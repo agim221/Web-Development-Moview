@@ -3,7 +3,7 @@ import React from "react";
 export default function login() {
   return (
     <>
-      <body className="bg-gray-100 flex items-center justify-center h-screen">
+      <div className="bg-gray-100 flex items-center justify-center h-screen">
         <div className="bg-white p-8 rounded-lg shadow-lg w-96">
           <h1 className="text-2xl font-bold text-center mb-6">Dramaku</h1>
           <form action="login.html" method="post" className="space-y-4">
@@ -45,7 +45,7 @@ export default function login() {
             </div>
           </form>
         </div>
-      </body>
+      </div>
     </>
   );
 }
