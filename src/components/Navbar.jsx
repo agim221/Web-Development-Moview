@@ -2,13 +2,14 @@ import React, { useState } from "react";
 import "../styles/style.css";
 import { useNavigate } from "react-router-dom";
 
-function Navbar({ toggleFilterBar }) {
+function Navbar({ toggleFilterBar, setSearchText }) {
   let [text, setText] = useState("");
 
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setSearchText(text);
     navigate("/search");
   };
 
@@ -16,7 +17,13 @@ function Navbar({ toggleFilterBar }) {
     <>
       <nav className="bg-white py-4 flex items-center justify-between mb-9">
         <div className="flex items-center space-x-4 gap-10 w-4/5">
-          <span className="text-lg font-semibold text-gray-800">DramaKu</span>
+          <span
+            role="button"
+            className="text-lg font-semibold text-gray-800"
+            onClick={() => navigate("/")}
+          >
+            DramaKu
+          </span>
           <div className="w-4/5 flex gap-6">
             <form onSubmit={handleSubmit} className="flex w-4/5">
               <input
@@ -35,7 +42,7 @@ function Navbar({ toggleFilterBar }) {
                 stroke="currentColor"
                 className="btn-search size-6 self-center w-10 h-10 -mx-12"
                 type="submit"
-                onSubmit={handleSubmit}
+                onClick={handleSubmit}
               >
                 <path
                   className="text-gray-800"

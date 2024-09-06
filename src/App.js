@@ -19,6 +19,8 @@ function App() {
     country: "",
     sort: "",
   });
+  let [searchText, setSearchText] = useState("");
+  let [filteredSum, setFilteredSum] = useState(0);
 
   const toggleFilterBar = useCallback(() => {
     setIsOpen((prev) =>
@@ -28,29 +30,38 @@ function App() {
 
   useEffect(() => {
     console.log(filterData);
-    console.log("ineffect");
   }, [filterData]);
 
   return (
     <Router>
-      <div className="relative w-full h-full">
+      <div className="relative w-full h-full min-h-screen">
         <Filterbar
           isOpen={isOpen}
           toggleFilterBar={toggleFilterBar}
           onSubmit={setFilterData}
         />
         <div className="w-4/5 mx-auto">
-          <Navbar isOpen={isOpen} toggleFilterBar={toggleFilterBar} />
+          <Navbar
+            isOpen={isOpen}
+            toggleFilterBar={toggleFilterBar}
+            setSearchText={setSearchText}
+          />
           <Routes>
             <Route path="/" element={<Home />} />
             <Route
               path="/search"
-              element={<Search filterData={filterData} />}
+              element={
+                <Search
+                  filterData={filterData}
+                  searchText={searchText}
+                  setFilteredSum={setFilteredSum}
+                />
+              }
             />
             <Route path="/login" element={<Login />} />
           </Routes>
         </div>
-        <Footer />
+        <Footer filteredSum={filteredSum} />
       </div>
     </Router>
   );

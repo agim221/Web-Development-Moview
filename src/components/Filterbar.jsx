@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 
 import "../styles/style.css";
 
@@ -11,8 +11,11 @@ function Filterbar({ isOpen, toggleFilterBar, onSubmit }) {
   const [year, setYear] = useState("");
   const [country, setCountry] = useState("");
   const [sort, setSort] = useState("");
+  const [savedValues, setSavedValues] = useState({});
 
   const navigate = useNavigate();
+
+  const form = useRef(null);
 
   const handleStatusChange = (e) => {
     setStatus(e.target.value);
@@ -38,6 +41,16 @@ function Filterbar({ isOpen, toggleFilterBar, onSubmit }) {
     setGenre(e.target.value);
   };
 
+  const handleClose = () => {
+    toggleFilterBar();
+    setGenre(savedValues.genre);
+    setStatus(savedValues.status);
+    setRating(savedValues.rating);
+    setYear(savedValues.year);
+    setCountry(savedValues.country);
+    setSort(savedValues.sort);
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const formData = {
@@ -51,21 +64,24 @@ function Filterbar({ isOpen, toggleFilterBar, onSubmit }) {
 
     navigate("/search");
     toggleFilterBar();
+    setSavedValues(formData);
     onSubmit(formData);
   };
 
   const handleReset = (e) => {
     e.preventDefault();
     setStatus("");
+    setGenre("");
     setRating("");
     setYear("");
     setCountry("");
     setSort("");
+    form.current.reset();
   };
 
   return (
     <section
-      className={`filter-sec bg-gray-500/90 h-[80%] w-full absolute z-10 transition-transform duration-500 ease-in-out ${isOpen}`}
+      className={`filter-sec bg-gray-500/90 h-[600px] w-full absolute z-10 transition-transform duration-500 ease-in-out ${isOpen}`}
     >
       <div className="p-4 flex flex-col w-2/4 mx-auto mt-10">
         <div className="flex flex-row justify-between">
@@ -74,7 +90,7 @@ function Filterbar({ isOpen, toggleFilterBar, onSubmit }) {
             role="button"
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
-            onClick={() => toggleFilterBar()}
+            onClick={() => handleClose()}
             viewBox="0 0 24 24"
             strokeWidth="1.5"
             stroke="currentColor"
@@ -88,7 +104,7 @@ function Filterbar({ isOpen, toggleFilterBar, onSubmit }) {
           </svg>
         </div>
         <div className="flex flex-col gap-4 mt-4">
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} ref={form} className="space-y-4">
             <div className="flex flex-row gap-4">
               <div className="flex flex-col gap-2">
                 <label htmlFor="genre">Genre</label>
@@ -97,7 +113,9 @@ function Filterbar({ isOpen, toggleFilterBar, onSubmit }) {
                   id="genre"
                   className="border border-gray-300 p-2 rounded-xl"
                   onChange={handleGenreChange}
+                  value={genre}
                 >
+                  <option value="" default></option>
                   <option value="action">Action</option>
                   <option value="drama">Drama</option>
                   <option value="comedy">Comedy</option>
@@ -111,7 +129,9 @@ function Filterbar({ isOpen, toggleFilterBar, onSubmit }) {
                   id="status"
                   className="border border-gray-300 p-2 rounded-xl"
                   onChange={handleStatusChange}
+                  value={status}
                 >
+                  <option value="" default></option>
                   <option value="ongoing">Ongoing</option>
                   <option value="completed">Completed</option>
                 </select>
@@ -123,7 +143,9 @@ function Filterbar({ isOpen, toggleFilterBar, onSubmit }) {
                   id="rating"
                   className="border border-gray-300 p-2 rounded-xl"
                   onChange={handleRatingChange}
+                  value={rating}
                 >
+                  <option value="" default></option>
                   <option value="1">1</option>
                   <option value="2">2</option>
                   <option value="3">3</option>
@@ -137,7 +159,9 @@ function Filterbar({ isOpen, toggleFilterBar, onSubmit }) {
                   id="year"
                   className="border border-gray-300 p-2 rounded-xl"
                   onChange={handleYearChange}
+                  value={year}
                 >
+                  <option value="" default></option>
                   <option value="2021">2021</option>
                   <option value="2020">2020</option>
                   <option value="2019">2019</option>
@@ -151,7 +175,9 @@ function Filterbar({ isOpen, toggleFilterBar, onSubmit }) {
                   id="country"
                   className="border border-gray-300 p-2 rounded-xl"
                   onChange={handleCountryChange}
+                  value={country}
                 >
+                  <option value="" default></option>
                   <option value="indonesia">Indonesia</option>
                   <option value="korea">Korea</option>
                   <option value="japan">Japan</option>
@@ -168,7 +194,9 @@ function Filterbar({ isOpen, toggleFilterBar, onSubmit }) {
                   id="sort"
                   className="border border-gray-300 p-2 rounded-xl"
                   onChange={handleSortChange}
+                  value={sort}
                 >
+                  <option value="" default></option>
                   <option value="asc">Ascending</option>
                   <option value="desc">Descending</option>
                 </select>

@@ -1,46 +1,55 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import FilmCard from "../components/FilmCard";
+import films from "../assets/images/main-slider/dummy.json";
 
-function search() {
+function Search({ filterData, searchText, setFilteredSum }) {
+  const [filteredFilms, setFilteredFilms] = useState([]);
+
+  const filterFilms = () => {
+    let filteredFilms = films.filter((film) => {
+      return (
+        film.title.toLowerCase().includes(searchText.toLowerCase()) &&
+        (film.status === filterData.status || filterData.status === "") &&
+        (film.genre === filterData.genre || filterData.genre === "") &&
+        (film.rating === filterData.rating || filterData.rating === "") &&
+        (film.year === filterData.year || filterData.year === "") &&
+        (film.country === filterData.country || filterData.country === "")
+      );
+    });
+    setFilteredFilms(filteredFilms);
+    setFilteredSum(filteredFilms.length);
+  };
+
+  useEffect(() => {
+    filterFilms();
+  }, [filterData, searchText]);
+
   return (
     <>
       <section className="flex flex-col w-4/5 mx-auto">
-        <h1 className="text-4xl font-bold p-5">Search</h1>
+        {filteredFilms.length === 0 ? (
+          <p className="text-2xl font-bold p-5">No films found</p>
+        ) : (
+          <h1 className="text-4xl font-bold p-5">Search</h1>
+        )}
         <div className="grid grid-cols-5 gap-x-4 gap-y-24 mb-28">
-          <FilmCard />
-          <FilmCard />
-          <FilmCard />
-          <FilmCard />
-          <FilmCard />
-          <FilmCard />
-          <FilmCard />
-          <FilmCard />
-          <FilmCard />
-          <FilmCard />
-          <FilmCard />
-          <FilmCard />
-          <FilmCard />
-          <FilmCard />
-          <FilmCard />
-          <FilmCard />
-          <FilmCard />
-          <FilmCard />
-          <FilmCard />
-          <FilmCard />
-          <FilmCard />
-          <FilmCard />
-          <FilmCard />
-          <FilmCard />
-          <FilmCard />
-          <FilmCard />
-          <FilmCard />
-          <FilmCard />
-          <FilmCard />
-          <FilmCard />
+          {filteredFilms.map((film) => (
+            <FilmCard
+              key={film.id}
+              title={film.title}
+              description={film.description}
+              posterUrl={film.image}
+              year={film.year}
+              rating={film.rating}
+              country={film.country}
+              status={film.status}
+              genre={film.genre}
+            />
+          ))}
         </div>
       </section>
     </>
   );
 }
 
-export default React.memo(search);
+export default Search;
