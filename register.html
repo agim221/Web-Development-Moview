@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 flex items-center justify-center h-screen">
+
+    <div class="bg-white p-8 rounded-lg shadow-lg w-96">
+        <h1 class="text-2xl font-bold text-center mb-6">Dramaku</h1>
+        <form action="login.html" method="post" class="space-y-4">
+            <div>
+                <input type="text" placeholder="Username" class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-orange-500">
+            </div>
+            <div>
+                <input type="text" placeholder="Email" class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-orange-500">
+            </div>
+            <div>
+                <input type="password" placeholder="Password" class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-orange-500">
+            </div>
+            <div>
+                <button type="submit" class="w-full py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600">Sign up</button>
+            </div>
+            <div>
+                <button type="submit" class="w-full py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600">Sign up with Google</button>
+            </div>
+            <div>Already have an account?<a href="login.html" class="text-blue-500"> Sign in</a>
+            </div>
+        </form>
+    </div>
+
+</body>
+</html>

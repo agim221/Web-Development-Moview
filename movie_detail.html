@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DramaKu</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 p-4">
+
+    <!-- Header -->
+    <header class="mb-8">
+        <h1 class="text-2xl font-bold">DramaKu</h1>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-6xl mx-auto bg-white p-8 rounded-lg shadow-lg">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            
+            <!-- Poster -->
+            <div class="lg:col-span-1">
+                <div class="bg-gray-200 h-80 rounded-lg"></div>
+            </div>
+
+            <!-- Drama Information -->
+            <div class="lg:col-span-2">
+                <h2 class="text-3xl font-bold mb-4">Title of the drama that makes two lines</h2>
+                <p class="text-sm text-gray-600 mb-2">Other titles: Title 2, Title 3, Title 4</p>
+                <p class="text-sm text-gray-600 mb-2">Year: Spring 2024</p>
+                <p class="text-gray-700 mb-4">
+                    Synopsis sometimes unhelpful. I don’t read it thoroughly. But what helps me is the genres. I need to see genres and actors. That is what I want.
+                </p>
+                <p class="text-gray-700 mb-2">Genre 1, Genre 2, Genre 3</p>
+                <p class="text-gray-700 mb-2">Rating: 3.5/5</p>
+                <p class="text-gray-700">Availability: Fansub: @subber on X</p>
+            </div>
+        </div>
+
+        <!-- Actor List -->
+        <div class="mt-8 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4">
+            <div class="flex flex-col items-center">
+                <div class="bg-gray-200 h-24 w-24 rounded-lg"></div>
+                <div class="text-center mt-2">Actor 1</div>
+            </div>
+            <div class="flex flex-col items-center">
+                <div class="bg-gray-200 h-24 w-24 rounded-lg"></div>
+                <div class="text-center mt-2">Actor 1</div>
+            </div>
+            <div class="flex flex-col items-center">
+                <div class="bg-gray-200 h-24 w-24 rounded-lg"></div>
+                <div class="text-center mt-2">Actor 1</div>
+            </div>
+            <div class="flex flex-col items-center">
+                <div class="bg-gray-200 h-24 w-24 rounded-lg"></div>
+                <div class="text-center mt-2">Actor 1</div>
+            </div>
+            <div class="flex flex-col items-center">
+                <div class="bg-gray-200 h-24 w-24 rounded-lg"></div>
+                <div class="text-center mt-2">Actor 1</div>
+            </div>
+            <div class="flex flex-col items-center">
+                <div class="bg-gray-200 h-24 w-24 rounded-lg"></div>
+                <div class="text-center mt-2">Actor 1</div>
+            </div>
+        </div>
+
+        <!-- Video Section -->
+        <div class="mt-8 bg-gray-200 h-64 rounded-lg flex items-center justify-center">
+            <svg class="w-16 h-16 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm-2-11.5v7l6-3.5-6-3.5z" clip-rule="evenodd"></path>
+            </svg>
+        </div>
+
+        <!-- Comments Section -->
+        <div class="mt-8">
+            <h3 class="text-lg font-bold mb-4">(4) People think about this drama</h3>
+            
+            <!-- Filter for reviews -->
+            <div class="flex justify-between mb-4">
+                <select class="border border-gray-300 rounded py-2 px-4">
+                    <option value="all">All Reviews</option>
+                    <option value="5">★★★★★</option>
+                    <option value="4">★★★★☆</option>
+                    <option value="3">★★★☆☆</option>
+                    <option value="2">★★☆☆☆</option>
+                    <option value="1">★☆☆☆☆</option>
+                </select>
+                <button class="bg-orange-500 text-white py-2 px-4 rounded hover:bg-orange-600">Filter</button>
+            </div>
+
+            <div class="space-y-4">
+                <div class="flex items-start space-x-4">
+                    <div class="flex-shrink-0">
+                        <div class="w-10 h-10 bg-gray-300 rounded-full"></div>
+                    </div>
+                    <div>
+                        <div class="text-sm font-bold">Nara (4/14/2014)</div>
+                        <div class="text-sm text-yellow-500">★★★★★</div>
+                        <div class="text-sm text-gray-700">said: it is a wonderful drama! Love it so much!!!!</div>
+                    </div>
+                </div>
+                <!-- Repeat the comment structure for other comments -->
+            </div>
+        </div>
+
+        <!-- Add Comment Section -->
+        <div class="mt-8">
+            <h3 class="text-lg font-bold mb-4">Add yours!</h3>
+            <form class="space-y-4">
+                <div class="flex space-x-4">
+                    <input type="text" placeholder="Name" class="w-1/3 px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-orange-500">
+                    <select class="w-1/3 border border-gray-300 rounded py-2 px-4">
+                        <option value="5">★★★★★</option>
+                        <option value="4">★★★★☆</option>
+                        <option value="3">★★★☆☆</option>
+                        <option value="2">★★☆☆☆</option>
+                        <option value="1">★☆☆☆☆</option>
+                    </select>
+                </div>
+                <textarea placeholder="Your thoughts" class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-orange-500"></textarea>
+                <div class="text-sm text-gray-500">you can only submit your comment once.</div>
+                <button type="submit" class="w-20 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600">Submit</button></form>
+        </div>
+    </main>
+
+</body>
+</html>

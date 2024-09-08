@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Approve Movie</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Halaman Utama -->
+    <div class="p-8">
+        <div class="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-lg text-black">
+            <h2 class="text-3xl font-bold mb-4">Title of the Drama</h2>
+            <p>Other details about the movie...</p>
+            <div class="mt-4 flex space-x-4">
+                <button id="approveButton" class="bg-yellow-500 text-white py-2 px-4 rounded hover:bg-yellow-600">Approve</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pop-up Modal -->
+    <div id="approveModal" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center hidden">
+        <div class="bg-white p-6 rounded-lg shadow-lg text-black w-3/4 max-h-screen overflow-y-auto">
+            <!-- Main Content -->
+            <main class="bg-white p-8 rounded-lg shadow-lg">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <!-- Poster -->
+                    <div class="lg:col-span-1">
+                        <div class="bg-gray-200 h-80 rounded-lg"></div>
+                    </div>
+                    <!-- Drama Information -->
+                    <div class="lg:col-span-2">
+                        <h2 class="text-3xl font-bold mb-4">Title of the drama that makes two lines</h2>
+                        <p class="text-sm text-gray-600 mb-2">Other titles: Title 2, Title 3, Title 4</p>
+                        <p class="text-sm text-gray-600 mb-2">Year: Spring 2024</p>
+                        <p class="text-gray-700 mb-4">
+                            Synopsis sometimes unhelpful. I don’t read it thoroughly. But what helps me is the genres. I need to see genres and actors. That is what I want.
+                        </p>
+                        <p class="text-gray-700 mb-2">Genre 1, Genre 2, Genre 3</p>
+                        <p class="text-gray-700 mb-2">Rating: 3.5/5</p>
+                        <p class="text-gray-700">Availability: Fansub: @subber on X</p>
+                    </div>
+                </div>
+                <!-- Actor List -->
+                <div class="mt-8 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4">
+                    <div class="flex flex-col items-center">
+                        <div class="bg-gray-200 h-24 w-24 rounded-lg"></div>
+                        <div class="text-center mt-2">Actor 1</div>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <div class="bg-gray-200 h-24 w-24 rounded-lg"></div>
+                        <div class="text-center mt-2">Actor 1</div>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <div class="bg-gray-200 h-24 w-24 rounded-lg"></div>
+                        <div class="text-center mt-2">Actor 1</div>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <div class="bg-gray-200 h-24 w-24 rounded-lg"></div>
+                        <div class="text-center mt-2">Actor 1</div>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <div class="bg-gray-200 h-24 w-24 rounded-lg"></div>
+                        <div class="text-center mt-2">Actor 1</div>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <div class="bg-gray-200 h-24 w-24 rounded-lg"></div>
+                        <div class="text-center mt-2">Actor 1</div>
+                    </div>
+                </div>
+                <!-- Video Section -->
+                <div class="mt-8 bg-gray-200 h-64 rounded-lg flex items-center justify-center">
+                    <svg class="w-16 h-16 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm-2-11.5v7l6-3.5-6-3.5z" clip-rule="evenodd"></path>
+                    </svg>
+                </div>
+            </main>
+            <div class="mt-6 flex space-x-4">
+                <button id="confirmApprove" class="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600">Yes, Approve</button>
+                <button id="cancelApprove" class="bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-600">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript untuk Pop-up -->
+    <script>
+        document.getElementById('approveButton').addEventListener('click', function () {
+            document.getElementById('approveModal').classList.remove('hidden');
+        });
+
+        document.getElementById('cancelApprove').addEventListener('click', function () {
+            document.getElementById('approveModal').classList.add('hidden');
+        });
+
+        document.getElementById('confirmApprove').addEventListener('click', function () {
+            // Logika untuk meng-approve movie
+            alert('Movie Approved!');
+            document.getElementById('approveModal').classList.add('hidden');
+        });
+    </script>
+</body>
+
+</html>

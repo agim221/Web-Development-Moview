@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body class="w-4/5 mx-auto py-4">
+    <div class="">
+      <span class="text-xl font-semibold text-gray-800">DramaKu</span>
+      <div class="flex flex-row mt-4 ml-4">
+        <section class="w-1/6">
+          <div>
+            <span class="">Dramas</span>
+            <ul class="ml-4">
+              <li>Validate</li>
+              <li id="input-menu">Input New Drama</li>
+            </ul>
+          </div>
+          <div id="countries-menu">Countries</div>
+          <div id="awards-menu">Awards</div>
+          <div id="genres-menu">Genres</div>
+          <div id="actors-menu">Actors</div>
+          <div id="comments-menu">Comments</div>
+          <div id="users-menu">Users</div>
+          <div id="logout-menu">Logout</div>
+        </section>
+
+        <!-- Input New Drama -->
+        <section class="input-section w-full hidden">
+          <div class="flex flex-row gap-2">
+            <div class="flex flex-col w-3/12">
+              <div class="w-4/5 mx-auto">
+                <img
+                  class="w-full h-full mx-auto rounded-xl"
+                  src="./picture/download.jpeg"
+                  alt=""
+                />
+              </div>
+              <button
+                title="submit"
+                class="mt-4 bg-slate-500 text-white rounded-lg w-2/5 h-10 mx-auto"
+              >
+                Submit
+              </button>
+            </div>
+            <div class="flex flex-col w-full">
+              <div class="flex flex-row gap-4">
+                <div class="flex flex-col w-full">
+                  <label for="title">Title</label>
+                  <input
+                    type="text"
+                    name="title"
+                    id="title"
+                    class="bg-slate-400 text-white p-1 rounded"
+                  />
+                </div>
+                <div class="flex flex-col w-full">
+                  <label for="alt-title">Alternative Title</label>
+                  <input
+                    type="text"
+                    name="alt-title"
+                    id="alt-title"
+                    class="bg-slate-400 text-white p-1 rounded"
+                  />
+                </div>
+              </div>
+              <div class="flex flex-row gap-8">
+                <div class="flex flex-col">
+                  <label for="year">Year</label>
+                  <select
+                    name="year"
+                    id="year"
+                    class="bg-slate-400 rounded text-white p-1"
+                  >
+                    <option value="2021">2021</option>
+                    <option value="2020">2020</option>
+                    <option value="2019">2019</option>
+                    <option value="2018">2018</option>
+                    <option value="2017">2017</option>
+                    <option value="2016">2016</option>
+                    <option value="2015">2015</option>
+                    <option value="2014">2014</option>
+                    <option value="2013">2013</option>
+                    <option value="2012">2012</option>
+                    <option value="2011">2011</option>
+                  </select>
+                </div>
+                <div class="flex flex-col">
+                  <label for="country">Country</label>
+                  <input
+                    type="text"
+                    name="country"
+                    id="country"
+                    class="bg-slate-400 rounded text-white p-1"
+                  />
+                </div>
+                <div class="flex flex-col">
+                  <label for="status">Status</label>
+                  <select
+                    name="status"
+                    id="status"
+                    class="bg-slate-400 text-white p-1 rounded"
+                  >
+                    <option value="ongoing">Ongoing</option>
+                    <option value="completed">Completed</option>
+                  </select>
+                </div>
+              </div>
+              <div class="flex flex-col">
+                <label for="synopsis">Synopsis</label>
+                <textarea
+                  name="synopsis"
+                  id="synopsis"
+                  class="bg-slate-400 text-white p-1 rounded"
+                ></textarea>
+              </div>
+              <div class="flex flex-col">
+                <label for="available">Availability</label>
+                <input
+                  type="text"
+                  name="available"
+                  id="available"
+                  class="bg-slate-400 text-white p-1 rounded"
+                />
+              </div>
+              <div>
+                <label for="genre">Add Genre</label>
+
+                <form action="" class="grid grid-cols-4">
+                  <div>
+                    <input
+                      title="genre"
+                      type="checkbox"
+                      name="genre"
+                      id="genre-1"
+                      class="h-4 w-4 rounded"
+                    />
+                    <label for="genre">Action</label>
+                  </div>
+                  <div>
+                    <input
+                      title="genre"
+                      type="checkbox"
+                      name="genre"
+                      id="genre-1"
+                      class="h-4 w-4 rounded"
+                    />
+                    <label for="genre">Action</label>
+                  </div>
+                  <div>
+                    <input
+                      title="genre"
+                      type="checkbox"
+                      name="genre"
+                      id="genre-1"
+                      class="h-4 w-4 rounded"
+                    />
+                    <label for="genre">Action</label>
+                  </div>
+                  <div>
+                    <input
+                      title="genre"
+                      type="checkbox"
+                      name="genre"
+                      id="genre-1"
+                      class="h-4 w-4 rounded"
+                    />
+                    <label for="genre">Action</label>
+                  </div>
+                  <div>
+                    <input
+                      title="genre"
+                      type="checkbox"
+                      name="genre"
+                      id="genre-1"
+                      class="h-4 w-4 rounded"
+                    />
+                    <label for="genre">Action</label>
+                  </div>
+                  <div>
+                    <input
+                      title="genre"
+                      type="checkbox"
+                      name="genre"
+                      id="genre-1"
+                      class="h-4 w-4 rounded"
+                    />
+                    <label for="genre">Action</label>
+                  </div>
+                  <div>
+                    <input
+                      title="genre"
+                      type="checkbox"
+                      name="genre"
+                      id="genre-1"
+                      class="h-4 w-4 rounded"
+                    />
+                    <label for="genre">Action</label>
+                  </div>
+                  <div>
+                    <input
+                      title="genre"
+                      type="checkbox"
+                      name="genre"
+                      id="genre-1"
+                      class="h-4 w-4 rounded"
+                    />
+                    <label for="genre">Action</label>
+                  </div>
+                  <div>
+                    <input
+                      title="genre"
+                      type="checkbox"
+                      name="genre"
+                      id="genre-1"
+                      class="h-4 w-4 rounded"
+                    />
+                    <label for="genre">Action</label>
+                  </div>
+                  <div>
+                    <input
+                      title="genre"
+                      type="checkbox"
+                      name="genre"
+                      id="genre-1"
+                      class="h-4 w-4 rounded"
+                    />
+                    <label for="genre">Action</label>
+                  </div>
+                  <div>
+                    <input
+                      title="genre"
+                      type="checkbox"
+                      name="genre"
+                      id="genre-1"
+                      class="h-4 w-4 rounded"
+                    />
+                    <label for="genre">Action</label>
+                  </div>
+                  <div>
+                    <input
+                      title="genre"
+                      type="checkbox"
+                      name="genre"
+                      id="genre-1"
+                      class="h-4 w-4 rounded"
+                    />
+                    <label for="genre">Action</label>
+                  </div>
+                  <div>
+                    <input
+                      title="genre"
+                      type="checkbox"
+                      name="genre"
+                      id="genre-1"
+                      class="h-4 w-4 rounded"
+                    />
+                    <label for="genre">Action</label>
+                  </div>
+                  <div>
+                    <input
+                      title="genre"
+                      type="checkbox"
+                      name="genre"
+                      id="genre-1"
+                      class="h-4 w-4 rounded"
+                    />
+                    <label for="genre">Action</label>
+                  </div>
+                  <div>
+                    <input
+                      title="genre"
+                      type="checkbox"
+                      name="genre"
+                      id="genre-1"
+                      class="h-4 w-4 rounded"
+                    />
+                    <label for="genre">Action</label>
+                  </div>
+                  <div>
+                    <input
+                      title="genre"
+                      type="checkbox"
+                      name="genre"
+                      id="genre-1"
+                      class="h-4 w-4 rounded"
+                    />
+                    <label for="genre">Action</label>
+                  </div>
+                </form>
+              </div>
+              <div class="flex flex-col gap-2">
+                <label for="actor">Add Actors (Up to 9)</label>
+                <input
+                  type="text"
+                  name="actor"
+                  id="actor"
+                  class="bg-slate-400 p-1 text-white rounded w-1/3"
+                />
+                <div class="grid grid-cols-3 gap-2">
+                  <div class="bg-slate-300 flex flex-row gap-4 p-4 rounded-lg">
+                    <div class="w-2/12">
+                      <img
+                        class="w-full h-full mx-auto rounded-xl"
+                        src="./picture/download (1).jpeg"
+                        alt="actore"
+                      />
+                    </div>
+                    <span>Actor Name</span>
+                  </div>
+                  <div class="bg-slate-300 flex flex-row gap-4 p-4 rounded-lg">
+                    <div class="w-2/12">
+                      <img
+                        class="w-full h-full mx-auto rounded-xl"
+                        src="./picture/download (1).jpeg"
+                        alt="actore"
+                      />
+                    </div>
+                    <span>Actor Name</span>
+                  </div>
+                  <div class="bg-slate-300 flex flex-row gap-4 p-4 rounded-lg">
+                    <div class="w-2/12">
+                      <img
+                        class="w-full h-full mx-auto rounded-xl"
+                        src="./picture/download (1).jpeg"
+                        alt="actore"
+                      />
+                    </div>
+                    <span>Actor Name</span>
+                  </div>
+                  <div class="bg-slate-300 flex flex-row gap-4 p-4 rounded-lg">
+                    <div class="w-2/12">
+                      <img
+                        class="w-full h-full mx-auto rounded-xl"
+                        src="./picture/download (1).jpeg"
+                        alt="actore"
+                      />
+                    </div>
+                    <span>Actor Name</span>
+                  </div>
+                  <div class="bg-slate-300 flex flex-row gap-4 p-4 rounded-lg">
+                    <div class="w-2/12">
+                      <img
+                        class="w-full h-full mx-auto rounded-xl"
+                        src="./picture/download (1).jpeg"
+                        alt="actore"
+                      />
+                    </div>
+                    <span>Actor Name</span>
+                  </div>
+                  <div class="bg-slate-300 flex flex-row gap-4 p-4 rounded-lg">
+                    <div class="w-2/12">
+                      <img
+                        class="w-full h-full mx-auto rounded-xl"
+                        src="./picture/download (1).jpeg"
+                        alt="actore"
+                      />
+                    </div>
+                    <span>Actor Name</span>
+                  </div>
+                  <div class="bg-slate-300 flex flex-row gap-4 p-4 rounded-lg">
+                    <div class="w-2/12">
+                      <img
+                        class="w-full h-full mx-auto rounded-xl"
+                        src="./picture/download (1).jpeg"
+                        alt="actore"
+                      />
+                    </div>
+                    <span>Actor Name</span>
+                  </div>
+                  <div class="bg-slate-300 flex flex-row gap-4 p-4 rounded-lg">
+                    <div class="w-2/12">
+                      <img
+                        class="w-full h-full mx-auto rounded-xl"
+                        src="./picture/download (1).jpeg"
+                        alt="actore"
+                      />
+                    </div>
+                    <span>Actor Name</span>
+                  </div>
+                  <div class="bg-slate-300 flex flex-row gap-4 p-4 rounded-lg">
+                    <div class="w-2/12">
+                      <img
+                        class="w-full h-full mx-auto rounded-xl"
+                        src="./picture/download (1).jpeg"
+                        alt="actore"
+                      />
+                    </div>
+                    <span>Actor Name</span>
+                  </div>
+                </div>
+              </div>
+              <div class="flex flex-row gap-2">
+                <div class="flex flex-col w-full">
+                  <label for="trailer">Link Trailer</label>
+                  <input
+                    type="text"
+                    name="trailer"
+                    id="trailer"
+                    class="bg-slate-400 text-white p-1 rounded"
+                  />
+                </div>
+                <div class="flex flex-col w-full">
+                  <label for="award">Award</label>
+                  <select
+                    name="award"
+                    id="award"
+                    class="bg-slate-400 text-white p-1 rounded"
+                  >
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Countries -->
+        <section class="countries-section w-full hidden">
+          <div class="flex flex-col w-3/4 mx-auto">
+            <div class="flex flex-row mb-8 gap-4 bg-slate-100 p-2 rounded">
+              <span class="text-sm self-center">Country</span>
+              <input
+                type="text"
+                name="country"
+                id="country"
+                class="bg-slate-300 text-white ml-4"
+              />
+              <button
+                class="bg-slate-300 text-white text-xs p-1 rounded hover:text-black hover:bg-white"
+              >
+                Add
+              </button>
+            </div>
+            <table class="text-center">
+              <thead class="bg-slate-300 h-10">
+                <tr>
+                  <th class="w-1/12">No</th>
+                  <th>Country</th>
+                  <th class="w-1/5">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="odd:bg-red-100 even:bg-red-100/20">
+                  <td>1</td>
+                  <td>Indonesia</td>
+                  <td>
+                    <button class="hover:underline">Rename</button>
+                    <span class="">|</span>
+                    <button class="hover:underline">Delete</button>
+                  </td>
+                </tr>
+                <tr class="odd:bg-red-100 even:bg-red-100/20">
+                  <td>1</td>
+                  <td>Indonesia</td>
+                  <td>
+                    <button class="hover:underline">Rename</button>
+                    <span class="">|</span>
+                    <button class="hover:underline">Delete</button>
+                  </td>
+                </tr>
+                <tr class="odd:bg-red-100 even:bg-red-100/20">
+                  <td>1</td>
+                  <td>Indonesia</td>
+                  <td>
+                    <button class="hover:underline">Rename</button>
+                    <span class="">|</span>
+                    <button class="hover:underline">Delete</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Awards -->
+        <section class="awards-section w-full hidden">
+          <div class="flex flex-col w-3/4 mx-auto">
+            <div class="flex flex-col mb-8 gap-2 bg-slate-100 p-2 rounded">
+              <div class="flex flex-row gap-4 items-center">
+                <span class="text-sm w-1/12">Country</span>
+                <input
+                  type="text"
+                  name="country"
+                  id="country"
+                  class="bg-slate-300 text-white w-1/4"
+                />
+              </div>
+              <div class="flex flex-row gap-4 items-center">
+                <span class="text-sm w-1/12">Year</span>
+                <input
+                  type="text"
+                  name="year"
+                  id="year"
+                  class="bg-slate-300 text-white w-1/4"
+                />
+              </div>
+              <div class="flex flex-row gap-4 items-center">
+                <span class="text-sm w-1/12">Award</span>
+                <input
+                  type="text"
+                  name="award"
+                  id="award"
+                  class="bg-slate-300 text-white w-1/4"
+                />
+              </div>
+              <button
+                title="submit"
+                class="bg-slate-300 text-white text-xs p-1 rounded hover:text-black hover:bg-white w-1/12 ml-[10.5%]"
+              >
+                Submit
+              </button>
+            </div>
+            <table class="text-center">
+              <thead class="bg-slate-300 h-10">
+                <tr>
+                  <th class="w-1/12">No</th>
+                  <th>Country</th>
+                  <th>year</th>
+                  <th>award</th>
+                  <th class="w-1/5">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="odd:bg-red-100 even:bg-red-100/20">
+                  <td>1</td>
+                  <td>Indonesia</td>
+                  <td>2021</td>
+                  <td>Film terbaik</td>
+                  <td>
+                    <button class="hover:underline">Rename</button>
+                    <span class="">|</span>
+                    <button class="hover:underline">Delete</button>
+                  </td>
+                </tr>
+                <tr class="odd:bg-red-100 even:bg-red-100/20">
+                  <td>1</td>
+                  <td>Indonesia</td>
+                  <td>2021</td>
+                  <td>Film terbaik</td>
+                  <td>
+                    <button class="hover:underline">Rename</button>
+                    <span class="">|</span>
+                    <button class="hover:underline">Delete</button>
+                  </td>
+                </tr>
+                <tr class="odd:bg-red-100 even:bg-red-100/20">
+                  <td>1</td>
+                  <td>Indonesia</td>
+                  <td>2021</td>
+                  <td>Film terbaik</td>
+                  <td>
+                    <button class="hover:underline">Rename</button>
+                    <span class="">|</span>
+                    <button class="hover:underline">Delete</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Genre -->
+        <section class="genres-section w-full hidden">
+          <div class="flex flex-col w-3/4 mx-auto">
+            <div class="flex flex-row mb-8 gap-4 bg-slate-100 p-2 rounded">
+              <span class="text-sm self-center">Genre</span>
+              <input
+                type="text"
+                name="country"
+                id="country"
+                class="bg-slate-300 text-white ml-4"
+              />
+              <button
+                class="bg-slate-300 text-white text-xs p-1 rounded hover:text-black hover:bg-white"
+              >
+                Submit
+              </button>
+            </div>
+            <table class="text-center">
+              <thead class="bg-slate-300 h-10">
+                <tr>
+                  <th class="w-1/12">No</th>
+                  <th>Genre</th>
+                  <th class="w-1/5">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="odd:bg-red-100 even:bg-red-100/20">
+                  <td>1</td>
+                  <td>Romance</td>
+                  <td>
+                    <button class="hover:underline">Rename</button>
+                    <span class="">|</span>
+                    <button class="hover:underline">Delete</button>
+                  </td>
+                </tr>
+                <tr class="odd:bg-red-100 even:bg-red-100/20">
+                  <td>2</td>
+                  <td>Drama</td>
+                  <td>
+                    <button class="hover:underline">Rename</button>
+                    <span class="">|</span>
+                    <button class="hover:underline">Delete</button>
+                  </td>
+                </tr>
+                <tr class="odd:bg-red-100 even:bg-red-100/20">
+                  <td>3</td>
+                  <td>Action</td>
+                  <td>
+                    <button class="hover:underline">Rename</button>
+                    <span class="">|</span>
+                    <button class="hover:underline">Delete</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Actor -->
+        <section class="actors-section w-full hidden">
+          <div class="flex flex-col w-3/4 mx-auto">
+            <div class="flex flex-col mb-8 gap-2 bg-slate-100 p-2 rounded">
+              <div class="flex flex-row gap-4 items-center">
+                <span class="text-sm w-1/12">Country</span>
+                <input
+                  type="text"
+                  name="country"
+                  id="country"
+                  class="bg-slate-300 text-white w-1/4"
+                />
+              </div>
+              <div class="flex flex-row gap-4 items-center">
+                <span class="text-sm w-1/12">Actor name</span>
+                <input
+                  type="text"
+                  name="actor"
+                  id="actor"
+                  class="bg-slate-300 text-white w-1/4"
+                />
+              </div>
+              <div class="flex flex-row gap-4 items-center">
+                <span class="text-sm w-1/12">Birth Date</span>
+                <input
+                  title="birth-date"
+                  type="text"
+                  name="birth-date"
+                  id="birth-date"
+                  class="bg-slate-300 text-white w-1/4"
+                />
+              </div>
+              <button
+                title="submit"
+                class="bg-slate-300 text-white text-xs p-1 rounded hover:text-black hover:bg-white w-1/12 ml-[10.5%]"
+              >
+                Submit
+              </button>
+            </div>
+            <table class="text-center">
+              <thead class="bg-slate-300 h-10">
+                <tr>
+                  <th class="w-1/12">No</th>
+                  <th>Country</th>
+                  <th>Actor Name</th>
+                  <th>Birth Date</th>
+                  <th>Photo</th>
+                  <th class="w-1/5">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="odd:bg-red-100 even:bg-red-100/20">
+                  <td>1</td>
+                  <td>Indonesia</td>
+                  <td>Joji</td>
+                  <td>30 agustus 2024</td>
+                  <td class="w-[10%]">
+                    <img src="./picture/download (1).jpeg" title="actor" />
+                  </td>
+                  <td>
+                    <button class="hover:underline">Rename</button>
+                    <span class="">|</span>
+                    <button class="hover:underline">Delete</button>
+                  </td>
+                </tr>
+                <tr class="odd:bg-red-100 even:bg-red-100/20">
+                  <td>1</td>
+                  <td>Indonesia</td>
+                  <td>Joji</td>
+                  <td>30 agustus 2024</td>
+                  <td class="w-[10%]">
+                    <img src="./picture/download (1).jpeg" title="actor" />
+                  </td>
+                  <td>
+                    <button class="hover:underline">Rename</button>
+                    <span class="">|</span>
+                    <button class="hover:underline">Delete</button>
+                  </td>
+                </tr>
+                <tr class="odd:bg-red-100 even:bg-red-100/20">
+                  <td>1</td>
+                  <td>Indonesia</td>
+                  <td>Joji</td>
+                  <td>30 agustus 2024</td>
+                  <td class="w-[10%]">
+                    <img src="./picture/download (1).jpeg" title="actor" />
+                  </td>
+                  <td>
+                    <button class="hover:underline">Rename</button>
+                    <span class="">|</span>
+                    <button class="hover:underline">Delete</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Comment -->
+        <section class="comments-section w-full">
+          <div class="flex flex-col w-3/4 mx-auto gap-4">
+            <div
+              class="flex flex-row mb-4 gap-2 bg-slate-100 p-2 rounded self-center"
+            >
+              <label>Filtered by : </label>
+              <select
+                name="status"
+                id="status"
+                class="bg-slate-400 text-white p-1 rounded"
+              >
+                <option value="unapproved">Unapproved</option>
+                <option value="approved">Approved</option>
+              </select>
+              <label>Shows</label>
+              <select
+                name="status"
+                id="status"
+                class="bg-slate-400 text-white p-1 rounded"
+              >
+                <option value="10">10</option>
+
+                <option value="50">50</option>
+                <option value="100">100</option>
+              </select>
+              <input
+                title="search"
+                type="text"
+                name="search"
+                id="search"
+                class="bg-slate-300 text-white ml-4 p-1 self-end"
+              />
+            </div>
+            <table class="text-center">
+              <thead class="bg-slate-300 h-10">
+                <tr>
+                  <th class="w-1/12">No</th>
+                  <th>Username</th>
+                  <th>Rate</th>
+                  <th>Drama</th>
+                  <th>Comments</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="odd:bg-red-100 even:bg-red-100/20">
+                  <td>
+                    <input
+                      type="checkbox"
+                      name="comment"
+                      id="comment"
+                      class="h-4 w-4 rounded"
+                    />
+                  </td>
+                  <td>Judul Film</td>
+                  <td>Actor-actor</td>
+                  <td>genre</td>
+                  <td>Synopsis</td>
+                  <td>status</td>
+                </tr>
+              </tbody>
+            </table>
+            <span class="">Select All</span>
+            <div class="flex flex-col">
+              <div class="flex flex-row gap-2">
+                <button class="bg-slate-300 text-white p-1 rounded">
+                  Approve
+                </button>
+                <button class="bg-slate-300 text-white p-1 rounded">
+                  Delete
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Validate -->
+        <section class="users-section w-full hidden">
+          <div class="flex flex-col w-3/4 mx-auto">
+            <div
+              class="flex flex-row mb-8 gap-2 bg-slate-100 p-2 rounded self-center"
+            >
+              <label>Filtered by : </label>
+              <select
+                name="status"
+                id="status"
+                class="bg-slate-400 text-white p-1 rounded"
+              >
+                <option value="unapproved">Unapproved</option>
+                <option value="approved">Approved</option>
+              </select>
+              <label>Shows</label>
+              <select
+                name="status"
+                id="status"
+                class="bg-slate-400 text-white p-1 rounded"
+              >
+                <option value="10">10</option>
+
+                <option value="50">50</option>
+                <option value="100">100</option>
+              </select>
+              <input
+                title="search"
+                type="text"
+                name="search"
+                id="search"
+                class="bg-slate-300 text-white ml-4 p-1 self-end"
+              />
+            </div>
+            <table class="text-center">
+              <thead class="bg-slate-300 h-10">
+                <tr>
+                  <th class="w-1/12">No</th>
+                  <th>Drama</th>
+                  <th>Actor</th>
+                  <th>Genre</th>
+                  <th>Synopsis</th>
+                  <th>Status</th>
+                  <th class="w-1/5">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="odd:bg-red-100 even:bg-red-100/20">
+                  <td>1</td>
+                  <td>Judul Film</td>
+                  <td>Actor-actor</td>
+                  <td>genre</td>
+                  <td>Synopsis</td>
+                  <td>status</td>
+                  <td>
+                    <button class="hover:underline">Rename</button>
+                    <span class="">|</span>
+                    <button class="hover:underline">Delete</button>
+                  </td>
+                </tr>
+                <tr class="odd:bg-red-100 even:bg-red-100/20">
+                  <td>1</td>
+                  <td>Judul Film</td>
+                  <td>Actor-actor</td>
+                  <td>genre</td>
+                  <td>Synopsis</td>
+                  <td>status</td>
+                  <td>
+                    <button class="hover:underline">Rename</button>
+                    <span class="">|</span>
+                    <button class="hover:underline">Delete</button>
+                  </td>
+                </tr>
+                <tr class="odd:bg-red-100 even:bg-red-100/20">
+                  <td>1</td>
+                  <td>Judul Film</td>
+                  <td>Actor-actor</td>
+                  <td>genre</td>
+                  <td>Synopsis</td>
+                  <td>status</td>
+                  <td>
+                    <button class="hover:underline">Rename</button>
+                    <span class="">|</span>
+                    <button class="hover:underline">Delete</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+    </div>
+  </body>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const menuItems = [
+        { id: "input-menu", sectionClass: "input-section" },
+        { id: "countries-menu", sectionClass: "countries-section" },
+        { id: "awards-menu", sectionClass: "awards-section" },
+        { id: "genres-menu", sectionClass: "genres-section" },
+        { id: "actors-menu", sectionClass: "actors-section" },
+        { id: "comments-menu", sectionClass: "comments-section" },
+        { id: "users-menu", sectionClass: "users-section" },
+        { id: "logout-menu", sectionClass: "logout-section" },
+      ];
+
+      function hideAllSections() {
+        menuItems.forEach((menuItem) => {
+          const section = document.querySelector(`.${menuItem.sectionClass}`);
+          if (section) {
+            section.classList.add("hidden");
+          }
+        });
+      }
+
+      menuItems.forEach((menuItem) => {
+        const menuElement = document.getElementById(menuItem.id);
+        menuElement.addEventListener("click", function () {
+          hideAllSections();
+          const section = document.querySelector(`.${menuItem.sectionClass}`);
+          if (section) {
+            section.classList.remove("hidden");
+          }
+        });
+      });
+    });
+  </script>
+</html>
