@@ -65,7 +65,7 @@ function validate() {
               type="text"
               name="search"
               id="search"
-              className="bg-slate-300 text-white ml-4 p-1 self-end"
+              className="bg-slate-300 text-white ml-4 p-1 self-end rounded"
             />
           </div>
         </CMSTable>

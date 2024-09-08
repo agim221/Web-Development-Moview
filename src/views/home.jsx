@@ -1,9 +1,12 @@
 import React, { useState, useRef } from "react";
 import MainSlider from "../components/MainSlider";
 import FilmCard from "../components/FilmCard";
+import FilmList from "../components/FilmList";
 
-function Home() {
+function Home({ filterData, searchText, setFilteredSum }) {
   let [scrollLeft, setScrollLeft] = useState(0);
+  let [filmShowed, setFilmShowed] = useState(20);
+
   const containerRef = useRef(null);
 
   const scrollMore = (direction) => {
@@ -86,19 +89,14 @@ function Home() {
       </section>
 
       <section className="flex flex-col w-4/5 mx-auto">
-        <h1 className="text-4xl font-bold p-5">More</h1>
-        <div className="grid grid-cols-5 gap-x-4 gap-y-24 mb-28">
-          <FilmCard />
-          <FilmCard />
-          <FilmCard />
-          <FilmCard />
-          <FilmCard />
-          <FilmCard />
-          <FilmCard />
-          <FilmCard />
-          <FilmCard />
-          <FilmCard />
-        </div>
+        <FilmList
+          filterData={filterData}
+          searchText={searchText}
+          filmShowed={filmShowed}
+          setFilmShowed={setFilmShowed}
+          setFilteredSum={setFilteredSum}
+          sectionTitle={"More Films"}
+        />
       </section>
     </>
   );

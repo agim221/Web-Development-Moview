@@ -9,9 +9,12 @@ import Navbar from "./components/Navbar";
 import Filterbar from "./components/Filterbar";
 import Footer from "./components/Footer";
 import Validate from "./views/cms/validate";
+import Country from "./views/cms/countries";
+import Genre from "./views/cms/genres";
 
 function App() {
   let [isOpen, setIsOpen] = useState("-translate-y-full");
+
   const [filterData, setFilterData] = useState({
     status: "",
     genre: "",
@@ -29,10 +32,6 @@ function App() {
     );
   }, []);
 
-  useEffect(() => {
-    // console.log(filterData);
-  }, [filterData]);
-
   return (
     <Router>
       <div className="relative w-full h-full min-h-screen">
@@ -48,7 +47,16 @@ function App() {
             setSearchText={setSearchText}
           />
           <Routes>
-            <Route path="/" element={<Home />} />
+            <Route
+              path="/"
+              element={
+                <Home
+                  filterData={filterData}
+                  searchText={searchText}
+                  setFilteredSum={setFilteredSum}
+                />
+              }
+            />
             <Route
               path="/search"
               element={
@@ -60,7 +68,9 @@ function App() {
               }
             />
             <Route path="/login" element={<Login />} />
-            <Route path="/cms" element={<Validate />} />
+            <Route path="/validate" element={<Validate />} />
+            <Route path="/country" element={<Country />} />
+            <Route path="/genre" element={<Genre />} />
           </Routes>
         </div>
         <Footer filteredSum={filteredSum} />
