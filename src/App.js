@@ -4,6 +4,7 @@ import "./App.css";
 import "./styles/style.css";
 import Home from "./views/home";
 import Login from "./views/login";
+import MovieDetail from "./views/MovieDetail";
 import Search from "./views/search";
 import Navbar from "./components/Navbar";
 import Filterbar from "./components/Filterbar";
@@ -33,6 +34,11 @@ function App() {
   }, [filterData]);
 
   return (
+    <div className="relative w-full h-full">
+      {/* <Home /> */}
+      {/* <Login /> */}
+      {/*<MovieDetail />*/}
+    </div>
     <Router>
       <div className="relative w-full h-full min-h-screen">
         <Filterbar
