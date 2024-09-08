@@ -8,6 +8,7 @@ import Search from "./views/search";
 import Navbar from "./components/Navbar";
 import Filterbar from "./components/Filterbar";
 import Footer from "./components/Footer";
+import Validate from "./views/cms/validate";
 
 function App() {
   let [isOpen, setIsOpen] = useState("-translate-y-full");
@@ -29,7 +30,7 @@ function App() {
   }, []);
 
   useEffect(() => {
-    console.log(filterData);
+    // console.log(filterData);
   }, [filterData]);
 
   return (
@@ -59,6 +60,7 @@ function App() {
               }
             />
             <Route path="/login" element={<Login />} />
+            <Route path="/cms" element={<Validate />} />
           </Routes>
         </div>
         <Footer filteredSum={filteredSum} />

@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import FilmCard from "../components/FilmCard";
 import films from "../assets/images/main-slider/dummy.json";
 
 function Search({ filterData, searchText, setFilteredSum }) {
   const [filteredFilms, setFilteredFilms] = useState([]);
+  const [filmShowed, setFilmShowed] = useState(30);
 
   const filterFilms = () => {
     let filteredFilms = films.filter((film) => {
@@ -16,9 +17,14 @@ function Search({ filterData, searchText, setFilteredSum }) {
         (film.country === filterData.country || filterData.country === "")
       );
     });
+
     setFilteredFilms(filteredFilms);
     setFilteredSum(filteredFilms.length);
   };
+
+  const loadMore = useCallback(() => {
+    setFilmShowed((prev) => prev + 30);
+  }, []);
 
   useEffect(() => {
     filterFilms();
@@ -33,7 +39,7 @@ function Search({ filterData, searchText, setFilteredSum }) {
           <h1 className="text-4xl font-bold p-5">Search</h1>
         )}
         <div className="grid grid-cols-5 gap-x-4 gap-y-24 mb-28">
-          {filteredFilms.map((film) => (
+          {filteredFilms.slice(0, filmShowed).map((film) => (
             <FilmCard
               key={film.id}
               title={film.title}
@@ -47,6 +53,14 @@ function Search({ filterData, searchText, setFilteredSum }) {
             />
           ))}
         </div>
+        <button
+          className={`bg-red-400 text-white font-bold py-2 px-4 w-1/6 rounded self-center ${
+            filteredFilms.length <= filmShowed ? "hidden" : ""
+          }`}
+          onClick={loadMore}
+        >
+          Load More
+        </button>
       </section>
     </>
   );
