@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import FilmCard from "./FilmCard";
 import films from "../assets/images/main-slider/dummy.json";
 
@@ -12,6 +13,7 @@ function FilmList({
   increment = 20,
 }) {
   const [filteredFilms, setFilteredFilms] = useState([]);
+  const navigate = useNavigate();
 
   const filterFilms = () => {
     let filteredFilms = films.filter((film) => {
@@ -37,6 +39,10 @@ function FilmList({
     filterFilms();
   }, [filterData, searchText]);
 
+  const handleFilmClick = (id) => {
+    navigate(`/MovieDetail/${id}`);
+  }
+
   return (
     <>
       {filteredFilms.length === 0 ? (
@@ -46,17 +52,19 @@ function FilmList({
       )}
       <div className="grid grid-cols-5 gap-x-4 gap-y-24 mb-28">
         {filteredFilms.slice(0, filmShowed).map((film) => (
-          <FilmCard
-            key={film.id}
-            title={film.title}
-            description={film.description}
-            posterUrl={film.image}
-            year={film.year}
-            rating={film.rating}
-            country={film.country}
-            status={film.status}
-            genre={film.genre}
-          />
+          <div key={film.id} onClick={() => handleFilmClick(film.id)}>
+            <FilmCard
+              key={film.id}
+              title={film.title}
+              description={film.description}
+              posterUrl={film.image}
+              year={film.year}
+              rating={film.rating}
+              country={film.country}
+              status={film.status}
+              genre={film.genre}
+            />
+          </div>
         ))}
       </div>
       <button
