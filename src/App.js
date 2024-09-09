@@ -12,6 +12,7 @@ import Footer from "./components/Footer";
 import Validate from "./views/cms/validate";
 import Country from "./views/cms/countries";
 import Genre from "./views/cms/genres";
+import Register from "./views/register";
 
 function App() {
   let [isOpen, setIsOpen] = useState("-translate-y-full");
@@ -36,7 +37,7 @@ function App() {
   return (
     // <div className="relative w-full h-full">
     //   {/* <Home /> */}
-    //   {/* <Login /> */}
+    // {/* <Login /> */}
     //   {/*<MovieDetail />*/}
     // </div>
     <Router>
@@ -80,6 +81,7 @@ function App() {
             <Route
               path="/MovieDetail/:id"
               element={<MovieDetail filterData={filterData} />} />
+            <Route path="/register" element={<Register />} />
           </Routes>
         </div>
         <Footer filteredSum={filteredSum} />
