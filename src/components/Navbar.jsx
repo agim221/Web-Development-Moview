@@ -107,7 +107,7 @@ function Navbar({ toggleFilterBar, setSearchText }) {
 
             <button className="text-white py-1 px-3 rounded">Profile</button>
           </div>
-          <button className="bg-orange-500 text-white py-1 px-3 rounded">
+          <button className="bg-orange-500 text-white py-1 px-3 rounded" onClick={() => navigate("/login")}>
             Login
           </button>
         </div>
