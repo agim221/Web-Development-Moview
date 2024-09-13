@@ -8,9 +8,7 @@ import Search from "./views/search";
 import Navbar from "./components/Navbar";
 import Filterbar from "./components/Filterbar";
 import Footer from "./components/Footer";
-import Validate from "./views/cms/validate";
-import Country from "./views/cms/countries";
-import Genre from "./views/cms/genres";
+import CMS from "./views/cms";
 
 function App() {
   let [isOpen, setIsOpen] = useState("-translate-y-full");
@@ -24,7 +22,7 @@ function App() {
     sort: "",
   });
   let [searchText, setSearchText] = useState("");
-  let [filteredSum, setFilteredSum] = useState(0);
+  let [filteredSum, setFilteredSum] = useState(1);
 
   const toggleFilterBar = useCallback(() => {
     setIsOpen((prev) =>
@@ -68,9 +66,7 @@ function App() {
               }
             />
             <Route path="/login" element={<Login />} />
-            <Route path="/validate" element={<Validate />} />
-            <Route path="/country" element={<Country />} />
-            <Route path="/genre" element={<Genre />} />
+            <Route path="/cms" element={<CMS />} />
           </Routes>
         </div>
         <Footer filteredSum={filteredSum} />
