@@ -13,6 +13,7 @@ function Search({ filterData, searchText, setFilteredSum }) {
           filmShowed={filmShowed}
           setFilmShowed={setFilmShowed}
           setFilteredSum={setFilteredSum}
+          increment={30}
           sectionTitle={"More Films"}
         />
       </section>
