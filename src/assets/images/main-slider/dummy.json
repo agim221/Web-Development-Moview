@@ -8,7 +8,7 @@
     "country": "Indonesia",
     "status": "completed",
     "genre": "Action",
-    "image": "../assets/images/main-slider/download.jpeg"
+    "image": "/download.jpeg"
   },
   {
     "id": 2,
