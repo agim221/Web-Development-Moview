@@ -1,16 +1,28 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import axios from "axios";
 
 const LoginPage = () => {
   // State untuk menangani input username dan password
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
     // Lakukan sesuatu dengan data login (e.g., kirim ke server)
-    console.log('Username:', username);
-    console.log('Password:', password);
+    console.log("Username:", username);
+    console.log("Password:", password);
+    axios
+      .post("http://localhost:8000/api/login", {
+        username: username,
+        password: password,
+      })
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.error("There was an error!", error);
+      });
   };
 
   return (
@@ -49,15 +61,18 @@ const LoginPage = () => {
               type="button"
               className="w-full py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600"
               onClick={() => {
-                console.log('Sign in with Google clicked');
+                console.log("Sign in with Google clicked");
               }}
             >
               Sign in with Google
             </button>
           </div>
           <div>
-            Don't have an account? 
-            <Link to="/register" className="text-blue-500"> Sign up</Link>
+            Don't have an account?
+            <Link to="/register" className="text-blue-500">
+              {" "}
+              Sign up
+            </Link>
           </div>
         </form>
       </div>

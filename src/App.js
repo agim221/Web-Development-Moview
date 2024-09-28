@@ -32,11 +32,6 @@ function App() {
   }, []);
 
   return (
-    // <div className="relative w-full h-full">
-    //   {/* <Home /> */}
-    // {/* <Login /> */}
-    //   {/*<MovieDetail />*/}
-    // </div>
     <Router>
       <div className="relative w-full h-full min-h-screen">
         <Filterbar
@@ -73,6 +68,7 @@ function App() {
             />
             <Route path="/login" element={<Login />} />
             <Route path="/cms" element={<CMS />} />
+            <Route path="/movieDetail/:id" element={<MovieDetail />} />
           </Routes>
         </div>
         <Footer filteredSum={filteredSum} />
