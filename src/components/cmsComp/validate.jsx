@@ -6,9 +6,9 @@ function validate() {
     return (
       <>
         <td>
-          <button class="hover:underline">Rename</button>
-          <span class="">|</span>
-          <button class="hover:underline">Delete</button>
+          <button className="hover:underline">Rename</button>
+          <span className="">|</span>
+          <button className="hover:underline">Delete</button>
         </td>
       </>
     );
@@ -16,7 +16,7 @@ function validate() {
 
   return (
     <section className="w-full">
-      <div className="flex flex-col w-3/4 mx-auto">
+      <div className="flex flex-col w-3/4 mx-auto gap-4">
         <CMSTable
           headers={[
             "",
@@ -39,12 +39,12 @@ function validate() {
             ],
           ]}
         >
-          <div class="flex flex-row mb-8 gap-2 bg-slate-100 p-2 rounded self-center">
+          <div className="flex flex-row mb-8 gap-2 bg-slate-100 p-2 rounded self-center">
             <label>Filtered by : </label>
             <select
               name="status"
               id="status"
-              class="bg-slate-400 text-white p-1 rounded"
+              className="bg-slate-400 text-white p-1 rounded"
             >
               <option value="unapproved">Unapproved</option>
               <option value="approved">Approved</option>
@@ -53,7 +53,7 @@ function validate() {
             <select
               name="status"
               id="status"
-              class="bg-slate-400 text-white p-1 rounded"
+              className="bg-slate-400 text-white p-1 rounded"
             >
               <option value="10">10</option>
 
