@@ -73,6 +73,7 @@ function App() {
             />
             <Route path="/login" element={<Login />} />
             <Route path="/cms" element={<CMS />} />
+            <Route path="/movieDetail/:id" element={<MovieDetail />} />
           </Routes>
         </div>
         <Footer filteredSum={filteredSum} />

@@ -4,6 +4,10 @@ import Genres from "../components/cmsComp/genres";
 import Countries from "../components/cmsComp/countries";
 import Validate from "../components/cmsComp/validate";
 import InputFilm from "../components/cmsComp/inputFilm";
+import Comments from "../components/cmsComp/comments";
+import Awards from "../components/cmsComp/awards";
+import Actors from "../components/cmsComp/actors";
+import Users from "../components/cmsComp/users";
 
 // Definisikan initial state
 const initialState = {
@@ -34,7 +38,7 @@ function CMS() {
     <>
       <div className="flex flex-row">
         <span>
-          <span className="text-xl font-semibold text-gray-800">Dramaku</span>
+          <span className="text-xl font-semibold text-gray-800">Moview</span>
           <div className="flex flex-row mt-4 ml-4">
             <CMSSidebar onViewChange={handleViewChange} />
           </div>
@@ -44,6 +48,10 @@ function CMS() {
           {state.view === "countries" && <Countries />}
           {state.view === "validate" && <Validate />}
           {state.view === "input" && <InputFilm />}
+          {state.view === "comments" && <Comments />}
+          {state.view === "awards" && <Awards />}
+          {state.view === "actors" && <Actors />} 
+          {state.view === "users" && <Users />}
         </div>
       </div>
     </>

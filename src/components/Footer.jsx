@@ -9,7 +9,7 @@ export default function Footer({ filteredSum }) {
         }`}
       >
         <div className="bg-gray-800 text-white text-center py-4">
-          <p>© 2021 DramaKu. All rights reserved</p>
+          <p>© 2024 Moview. All rights reserved</p>
         </div>
       </footer>
     </>
