@@ -22,7 +22,7 @@ function Navbar({ toggleFilterBar, setSearchText }) {
             className="text-lg font-semibold text-gray-800"
             onClick={() => navigate("/")}
           >
-            DramaKu
+            Moview
           </span>
           <div className="w-full flex gap-6">
             <form onSubmit={handleSubmit} className="flex w-4/5">
