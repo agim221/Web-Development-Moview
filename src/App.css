@@ -1,4 +1,9 @@
 /* App.css */
+@media (max-width: 640px) {
+  body {
+    width: 100vh;
+  }
+}
 
 .app-container {
   min-height: 100vh;
