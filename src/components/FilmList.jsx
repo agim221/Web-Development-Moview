@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import FilmCard from "./FilmCard";
-import films from "../assets/images/main-slider/dummy.json";
+import axios from "axios";
 
 function FilmList({
   filterData,
@@ -14,44 +14,72 @@ function FilmList({
 }) {
   const [filteredFilms, setFilteredFilms] = useState([]);
   const navigate = useNavigate();
-
-  const filterFilms = () => {
-    let filteredFilms = films.filter((film) => {
-      return (
-        film.title.toLowerCase().includes(searchText.toLowerCase()) &&
-        (film.status === filterData.status || filterData.status === "") &&
-        (film.genre === filterData.genre || filterData.genre === "") &&
-        (film.rating === filterData.rating || filterData.rating === "") &&
-        (film.year === filterData.year || filterData.year === "") &&
-        (film.country === filterData.country || filterData.country === "")
-      );
-    });
-
-    setFilteredFilms(filteredFilms);
-    setFilteredSum(filteredFilms.length);
-  };
+  const [films, setFilms] = useState([]);
 
   const loadMore = useCallback(() => {
     setFilmShowed((prev) => prev + increment);
   }, []);
 
   useEffect(() => {
-    filterFilms();
-  }, [filterData, searchText]);
+    const fetchFilteredFilms = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:8000/api/films/search/${
+            filmShowed - (filmShowed - 1)
+          }/${filmShowed}`,
+          {
+            params: {
+              title: searchText,
+              filterData: Object.values(filterData),
+            },
+          }
+        );
+        setFilms(response.data);
+        setFilteredSum(response.data.length);
+        console.log(response.data);
+      } catch (error) {
+        console.error("There was an error fetching the filtered films!", error);
+      }
+    };
+
+    const fetchFilms = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:8000/api/films/range/${
+            filmShowed - (filmShowed - 1)
+          }/${filmShowed}`
+        );
+        setFilms(response.data);
+        setFilteredSum(response.data.length);
+      } catch (error) {
+        console.error("There was an error fetching the data!", error);
+      }
+    };
+
+    if (
+      searchText !== "" ||
+      Object.values(filterData).some((value) => value !== "")
+    ) {
+      fetchFilteredFilms();
+    } else {
+      fetchFilms();
+    }
+    console.log(searchText, filterData);
+  }, [searchText, filmShowed, filterData]);
 
   const handleFilmClick = (id) => {
     navigate(`/MovieDetail/${id}`);
-  }
+  };
 
   return (
     <>
-      {filteredFilms.length === 0 ? (
+      {films.length === 0 ? (
         <p className="text-2xl font-bold p-5">No films found</p>
       ) : (
         <h1 className="text-4xl font-bold p-5">{sectionTitle}</h1>
       )}
-      <div className="grid grid-cols-5 gap-x-4 gap-y-24 mb-28">
-        {filteredFilms.slice(0, filmShowed).map((film) => (
+      <div className="grid grid-cols-5 gap-x-4 gap-y-24 mb-28 ">
+        {films.slice(0, filmShowed).map((film) => (
           <div key={film.id} onClick={() => handleFilmClick(film.id)}>
             <FilmCard
               key={film.id}
@@ -69,7 +97,7 @@ function FilmList({
       </div>
       <button
         className={`bg-red-400 text-white font-bold py-2 px-4 w-1/6 rounded self-center ${
-          filteredFilms.length <= filmShowed ? "hidden" : ""
+          120 <= filmShowed ? "hidden" : ""
         }`}
         onClick={loadMore}
       >

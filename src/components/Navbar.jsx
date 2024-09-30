@@ -16,7 +16,7 @@ function Navbar({ toggleFilterBar, setSearchText }) {
   return (
     <>
       <nav className="bg-white py-4 flex items-center justify-between mb-9">
-        <div className="flex items-center space-x-4 gap-10 w-4/5">
+        <div className="flex items-center space-x-4 gap-10 w-full">
           <span
             role="button"
             className="text-lg font-semibold text-gray-800"
@@ -24,7 +24,7 @@ function Navbar({ toggleFilterBar, setSearchText }) {
           >
             Moview
           </span>
-          <div className="w-4/5 flex gap-6">
+          <div className="w-full flex gap-6">
             <form onSubmit={handleSubmit} className="flex w-4/5">
               <input
                 type="text"
@@ -70,8 +70,8 @@ function Navbar({ toggleFilterBar, setSearchText }) {
             </svg>
           </div>
         </div>
-        <div className="flex space-x-2">
-          <div className="flex flex-row bg-orange-500 rounded px-2">
+        <div className="flex space-x-2 justify-end w-1/4">
+          {/* <div className="flex flex-row bg-orange-500 rounded px-2">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="#fff"
@@ -88,8 +88,8 @@ function Navbar({ toggleFilterBar, setSearchText }) {
             </svg>
 
             <button className="text-white py-1 px-3 rounded">watchlist</button>
-          </div>
-          <div className="flex flex-row bg-orange-500 rounded px-2">
+          </div> */}
+          {/* <div className="flex flex-row bg-orange-500 rounded px-2">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -106,8 +106,11 @@ function Navbar({ toggleFilterBar, setSearchText }) {
             </svg>
 
             <button className="text-white py-1 px-3 rounded">Profile</button>
-          </div>
-          <button className="bg-orange-500 text-white py-1 px-3 rounded" onClick={() => navigate("/login")}>
+          </div> */}
+          <button
+            className="bg-orange-500 text-white py-1 px-3 rounded"
+            onClick={() => navigate("/login")}
+          >
             Login
           </button>
         </div>

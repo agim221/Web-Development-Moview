@@ -2,6 +2,7 @@ import React, { useState, useRef } from "react";
 import MainSlider from "../components/MainSlider";
 import FilmCard from "../components/FilmCard";
 import FilmList from "../components/FilmList";
+import film from "../assets/images/main-slider/dummy.json";
 
 function Home({ filterData, searchText, setFilteredSum }) {
   let [scrollLeft, setScrollLeft] = useState(0);
@@ -38,7 +39,7 @@ function Home({ filterData, searchText, setFilteredSum }) {
             title="btn-right"
             onClick={() => scrollMore("right")}
             role="button"
-            className="absolute right-0 bottom-1/2 bg-zinc-400/50 rounded p-2"
+            className="absolute right-0 bottom-1/2 bg-zinc-400/50 rounded p-2 translate-y-1/4"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -59,7 +60,7 @@ function Home({ filterData, searchText, setFilteredSum }) {
             title="btn-left"
             onClick={() => scrollMore("left")}
             role="button"
-            className="absolute left-0 bottom-1/2 bg-zinc-400/50 rounded p-2"
+            className="absolute left-0 bottom-1/2 bg-zinc-400/50 rounded p-2 translate-y-1/4"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -76,15 +77,15 @@ function Home({ filterData, searchText, setFilteredSum }) {
               />
             </svg>
           </div>
-          <FilmCard />
-          <FilmCard />
-          <FilmCard />
-          <FilmCard />
-          <FilmCard />
-          <FilmCard />
-          <FilmCard />
-          <FilmCard />
-          <FilmCard />
+          {film.slice(0, 10).map((film) => (
+            <FilmCard
+              key={film.id}
+              title={film.title}
+              rating={film.rating}
+              year={film.year}
+              image={film.image}
+            />
+          ))}
         </div>
       </section>
 
