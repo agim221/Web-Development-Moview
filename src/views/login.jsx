@@ -13,7 +13,7 @@ const LoginPage = () => {
     console.log("Username:", username);
     console.log("Password:", password);
     axios
-      .post("http://localhost:8000/api/login", {
+      .post("http://localhost:8000/api/auth/callback/google", {
         username: username,
         password: password,
       })
@@ -23,6 +23,10 @@ const LoginPage = () => {
       .catch((error) => {
         console.error("There was an error!", error);
       });
+  };
+
+  const handleLoginWithGoogle = () => {
+    window.location.href = "http://localhost:8000/api/auth/google";
   };
 
   return (
@@ -61,7 +65,7 @@ const LoginPage = () => {
               type="button"
               className="w-full py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600"
               onClick={() => {
-                console.log("Sign in with Google clicked");
+                handleLoginWithGoogle();
               }}
             >
               Sign in with Google

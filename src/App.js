@@ -10,6 +10,7 @@ import Navbar from "./components/Navbar";
 import Filterbar from "./components/Filterbar";
 import Footer from "./components/Footer";
 import CMS from "./views/cms";
+import Register from "./views/register";
 
 function App() {
   let [isOpen, setIsOpen] = useState("-translate-y-full");
@@ -68,6 +69,7 @@ function App() {
             />
             <Route path="/login" element={<Login />} />
             <Route path="/cms" element={<CMS />} />
+            <Route path="/register" element={<Register />} />
             <Route path="/movieDetail/:id" element={<MovieDetail />} />
           </Routes>
         </div>

@@ -16,22 +16,6 @@ function FilmList({
   const navigate = useNavigate();
   const [films, setFilms] = useState([]);
 
-  // const filterFilms = () => {
-  //   let filteredFilms = films.filter((film) => {
-  //     return (
-  //       film.title.toLowerCase().includes(searchText.toLowerCase()) &&
-  //       (film.status === filterData.status || filterData.status === "") &&
-  //       (film.genre === filterData.genre || filterData.genre === "") &&
-  //       (film.rating === filterData.rating || filterData.rating === "") &&
-  //       (film.year === filterData.year || filterData.year === "") &&
-  //       (film.country === filterData.country || filterData.country === "")
-  //     );
-  //   });
-
-  //   setFilteredFilms(filteredFilms);
-  //   setFilteredSum(filteredFilms.length);
-  // };
-
   const loadMore = useCallback(() => {
     setFilmShowed((prev) => prev + increment);
   }, []);
