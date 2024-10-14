@@ -15,7 +15,7 @@ function Navbar({ toggleFilterBar, setSearchText }) {
 
   return (
     <>
-      <nav className="bg-white py-4 flex items-center justify-between mb-9">
+      <nav className="bg-white py-4 flex items-center justify-between mb-9 px-40">
         <div className="flex items-center space-x-4 gap-10 w-full">
           <span
             role="button"
