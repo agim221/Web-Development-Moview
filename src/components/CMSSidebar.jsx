@@ -16,13 +16,13 @@ function CMSSidebar({ onViewChange }) {
         <div id="countries-menu" onClick={() => onViewChange("countries")}>
           Countries
         </div>
-        <div id="awards-menu">Awards</div>
+        <div id="awards-menu" onClick={() => onViewChange("awards")}>Awards</div>
         <div id="genres-menu" onClick={() => onViewChange("genres")}>
           Genres
         </div>
-        <div id="actors-menu">Actors</div>
-        <div id="comments-menu">Comments</div>
-        <div id="users-menu">Users</div>
+        <div id="actors-menu" onClick={() => onViewChange("actors")}>Actors</div>
+        <div id="comments-menu" onClick={() => onViewChange("comments")}>Comments</div>
+        <div id="users-menu" onClick={() => onViewChange("users")}>Users</div>
         <div id="logout-menu">Logout</div>
       </section>
     </>
