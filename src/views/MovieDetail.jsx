@@ -1,19 +1,45 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import 'tailwindcss/tailwind.css';
 import Comment from "../components/Comment";
 import { useParams } from "react-router-dom";
-import films from "../assets/images/main-slider/dummy.json";
-import image from "../assets/images/main-slider/download.jpeg";
+import axios from "axios"; // Untuk melakukan fetching data
 
 export default function MovieDetail() {
   let [isOpen, setIsOpen] = useState("-translate-y-full");
   let [scrollLeft, setScrollLeft] = useState(0);
 
-  const { id } = useParams();
-  const film = films.find((film) => film.id === parseInt(id));
+  const { id } = useParams(); // Mengambil ID dari URL
+  const [film, setFilm] = useState(null); // State untuk menyimpan data film
+  const [loading, setLoading] = useState(true); // State untuk status loading
+  const [error, setError] = useState(null); // State untuk error handling
+
+  useEffect(() => {
+    // Fetching data film berdasarkan ID dari URL
+    const fetchFilm = async () => {
+      try {
+        const response = await axios.get(`http://localhost:8000/api/films_detail/${id}`);
+        setFilm(response.data); // Set data film yang diambil dari backend
+        setLoading(false); // Hentikan loading setelah data diterima
+      } catch (error) {
+        console.error("Error fetching film details:", error);
+        setError("Failed to load film details."); // Set error jika terjadi kesalahan
+        setLoading(false); // Hentikan loading meskipun terjadi error
+      }
+    };
+
+    fetchFilm();
+  }, [id]); // useEffect akan berjalan setiap kali id berubah
+
+  if (loading) {
+    return <p>Loading...</p>; // Tampilkan pesan loading ketika data belum siap
+  }
+
+  if (error) {
+    return <p>{error}</p>; // Tampilkan pesan error jika gagal fetching
+  }
 
   if (!film) {
-    return <p>Film not found</p>;
+    return <p>Film not found</p>; // Tampilkan pesan jika film tidak ditemukan
   }
 
   const toggleFilterBar = () => {
@@ -45,16 +71,24 @@ export default function MovieDetail() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Poster */}
           <div className="lg:col-span-1">
-            <img src={film.image} alt={film.title} className="bg-gray-200 h-80 rounded-lg" />
+            {/* <img
+              src={film.image || image} // Gunakan gambar dari data film atau gambar default
+              alt={film.title}
+              className="bg-gray-200 h-80 rounded-lg"
+            /> */}
           </div>
 
           {/* Drama Information */}
           <div className="lg:col-span-2">
             <h2 className="text-3xl font-bold mb-4">{film.title}</h2>
-            <p className="text-sm text-gray-600 mb-2">Other titles: {Array.isArray(film.otherTitles) ? film.otherTitles.join(", ") : film.otherTitles}</p>
+            <p className="text-sm text-gray-600 mb-2">
+              Other titles: {Array.isArray(film.otherTitles) ? film.otherTitles.join(", ") : film.otherTitles}
+            </p>
             <p className="text-sm text-gray-600 mb-2">Year: {film.year}</p>
             <p className="text-gray-700 mb-4">{film.description}</p>
-            <p className="text-gray-700 mb-2">Genres: {Array.isArray(film.genre) ? film.genre.join(", ") : film.genre}</p>
+            <p className="text-gray-700 mb-2">
+              Genres: {Array.isArray(film.genre) ? film.genre.join(", ") : film.genre}
+            </p>
             <p className="text-gray-700 mb-2">Rating: {film.rating}/5</p>
             <p className="text-gray-700">Availability: {film.availability}</p>
           </div>
@@ -84,7 +118,9 @@ export default function MovieDetail() {
         {/* Comments Section */}
         <div className="mt-8">
           <div className="flex justify-between items-center mb-4">
-            <h3 className="text-lg font-bold">({Array.isArray(film.comments) ? film.comments.length : 0}) People think about this drama</h3>
+            <h3 className="text-lg font-bold">
+              ({Array.isArray(film.comments) ? film.comments.length : 0}) People think about this drama
+            </h3>
             <div className="flex items-center space-x-2">
               <span className="text-gray-700">Filtered by:</span>
               <select className="border border-gray-300 rounded py-2 px-4">

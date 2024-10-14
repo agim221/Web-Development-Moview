@@ -36,19 +36,21 @@ function App() {
 
   return (
     <Router>
-      <div className="relative w-full h-full min-h-screen">
+      <div className="relative w-full h-full min-h-screen bg-gray-100">
         <Filterbar
           isOpen={isOpen}
           toggleFilterBar={toggleFilterBar}
           onSubmit={setFilterData}
         />
-        <div className="w-4/5 mx-auto">
-          <Navbar
+        <div className="w-full">
+        <Navbar
             isOpen={isOpen}
             toggleFilterBar={toggleFilterBar}
             setSearchText={setSearchText}
             setFilterData={setFilterData}
           />
+        </div>
+        <div className="w-4/5 mx-auto">
           <Routes>
             <Route
               path="/"
