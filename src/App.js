@@ -32,6 +32,8 @@ function App() {
     );
   }, []);
 
+  useEffect(() => {}, []);
+
   return (
     <Router>
       <div className="relative w-full h-full min-h-screen bg-gray-100">
@@ -45,6 +47,7 @@ function App() {
             isOpen={isOpen}
             toggleFilterBar={toggleFilterBar}
             setSearchText={setSearchText}
+            setFilterData={setFilterData}
           />
         </div>
         <div className="w-4/5 mx-auto">

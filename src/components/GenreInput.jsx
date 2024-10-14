@@ -1,7 +1,7 @@
 import React from "react";
 
 function GenreInput({ genres }) {
-  console.log(genres);
+  // console.log(genres);
   return (
     <>
       <form action="" className="grid grid-cols-4">

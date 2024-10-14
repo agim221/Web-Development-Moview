@@ -36,7 +36,7 @@ function FilmList({
         );
         setFilms(response.data);
         setFilteredSum(response.data.length);
-        console.log(response.data);
+        // console.log(response.data);
       } catch (error) {
         console.error("There was an error fetching the filtered films!", error);
       }
@@ -64,7 +64,7 @@ function FilmList({
     } else {
       fetchFilms();
     }
-    console.log(searchText, filterData);
+    // console.log(searchText, filterData);
   }, [searchText, filmShowed, filterData]);
 
   const handleFilmClick = (id) => {

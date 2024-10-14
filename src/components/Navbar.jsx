@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../styles/style.css";
 import { useNavigate } from "react-router-dom";
 
-function Navbar({ toggleFilterBar, setSearchText }) {
+function Navbar({ toggleFilterBar, setSearchText, setFilterData }) {
   let [text, setText] = useState("");
+  const [cookie, setCookie] = useState("");
 
   const navigate = useNavigate();
 
@@ -11,6 +12,42 @@ function Navbar({ toggleFilterBar, setSearchText }) {
     e.preventDefault();
     setSearchText(text);
     navigate("/search");
+  };
+
+  useEffect(() => {
+    const rememberToken = localStorage.getItem("remember_token");
+    const expiry = localStorage.getItem("remember_token_expiry");
+
+    if (rememberToken && expiry) {
+      const now = new Date();
+      const expiryDate = new Date(expiry);
+
+      if (now > expiryDate) {
+        localStorage.removeItem("remember_token");
+        localStorage.removeItem("remember_token_expiry");
+        setCookie("");
+      } else {
+        setCookie(rememberToken);
+      }
+    }
+  }, [cookie, navigate]);
+
+  const handleLogout = (e) => {
+    e.preventDefault();
+
+    localStorage.removeItem("remember_token");
+    localStorage.removeItem("remember_token_expiry");
+    setSearchText("");
+    setFilterData({
+      status: "",
+      genre: "",
+      rating: "",
+      year: "",
+      country: "",
+      sort: "",
+    });
+    setCookie("");
+    navigate("/");
   };
 
   return (
@@ -71,48 +108,61 @@ function Navbar({ toggleFilterBar, setSearchText }) {
           </div>
         </div>
         <div className="flex space-x-2 justify-end w-1/4">
-          {/* <div className="flex flex-row bg-orange-500 rounded px-2">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="#fff"
-              viewBox="0 0 24 24"
-              strokeWidth="1.5"
-              stroke="currentColor"
-              className="size-6 self-center text-white"
+          {cookie !== "" ? (
+            <>
+              <div className="flex flex-row bg-orange-500 rounded px-2">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="#fff"
+                  viewBox="0 0 24 24"
+                  strokeWidth="1.5"
+                  stroke="currentColor"
+                  className="size-6 self-center text-white"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z"
+                  />
+                </svg>
+                <button className="text-white py-1 px-3 rounded">
+                  watchlist
+                </button>
+              </div>
+              <div className="flex flex-row bg-orange-500 rounded px-2">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="1.5"
+                  stroke="currentColor"
+                  className="size-6 self-center text-white stroke-white"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+                  />
+                </svg>
+                <button className="text-white py-1 px-3 rounded">
+                  Profile
+                </button>
+              </div>
+              <button
+                className="bg-orange-500 text-white py-1 px-3 rounded"
+                onClick={handleLogout}
+              >
+                Logout
+              </button>
+            </>
+          ) : (
+            <button
+              className="bg-orange-500 text-white py-1 px-3 rounded"
+              onClick={() => navigate("/login")}
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z"
-              />
-            </svg>
-
-            <button className="text-white py-1 px-3 rounded">watchlist</button>
-          </div> */}
-          {/* <div className="flex flex-row bg-orange-500 rounded px-2">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth="1.5"
-              stroke="currentColor"
-              className="size-6 self-center text-white stroke-white"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
-              />
-            </svg>
-
-            <button className="text-white py-1 px-3 rounded">Profile</button>
-          </div> */}
-          <button
-            className="bg-orange-500 text-white py-1 px-3 rounded"
-            onClick={() => navigate("/login")}
-          >
-            Login
-          </button>
+              Login
+            </button>
+          )}
         </div>
       </nav>
     </>
