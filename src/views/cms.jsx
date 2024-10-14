@@ -1,33 +1,15 @@
-import React, { useReducer } from "react";
+import React, { useState } from "react";
 import CMSSidebar from "../components/CMSSidebar";
 import Genres from "../components/cmsComp/genres";
 import Countries from "../components/cmsComp/countries";
 import Validate from "../components/cmsComp/validate";
 import InputFilm from "../components/cmsComp/inputFilm";
 
-// Definisikan initial state
-const initialState = {
-  view: "home", // Nilai default
-};
-
-// Definisikan reducer
-function reducer(state, action) {
-  switch (action.type) {
-    case "CHANGE_VIEW":
-      return {
-        ...state,
-        view: action.payload,
-      };
-    default:
-      return state;
-  }
-}
-
 function CMS() {
-  const [state, dispatch] = useReducer(reducer, initialState);
+  const [view, setView] = useState("home"); // Menggunakan useState
 
   const handleViewChange = (view) => {
-    dispatch({ type: "CHANGE_VIEW", payload: view });
+    setView(view);
   };
 
   return (
@@ -40,10 +22,10 @@ function CMS() {
           </div>
         </span>
         <div className="flex w-full">
-          {state.view === "genres" && <Genres />}
-          {state.view === "countries" && <Countries />}
-          {state.view === "validate" && <Validate />}
-          {state.view === "input" && <InputFilm />}
+          {view === "genres" && <Genres />}
+          {view === "countries" && <Countries />}
+          {view === "validate" && <Validate />}
+          {view === "input" && <InputFilm />}
         </div>
       </div>
     </>

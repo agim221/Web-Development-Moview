@@ -1,24 +1,46 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
-  // State untuk menangani input username dan password
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState("AgimAgim");
+  const [password, setPassword] = useState("testingmoni");
+  const [message, setMessage] = useState("");
+  const [remember, setRemember] = useState(false);
 
-  const handleSubmit = (e) => {
+  const navigate = useNavigate();
+
+  const handleSubmitLogin = (e) => {
     e.preventDefault();
-    // Lakukan sesuatu dengan data login (e.g., kirim ke server)
-    console.log("Username:", username);
-    console.log("Password:", password);
+
     axios
-      .post("http://localhost:8000/api/auth/callback/google", {
+      .post("http://localhost:8000/login", {
         username: username,
         password: password,
       })
       .then((response) => {
-        console.log(response.data);
+        if (
+          response.data.error === "User not found" ||
+          response.data.error === "Invalid password"
+        ) {
+          setMessage("Email or password is incorrect");
+        } else {
+          const now = new Date();
+
+          const rememberToken = response.data.remember_token;
+          if (remember) {
+            const expiry = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000);
+            localStorage.setItem("remember_token", rememberToken);
+            localStorage.setItem("remember_token_expiry", expiry);
+          } else {
+            const expiry = new Date(now.getTime() + 24 * 60 * 60 * 1000); // 1 day
+            localStorage.setItem("remember_token", rememberToken);
+            localStorage.setItem("remember_token_expiry", expiry);
+          }
+
+          navigate("/");
+        }
       })
       .catch((error) => {
         console.error("There was an error!", error);
@@ -29,15 +51,33 @@ const LoginPage = () => {
     window.location.href = "http://localhost:8000/api/auth/google";
   };
 
+  useEffect(() => {
+    const rememberToken = localStorage.getItem("remember_token");
+    const expiry = localStorage.getItem("remember_token_expiry");
+
+    if (rememberToken && expiry) {
+      const now = new Date();
+      const expiryDate = new Date(expiry);
+
+      if (now > expiryDate) {
+        localStorage.removeItem("remember_token");
+        localStorage.removeItem("remember_token_expiry");
+      } else {
+        // Token is still valid, proceed with login
+        navigate("/");
+      }
+    }
+  }, [navigate]);
+
   return (
     <div className="bg-gray-100 flex items-center justify-center h-screen">
       <div className="bg-white p-8 rounded-lg shadow-lg w-96">
         <h1 className="text-2xl font-bold text-center mb-6">Dramaku</h1>
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmitLogin} className="space-y-4">
           <div>
             <input
               type="text"
-              placeholder="Username"
+              placeholder="username"
               className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-orange-500"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
@@ -53,6 +93,20 @@ const LoginPage = () => {
             />
           </div>
           <div>
+            <p className="text-red-500 text-sm">{message}</p>
+          </div>
+          <div>
+            <label className="flex items-center">
+              <input
+                type="checkbox"
+                className="mr-2"
+                checked={remember}
+                onChange={() => setRemember(!remember)}
+              />
+              <span>Remember me</span>
+            </label>
+          </div>
+          <div>
             <button
               type="submit"
               className="w-full py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600"
@@ -64,9 +118,7 @@ const LoginPage = () => {
             <button
               type="button"
               className="w-full py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600"
-              onClick={() => {
-                handleLoginWithGoogle();
-              }}
+              onClick={handleLoginWithGoogle}
             >
               Sign in with Google
             </button>

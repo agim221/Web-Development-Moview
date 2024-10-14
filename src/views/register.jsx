@@ -1,33 +1,46 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const SignUpPage = () => {
   // State untuk menangani input username, email, dan password
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     // Lakukan sesuatu dengan data sign-up (e.g., kirim ke server)
-    console.log("Username:", username);
-    console.log("Email:", email);
-    console.log("Password:", password);
 
     try {
-      const response = axios.get(`http://localhost:8000/api/account/register`, {
-        params: {
-          username: username,
-          email: email,
-          password: password,
-        },
+      const response = await axios.post(`http://localhost:8000/register`, {
+        username: username,
+        email: email,
+        password: password,
       });
-      console.log(response.data);
     } catch (error) {
-      console.error("There was an error fetching the filtered films!", error);
+      console.error("Error get csrf token!", error);
     }
   };
+
+  useEffect(() => {
+    const rememberToken = localStorage.getItem("remember_token");
+    const expiry = localStorage.getItem("remember_token_expiry");
+
+    if (rememberToken && expiry) {
+      const now = new Date();
+      const expiryDate = new Date(expiry);
+
+      if (now > expiryDate) {
+        localStorage.removeItem("remember_token");
+        localStorage.removeItem("remember_token_expiry");
+      } else {
+        navigate("/");
+      }
+    }
+  }, [navigate]);
 
   return (
     <div className="bg-gray-100 flex items-center justify-center h-screen">
@@ -74,7 +87,7 @@ const SignUpPage = () => {
               type="button"
               className="w-full py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600"
               onClick={() => {
-                console.log("Sign up with Google clicked");
+                // console.log("Sign up with Google clicked");
               }}
             >
               Sign up with Google
