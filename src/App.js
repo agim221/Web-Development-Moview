@@ -11,6 +11,7 @@ import Filterbar from "./components/Filterbar";
 import Footer from "./components/Footer";
 import CMS from "./views/cms";
 import Register from "./views/register";
+import Bookmark from "./views/bookmark";
 
 function App() {
   let [isOpen, setIsOpen] = useState("-translate-y-full");
@@ -43,7 +44,7 @@ function App() {
           onSubmit={setFilterData}
         />
         <div className="w-full">
-        <Navbar
+          <Navbar
             isOpen={isOpen}
             toggleFilterBar={toggleFilterBar}
             setSearchText={setSearchText}
@@ -73,12 +74,13 @@ function App() {
               }
             />
             <Route path="/login" element={<Login />} />
+            <Route path="/watchlist" element={<Bookmark />} />
             <Route path="/cms" element={<CMS />} />
             <Route path="/register" element={<Register />} />
             <Route path="/movieDetail/:id" element={<MovieDetail />} />
           </Routes>
         </div>
-        <Footer filteredSum={filteredSum} />
+        {/* <Footer filteredSum={filteredSum} /> */}
       </div>
     </Router>
   );
