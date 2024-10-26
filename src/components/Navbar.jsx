@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "../styles/style.css";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 function Navbar({ toggleFilterBar, setSearchText, setFilterData }) {
   let [text, setText] = useState("");
@@ -37,6 +38,12 @@ function Navbar({ toggleFilterBar, setSearchText, setFilterData }) {
 
     localStorage.removeItem("remember_token");
     localStorage.removeItem("remember_token_expiry");
+
+    setCookie("");
+    window.location.href = "/";
+  };
+
+  const handleHome = () => {
     setSearchText("");
     setFilterData({
       status: "",
@@ -46,8 +53,7 @@ function Navbar({ toggleFilterBar, setSearchText, setFilterData }) {
       country: "",
       sort: "",
     });
-    setCookie("");
-    navigate("/");
+    window.location.href = "/";
   };
 
   return (
@@ -57,7 +63,7 @@ function Navbar({ toggleFilterBar, setSearchText, setFilterData }) {
           <span
             role="button"
             className="text-lg font-semibold text-gray-800"
-            onClick={() => navigate("/")}
+            onClick={handleHome}
           >
             Moview
           </span>
@@ -110,7 +116,10 @@ function Navbar({ toggleFilterBar, setSearchText, setFilterData }) {
         <div className="flex space-x-2 justify-end w-1/4">
           {cookie !== "" ? (
             <>
-              <div className="flex flex-row bg-orange-500 rounded px-2">
+              <div
+                className="flex flex-row bg-orange-500 rounded px-2"
+                onClick={() => navigate("/watchlist")}
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="#fff"

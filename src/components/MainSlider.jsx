@@ -115,7 +115,7 @@ export default function MainSlider() {
                   {trending[activePicture].title}
                 </h2>
                 <p className="">{trending[activePicture].genre}</p>
-                <p className="">{trending[activePicture].rating}</p>
+                <p className="">{trending[activePicture].rating} / 10</p>
                 <p className="">{trending[activePicture].year}</p>
                 <p className="">{trending[activePicture].description}</p>
               </>

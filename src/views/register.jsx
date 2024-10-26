@@ -83,21 +83,10 @@ const SignUpPage = () => {
             </button>
           </div>
           <div>
-            <button
-              type="button"
-              className="w-full py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600"
-              onClick={() => {
-                // console.log("Sign up with Google clicked");
-              }}
-            >
-              Sign up with Google
-            </button>
-          </div>
-          <div>
             Already have an account?
             <Link to="/login" className="text-blue-500">
               {" "}
-              Sign up
+              Sign in
             </Link>
           </div>
         </form>
