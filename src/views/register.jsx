@@ -97,7 +97,7 @@ const SignUpPage = () => {
             Already have an account?
             <Link to="/login" className="text-blue-500">
               {" "}
-              Sign up
+              Sign in
             </Link>
           </div>
         </form>

@@ -3,7 +3,7 @@ import React from "react";
 function CMSSidebar({ onViewChange }) {
   return (
     <>
-      <section className="w-1/6">
+      <section className="w-full">
         <div>
           <span className="">Dramas</span>
           <ul className="ml-4">
@@ -12,6 +12,9 @@ function CMSSidebar({ onViewChange }) {
               Input New Drama
             </li>
           </ul>
+        </div>
+        <div id="film-menu" onClick={() => onViewChange("film")}>
+          Films
         </div>
         <div id="countries-menu" onClick={() => onViewChange("countries")}>
           Countries
