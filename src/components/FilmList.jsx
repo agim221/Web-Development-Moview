@@ -11,6 +11,7 @@ function FilmList({
   sectionTitle,
   setFilteredSum,
   increment = 20,
+  searchBy,
 }) {
   const [filteredFilms, setFilteredFilms] = useState([]);
   const navigate = useNavigate();
@@ -24,20 +25,36 @@ function FilmList({
   useEffect(() => {
     const fetchFilteredFilms = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:8000/api/films/search/${
-            filmShowed - (filmShowed - 1)
-          }/${filmShowed}`,
-          {
-            params: {
-              title: searchText,
-              filterData: Object.values(filterData),
-            },
-          }
-        );
+        let response;
+        if (searchBy === "title") {
+          response = await axios.get(
+            `http://localhost:8000/api/films/search/${
+              filmShowed - (filmShowed - 1)
+            }/${filmShowed}`,
+            {
+              params: {
+                title: searchText,
+                filterData: Object.values(filterData),
+              },
+            }
+          );
+        } else {
+          console.log(searchBy);
+          response = await axios.get(
+            `http://localhost:8000/api/films/search/actor/${
+              filmShowed - (filmShowed - 1)
+            }/${filmShowed}`,
+            {
+              params: {
+                name: searchText,
+                filterData: Object.values(filterData),
+              },
+            }
+          );
+        }
         setFilms(response.data);
-        setFilteredSum(response.data.length);
         console.log(response.data);
+        setFilteredSum(response.data.length);
       } catch (error) {
         console.error("There was an error fetching the filtered films!", error);
       }
@@ -69,6 +86,8 @@ function FilmList({
   }, [searchText, filmShowed, filterData]);
 
   const handleFilmClick = (id) => {
+    console.log(id);
+    console.log(location.pathname);
     navigate(`/MovieDetail/${id}`);
   };
 
@@ -80,7 +99,11 @@ function FilmList({
         <h1 className="text-4xl font-bold p-5">{sectionTitle}</h1>
       )}
       <div className="grid grid-cols-5 gap-x-4 gap-y-24 mb-28 ">
-        {location.pathname === "/search"
+        {location.pathname === "/search" &&
+        (filterData.genre !== "" ||
+          filterData.year !== "" ||
+          filterData.country !== "" ||
+          searchBy === "actor")
           ? films.slice(0, filmShowed).map((film) => (
               <div
                 key={film.film_id}

@@ -17,15 +17,14 @@ function App() {
   let [isOpen, setIsOpen] = useState("-translate-y-full");
 
   const [filterData, setFilterData] = useState({
-    status: "",
     genre: "",
-    rating: "",
     year: "",
     country: "",
     sort: "",
   });
   let [searchText, setSearchText] = useState("");
   let [filteredSum, setFilteredSum] = useState(1);
+  let [searchBy, setSearchBy] = useState("title");
 
   const toggleFilterBar = useCallback(() => {
     setIsOpen((prev) =>
@@ -49,6 +48,8 @@ function App() {
             toggleFilterBar={toggleFilterBar}
             setSearchText={setSearchText}
             setFilterData={setFilterData}
+            setSearchBy={setSearchBy}
+            searchBy={searchBy}
           />
         </div>
         <div className="w-4/5 mx-auto">
@@ -70,6 +71,7 @@ function App() {
                   filterData={filterData}
                   searchText={searchText}
                   setFilteredSum={setFilteredSum}
+                  searchBy={searchBy}
                 />
               }
             />

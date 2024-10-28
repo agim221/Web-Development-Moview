@@ -6,8 +6,6 @@ import "../styles/style.css";
 import { useNavigate } from "react-router-dom";
 
 function Filterbar({ isOpen, toggleFilterBar, onSubmit }) {
-  const [status, setStatus] = useState("");
-  const [rating, setRating] = useState("");
   const [genre, setGenre] = useState("");
   const [year, setYear] = useState("");
   const [country, setCountry] = useState("");
@@ -21,14 +19,6 @@ function Filterbar({ isOpen, toggleFilterBar, onSubmit }) {
   const navigate = useNavigate();
 
   const form = useRef(null);
-
-  const handleStatusChange = (e) => {
-    setStatus(e.target.value);
-  };
-
-  const handleRatingChange = (e) => {
-    setRating(e.target.value);
-  };
 
   const handleYearChange = (e) => {
     setYear(e.target.value);
@@ -49,8 +39,6 @@ function Filterbar({ isOpen, toggleFilterBar, onSubmit }) {
   const handleClose = () => {
     toggleFilterBar();
     setGenre(savedValues.genre);
-    setStatus(savedValues.status);
-    setRating(savedValues.rating);
     setYear(savedValues.year);
     setCountry(savedValues.country);
     setSort(savedValues.sort);
@@ -59,9 +47,7 @@ function Filterbar({ isOpen, toggleFilterBar, onSubmit }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     const formData = {
-      status,
       genre,
-      rating,
       year,
       country,
       sort,
@@ -75,9 +61,7 @@ function Filterbar({ isOpen, toggleFilterBar, onSubmit }) {
 
   const handleReset = (e) => {
     e.preventDefault();
-    setStatus("");
     setGenre("");
-    setRating("");
     setYear("");
     setCountry("");
     setSort("");
@@ -159,20 +143,6 @@ function Filterbar({ isOpen, toggleFilterBar, onSubmit }) {
                       {genre.name}
                     </option>
                   ))}
-                </select>
-              </div>
-              <div className="flex flex-col gap-2">
-                <label htmlFor="status">Status</label>
-                <select
-                  name="status"
-                  id="status"
-                  className="border border-gray-300 p-2 rounded-xl"
-                  onChange={handleStatusChange}
-                  value={status}
-                >
-                  <option value="" default></option>
-                  <option value="ongoing">Ongoing</option>
-                  <option value="completed">Completed</option>
                 </select>
               </div>
               {/* <div className="flex flex-col gap-2">
