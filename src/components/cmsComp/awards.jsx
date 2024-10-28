@@ -1,93 +1,171 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import CMSTable from "../../components/CMSTable";
 
 function Awards() {
-  // State untuk menyimpan data awards dan form input
-  const [country, setCountry] = useState("");
-  const [year, setYear] = useState("");
-  const [award, setAward] = useState("");
-  const [awardsData, setAwardsData] = useState([
-    { country: "Japan", year: 2024, award: "Japanese Drama Awards Spring 2024" },
-    { country: "Korea", year: 2024, award: "Korean Drama Awards 2024" },
-    // Tambahkan data lainnya sesuai kebutuhan
-  ]);
+  const [awards, setAwards] = useState([]); // State untuk menyimpan data awards
+  const [newYear, setNewYear] = useState(""); // State untuk input tahun
+  const [newName, setNewName] = useState(""); // State untuk input name (award)
+  const [editingAward, setEditingAward] = useState(null); // State untuk award yang sedang di-edit
 
-  // Fungsi untuk menambahkan data awards
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const newAward = { country, year, award };
-    setAwardsData([...awardsData, newAward]);
-    setCountry("");
-    setYear("");
-    setAward("");
+  // Fetch data awards dari API
+  useEffect(() => {
+    fetchAwards();
+  }, []);
+
+  const fetchAwards = async () => {
+    try {
+      const response = await axios.get("http://localhost:8000/api/awards"); // Ganti URL sesuai dengan API
+      setAwards(response.data); // Set data awards ke state
+    } catch (error) {
+      console.error("Error fetching awards:", error);
+    }
   };
 
-  // Fungsi untuk tombol Edit dan Delete
-  const actions = (index) => (
-    <>
-      <button className="text-blue-500 hover:underline" onClick={() => handleEdit(index)}>Edit</button>
-      <span> | </span>
-      <button className="text-red-500 hover:underline" onClick={() => handleDelete(index)}>Delete</button>
-    </>
-  );
-
-  // Fungsi untuk mengedit data
-  const handleEdit = (index) => {
-    const selectedAward = awardsData[index];
-    setCountry(selectedAward.country);
-    setYear(selectedAward.year);
-    setAward(selectedAward.award);
-    handleDelete(index);
+  // Tambah award baru
+  const addAward = async () => {
+    try {
+      if (!newYear || !newName) return; // Validasi input kosong
+      const response = await axios.post("http://localhost:8000/api/awards", {
+        year: newYear,
+        name: newName, // Gunakan name sesuai kolom di database
+      });
+      setAwards([...awards, response.data]); // Tambahkan award baru ke state
+      setNewYear(""); // Reset input field
+      setNewName(""); // Reset input field
+    } catch (error) {
+      console.error("Error adding award:", error);
+    }
   };
 
-  // Fungsi untuk menghapus data
-  const handleDelete = (index) => {
-    const updatedData = awardsData.filter((_, i) => i !== index);
-    setAwardsData(updatedData);
+  // Hapus award
+  const deleteAward = async (id) => {
+    try {
+      await axios.delete(`http://localhost:8000/api/awards/${id}`);
+      setAwards(awards.filter((award) => award.id !== id)); // Filter award yang dihapus dari state
+    } catch (error) {
+      console.error("Error deleting award:", error);
+    }
+  };
+
+  // Update award
+  const updateAward = async (id) => {
+    try {
+      if (!editingAward) return; // Validasi input kosong
+      await axios.put(`http://localhost:8000/api/awards/${id}`, {
+        year: editingAward.year,
+        name: editingAward.name, // Gunakan name sesuai kolom di database
+      });
+      setAwards(
+        awards.map((award) =>
+          award.id === id
+            ? { ...award, year: editingAward.year, name: editingAward.name }
+            : award
+        )
+      );
+      setEditingAward(null); // Reset state editing
+    } catch (error) {
+      console.error("Error updating award:", error);
+    }
+  };
+
+  // Set award untuk di-edit
+  const startEditing = (award) => {
+    setEditingAward({ ...award });
   };
 
   return (
     <section className="w-full">
       <div className="flex flex-col w-3/4 mx-auto">
+        {/* Input tambah award */}
         <div className="flex flex-row mb-8 gap-4 bg-slate-100 p-2 rounded">
-          <span className="text-sm self-center">Country</span>
-          <input
-            type="text"
-            value={country}
-            onChange={(e) => setCountry(e.target.value)}
-            className="bg-slate-300 text-white ml-4"
-          />
           <span className="text-sm self-center">Year</span>
           <input
             type="text"
-            value={year}
-            onChange={(e) => setYear(e.target.value)}
+            name="year"
+            id="year"
             className="bg-slate-300 text-white ml-4"
+            value={newYear}
+            onChange={(e) => setNewYear(e.target.value)} // Set input year
           />
-          <span className="text-sm self-center">Awards</span>
+          <span className="text-sm self-center">Award Name</span>
           <input
             type="text"
-            value={award}
-            onChange={(e) => setAward(e.target.value)}
+            name="name"
+            id="name"
             className="bg-slate-300 text-white ml-4"
+            value={newName}
+            onChange={(e) => setNewName(e.target.value)} // Set input name
           />
           <button
-            onClick={handleSubmit}
-            className="bg-orange-500 text-white text-xs p-1 rounded hover:text-black hover:bg-white"
+            className="bg-slate-300 text-white text-xs p-1 rounded hover:text-black hover:bg-white"
+            onClick={addAward} // Tambah award
           >
-            Submit
+            Add
           </button>
         </div>
 
-        {/* Tabel untuk menampilkan data awards */}
+        {/* Tabel award */}
         <CMSTable
-          headers={["", "Countries", "Years", "Awards", "Actions"]}
-          datas={awardsData.map((awardItem, index) => [
-            index + 1,
-            awardItem.country,
-            awardItem.year,
-            awardItem.award,
-            actions(index),
+          headers={["ID", "Year", "Award Name", "Action"]}
+          datas={awards.map((award) => [
+            award.id,
+            editingAward && editingAward.id === award.id ? (
+              <input
+                type="text"
+                value={editingAward.year}
+                onChange={(e) =>
+                  setEditingAward({ ...editingAward, year: e.target.value })
+                }
+              />
+            ) : (
+              award.year
+            ),
+            editingAward && editingAward.id === award.id ? (
+              <input
+                type="text"
+                value={editingAward.name}
+                onChange={(e) =>
+                  setEditingAward({ ...editingAward, name: e.target.value })
+                }
+              />
+            ) : (
+              award.name // Gunakan name sesuai kolom di database
+            ),
+            <>
+              {editingAward && editingAward.id === award.id ? (
+                <>
+                  <button
+                    className="hover:underline"
+                    onClick={() => updateAward(award.id)}
+                  >
+                    Save
+                  </button>
+                  <button
+                    className="hover:underline ml-2"
+                    onClick={() => setEditingAward(null)}
+                  >
+                    Cancel
+                  </button>
+                </>
+              ) : (
+                <>
+                  <button
+                    className="hover:underline"
+                    onClick={() => startEditing(award)}
+                  >
+                    Edit
+                  </button>
+                  <span className="mx-2">|</span>
+                  <button
+                    className="hover:underline"
+                    onClick={() => deleteAward(award.id)}
+                  >
+                    Delete
+                  </button>
+                </>
+              )}
+            </>,
           ])}
         />
       </div>
