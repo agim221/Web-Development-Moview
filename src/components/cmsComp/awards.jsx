@@ -3,58 +3,54 @@ import axios from "axios";
 import CMSTable from "../../components/CMSTable";
 
 function Awards() {
-  const [awards, setAwards] = useState([]); // State untuk menyimpan data awards
-  const [newYear, setNewYear] = useState(""); // State untuk input tahun
-  const [newName, setNewName] = useState(""); // State untuk input name (award)
-  const [editingAward, setEditingAward] = useState(null); // State untuk award yang sedang di-edit
+  const [awards, setAwards] = useState([]);
+  const [newYear, setNewYear] = useState("");
+  const [newName, setNewName] = useState("");
+  const [editingAward, setEditingAward] = useState(null);
 
-  // Fetch data awards dari API
   useEffect(() => {
     fetchAwards();
   }, []);
 
   const fetchAwards = async () => {
     try {
-      const response = await axios.get("http://localhost:8000/api/awards"); // Ganti URL sesuai dengan API
-      setAwards(response.data); // Set data awards ke state
+      const response = await axios.get("http://localhost:8000/api/awards");
+      setAwards(response.data);
     } catch (error) {
       console.error("Error fetching awards:", error);
     }
   };
 
-  // Tambah award baru
   const addAward = async () => {
     try {
-      if (!newYear || !newName) return; // Validasi input kosong
+      if (!newYear || !newName) return;
       const response = await axios.post("http://localhost:8000/api/awards", {
         year: newYear,
-        name: newName, // Gunakan name sesuai kolom di database
+        name: newName,
       });
-      setAwards([...awards, response.data]); // Tambahkan award baru ke state
-      setNewYear(""); // Reset input field
-      setNewName(""); // Reset input field
+      setAwards([...awards, response.data]);
+      setNewYear("");
+      setNewName("");
     } catch (error) {
       console.error("Error adding award:", error);
     }
   };
 
-  // Hapus award
   const deleteAward = async (id) => {
     try {
       await axios.delete(`http://localhost:8000/api/awards/${id}`);
-      setAwards(awards.filter((award) => award.id !== id)); // Filter award yang dihapus dari state
+      setAwards(awards.filter((award) => award.id !== id));
     } catch (error) {
       console.error("Error deleting award:", error);
     }
   };
 
-  // Update award
   const updateAward = async (id) => {
     try {
-      if (!editingAward) return; // Validasi input kosong
+      if (!editingAward) return;
       await axios.put(`http://localhost:8000/api/awards/${id}`, {
         year: editingAward.year,
-        name: editingAward.name, // Gunakan name sesuai kolom di database
+        name: editingAward.name,
       });
       setAwards(
         awards.map((award) =>
@@ -63,13 +59,12 @@ function Awards() {
             : award
         )
       );
-      setEditingAward(null); // Reset state editing
+      setEditingAward(null);
     } catch (error) {
       console.error("Error updating award:", error);
     }
   };
 
-  // Set award untuk di-edit
   const startEditing = (award) => {
     setEditingAward({ ...award });
   };
@@ -77,37 +72,39 @@ function Awards() {
   return (
     <section className="w-full">
       <div className="flex flex-col w-3/4 mx-auto">
-        {/* Input tambah award */}
-        <div className="flex flex-row mb-8 gap-4 bg-slate-100 p-2 rounded">
-          <span className="text-sm self-center">Year</span>
+        {/* Input for Adding New Award */}
+        <div className="flex items-center mb-6 p-4 bg-slate-100 rounded">
+          <label htmlFor="year" className="mr-4 text-sm font-medium">
+            Year:
+          </label>
           <input
             type="text"
-            name="year"
             id="year"
-            className="bg-slate-300 text-white ml-4"
+            className="flex-1 bg-slate-300 text-black px-3 py-1 rounded"
             value={newYear}
-            onChange={(e) => setNewYear(e.target.value)} // Set input year
+            onChange={(e) => setNewYear(e.target.value)}
           />
-          <span className="text-sm self-center">Award Name</span>
+          <label htmlFor="name" className="ml-4 mr-4 text-sm font-medium">
+            Award Name:
+          </label>
           <input
             type="text"
-            name="name"
             id="name"
-            className="bg-slate-300 text-white ml-4"
+            className="flex-1 bg-slate-300 text-black px-3 py-1 rounded"
             value={newName}
-            onChange={(e) => setNewName(e.target.value)} // Set input name
+            onChange={(e) => setNewName(e.target.value)}
           />
           <button
-            className="bg-slate-300 text-white text-xs p-1 rounded hover:text-black hover:bg-white"
-            onClick={addAward} // Tambah award
+            className="ml-4 bg-slate-500 text-white text-xs px-3 py-1 rounded hover:bg-slate-600"
+            onClick={addAward}
           >
             Add
           </button>
         </div>
 
-        {/* Tabel award */}
+        {/* Awards Table */}
         <CMSTable
-          headers={["ID", "Year", "Award Name", "Action"]}
+          headers={["ID", "Year", "Award Name", "Actions"]}
           datas={awards.map((award) => [
             award.id,
             editingAward && editingAward.id === award.id ? (
@@ -117,9 +114,10 @@ function Awards() {
                 onChange={(e) =>
                   setEditingAward({ ...editingAward, year: e.target.value })
                 }
+                className="bg-slate-200 p-1 text-black rounded w-full"
               />
             ) : (
-              award.year
+              <span className="block p-1">{award.year}</span>
             ),
             editingAward && editingAward.id === award.id ? (
               <input
@@ -128,21 +126,22 @@ function Awards() {
                 onChange={(e) =>
                   setEditingAward({ ...editingAward, name: e.target.value })
                 }
+                className="bg-slate-200 p-1 text-black rounded w-full"
               />
             ) : (
-              award.name // Gunakan name sesuai kolom di database
+              <span className="block p-1">{award.name}</span>
             ),
-            <>
+            <div className="flex gap-2">
               {editingAward && editingAward.id === award.id ? (
                 <>
                   <button
-                    className="hover:underline"
+                    className="text-blue-600 hover:underline"
                     onClick={() => updateAward(award.id)}
                   >
                     Save
                   </button>
                   <button
-                    className="hover:underline ml-2"
+                    className="text-red-600 hover:underline"
                     onClick={() => setEditingAward(null)}
                   >
                     Cancel
@@ -151,21 +150,21 @@ function Awards() {
               ) : (
                 <>
                   <button
-                    className="hover:underline"
+                    className="text-blue-600 hover:underline"
                     onClick={() => startEditing(award)}
                   >
                     Edit
                   </button>
-                  <span className="mx-2">|</span>
+                  <span>|</span>
                   <button
-                    className="hover:underline"
+                    className="text-red-600 hover:underline"
                     onClick={() => deleteAward(award.id)}
                   >
                     Delete
                   </button>
                 </>
               )}
-            </>,
+            </div>,
           ])}
         />
       </div>

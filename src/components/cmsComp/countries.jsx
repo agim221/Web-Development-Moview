@@ -3,67 +3,64 @@ import axios from "axios";
 import CMSTable from "../../components/CMSTable";
 
 function Countries() {
-  const [countries, setCountries] = useState([]); // State untuk menyimpan data countries
-  const [newCountry, setNewCountry] = useState(""); // State untuk input nama country
-  const [editingCountry, setEditingCountry] = useState(null); // State untuk country yang sedang di-edit
+  const [countries, setCountries] = useState([]);
+  const [newCountry, setNewCountry] = useState("");
+  const [editingCountry, setEditingCountry] = useState(null);
 
-  // Fetch data countries dari API
   useEffect(() => {
     fetchCountries();
   }, []);
 
   const fetchCountries = async () => {
     try {
-      const response = await axios.get("http://localhost:8000/api/countries"); // Ganti URL sesuai dengan API
-      setCountries(response.data); // Set data countries ke state
+      const response = await axios.get("http://localhost:8000/api/countries");
+      setCountries(response.data);
     } catch (error) {
       console.error("Error fetching countries:", error);
     }
   };
 
-  // Tambah country baru
   const addCountry = async () => {
     try {
-      if (!newCountry) return; // Validasi input kosong
+      if (!newCountry) return;
       const response = await axios.post("http://localhost:8000/api/countries", {
         name: newCountry,
       });
-      setCountries([...countries, response.data]); // Tambahkan country baru ke state
-      setNewCountry(""); // Reset input field
+      setCountries([...countries, response.data]);
+      setNewCountry("");
     } catch (error) {
       console.error("Error adding country:", error);
     }
   };
 
-  // Hapus country
   const deleteCountry = async (id) => {
     try {
       await axios.delete(`http://localhost:8000/api/countries/${id}`);
-      setCountries(countries.filter((country) => country.id !== id)); // Filter country yang dihapus dari state
+      setCountries(countries.filter((country) => country.id !== id));
     } catch (error) {
       console.error("Error deleting country:", error);
     }
   };
 
-  // Update country
   const updateCountry = async (id) => {
     try {
-      if (!editingCountry) return; // Validasi input kosong
+      if (!editingCountry) return;
       await axios.put(`http://localhost:8000/api/countries/${id}`, {
         name: editingCountry.name,
       });
       setCountries(
         countries.map((country) =>
-          country.id === id ? { ...country, name: editingCountry.name } : country
+          country.id === id
+            ? { ...country, name: editingCountry.name }
+            : country
         )
       );
-      setEditingCountry(null); // Reset state editing
+      setEditingCountry(null);
     } catch (error) {
       console.error("Error updating country:", error);
     }
   };
 
-  // Set country untuk di-edit
   const startEditing = (country) => {
     setEditingCountry({ ...country });
   };
@@ -71,28 +68,29 @@ function Countries() {
   return (
     <section className="w-full">
       <div className="flex flex-col w-3/4 mx-auto">
-        {/* Input tambah country */}
-        <div className="flex flex-row mb-8 gap-4 bg-slate-100 p-2 rounded">
-          <span className="text-sm self-center">Country</span>
+        {/* Input for Adding New Country */}
+        <div className="flex items-center mb-6 p-4 bg-slate-100 rounded">
+          <label htmlFor="country" className="mr-4 text-sm font-medium">
+            Country:
+          </label>
           <input
             type="text"
-            name="country"
             id="country"
-            className="bg-slate-300 text-white ml-4"
+            className="flex-1 bg-slate-300 text-black px-3 py-1 rounded"
             value={newCountry}
-            onChange={(e) => setNewCountry(e.target.value)} // Set input country
+            onChange={(e) => setNewCountry(e.target.value)}
           />
           <button
-            className="bg-slate-300 text-white text-xs p-1 rounded hover:text-black hover:bg-white"
-            onClick={addCountry} // Tambah country
+            className="ml-4 bg-slate-500 text-white text-xs px-3 py-1 rounded hover:bg-slate-600"
+            onClick={addCountry}
           >
             Add
           </button>
         </div>
 
-        {/* Tabel country */}
+        {/* Countries Table */}
         <CMSTable
-          headers={["ID", "Country", "Action"]}
+          headers={["ID", "Country", "Actions"]}
           datas={countries.map((country) => [
             country.id,
             editingCountry && editingCountry.id === country.id ? (
@@ -102,21 +100,22 @@ function Countries() {
                 onChange={(e) =>
                   setEditingCountry({ ...editingCountry, name: e.target.value })
                 }
+                className="bg-slate-200 p-1 text-black rounded w-full"
               />
             ) : (
-              country.name
+              <span className="block p-1">{country.name}</span>
             ),
-            <>
+            <div className="flex gap-2">
               {editingCountry && editingCountry.id === country.id ? (
                 <>
                   <button
-                    className="hover:underline"
+                    className="text-blue-600 hover:underline"
                     onClick={() => updateCountry(country.id)}
                   >
                     Save
                   </button>
                   <button
-                    className="hover:underline ml-2"
+                    className="text-red-600 hover:underline"
                     onClick={() => setEditingCountry(null)}
                   >
                     Cancel
@@ -125,21 +124,21 @@ function Countries() {
               ) : (
                 <>
                   <button
-                    className="hover:underline"
+                    className="text-blue-600 hover:underline"
                     onClick={() => startEditing(country)}
                   >
                     Rename
                   </button>
-                  <span className="mx-2">|</span>
+                  <span>|</span>
                   <button
-                    className="hover:underline"
+                    className="text-red-600 hover:underline"
                     onClick={() => deleteCountry(country.id)}
                   >
                     Delete
                   </button>
                 </>
               )}
-            </>,
+            </div>,
           ])}
         />
       </div>

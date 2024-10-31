@@ -9,14 +9,13 @@ function FilmList({
   filmShowed,
   setFilmShowed,
   sectionTitle,
-  setFilteredSum,
   increment = 20,
   searchBy,
 }) {
-  const [filteredFilms, setFilteredFilms] = useState([]);
   const navigate = useNavigate();
   const location = useLocation();
   const [films, setFilms] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const loadMore = useCallback(() => {
     setFilmShowed((prev) => prev + increment);
@@ -39,7 +38,6 @@ function FilmList({
             }
           );
         } else {
-          console.log(searchBy);
           response = await axios.get(
             `http://localhost:8000/api/films/search/actor/${
               filmShowed - (filmShowed - 1)
@@ -53,8 +51,7 @@ function FilmList({
           );
         }
         setFilms(response.data);
-        console.log(response.data);
-        setFilteredSum(response.data.length);
+        setLoading(false);
       } catch (error) {
         console.error("There was an error fetching the filtered films!", error);
       }
@@ -68,7 +65,7 @@ function FilmList({
           }/${filmShowed}`
         );
         setFilms(response.data);
-        setFilteredSum(response.data.length);
+        setLoading(false);
       } catch (error) {
         console.error("There was an error fetching the data!", error);
       }
@@ -82,21 +79,21 @@ function FilmList({
     } else {
       fetchFilms();
     }
-    // console.log(searchText, filterData);
   }, [searchText, filmShowed, filterData]);
 
   const handleFilmClick = (id) => {
-    console.log(id);
-    console.log(location.pathname);
     navigate(`/MovieDetail/${id}`);
   };
 
   return (
     <>
       {films.length === 0 ? (
-        <p className="text-2xl font-bold p-5">No films found</p>
+        <p className="text-2xl font-bold p-5">
+          {loading ? "" : "No films found"}
+        </p>
       ) : (
-        <h1 className="text-4xl font-bold p-5">{sectionTitle}</h1>
+        (console.log(films.length),
+        (<h1 className="text-4xl font-bold p-5">{sectionTitle}</h1>))
       )}
       <div className="grid grid-cols-5 gap-x-4 gap-y-24 mb-28 ">
         {location.pathname === "/search" &&
@@ -138,14 +135,16 @@ function FilmList({
               </div>
             ))}
       </div>
-      <button
-        className={`bg-red-400 text-white font-bold py-2 px-4 w-1/6 rounded self-center mb-28 ${
-          120 <= filmShowed ? "hidden" : ""
-        }`}
-        onClick={loadMore}
-      >
-        Load More
-      </button>
+      {films.length >= filmShowed ? (
+        <button
+          className="bg-red-400 text-white font-bold py-2 px-4 w-1/6 rounded self-center mb-10"
+          onClick={loadMore}
+        >
+          Load More
+        </button>
+      ) : (
+        <div></div>
+      )}
     </>
   );
 }

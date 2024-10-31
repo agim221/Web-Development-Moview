@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { Circles } from "react-loading-icons";
 import "./App.css";
 import "./styles/style.css";
 import Home from "./views/home";
@@ -8,23 +9,23 @@ import MovieDetail from "./views/MovieDetail";
 import Search from "./views/search";
 import Navbar from "./components/Navbar";
 import Filterbar from "./components/Filterbar";
-import Footer from "./components/Footer";
 import CMS from "./views/cms";
 import Register from "./views/register";
 import Bookmark from "./views/bookmark";
+import axios from "axios";
 
 function App() {
-  let [isOpen, setIsOpen] = useState("-translate-y-full");
-
+  const [isOpen, setIsOpen] = useState("-translate-y-full");
   const [filterData, setFilterData] = useState({
     genre: "",
     year: "",
     country: "",
     sort: "",
   });
-  let [searchText, setSearchText] = useState("");
-  let [filteredSum, setFilteredSum] = useState(1);
-  let [searchBy, setSearchBy] = useState("title");
+  const [searchText, setSearchText] = useState("");
+  const [searchBy, setSearchBy] = useState("title");
+  const [role, setRole] = useState("");
+  const [loading, setLoading] = useState(true);
 
   const toggleFilterBar = useCallback(() => {
     setIsOpen((prev) =>
@@ -32,58 +33,91 @@ function App() {
     );
   }, []);
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    const fetchRole = async () => {
+      try {
+        const response = await axios.get("http://localhost:8000/api/role", {
+          params: {
+            remember_token: localStorage.getItem("remember_token"),
+          },
+        });
+
+        if (response.data === "admin") {
+          setRole(response.data);
+        }
+      } catch (error) {
+        console.error("Error fetching role:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchRole();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <Circles
+          height="80"
+          width="80"
+          fill="#BCCFC0"
+          stroke="#0a0a0a"
+          ariaLabel="loading"
+        />
+      </div>
+    );
+  }
 
   return (
     <Router>
-      <div className="relative w-full h-full min-h-screen bg-gray-100">
-        <Filterbar
-          isOpen={isOpen}
-          toggleFilterBar={toggleFilterBar}
-          onSubmit={setFilterData}
-        />
-        <div className="w-full">
-          <Navbar
+      {role === "admin" ? (
+        <Routes>
+          <Route path="/*" element={<CMS />} />
+        </Routes>
+      ) : (
+        <div className="relative w-full h-full min-h-screen bg-gray-100">
+          <Filterbar
             isOpen={isOpen}
             toggleFilterBar={toggleFilterBar}
-            setSearchText={setSearchText}
-            setFilterData={setFilterData}
-            setSearchBy={setSearchBy}
-            searchBy={searchBy}
+            onSubmit={setFilterData}
           />
-        </div>
-        <div className="w-4/5 mx-auto">
-          <Routes>
-            <Route
-              path="/"
-              element={
-                <Home
-                  filterData={filterData}
-                  searchText={searchText}
-                  setFilteredSum={setFilteredSum}
-                />
-              }
+          <div className="w-full">
+            <Navbar
+              isOpen={isOpen}
+              toggleFilterBar={toggleFilterBar}
+              setSearchText={setSearchText}
+              setFilterData={setFilterData}
+              setSearchBy={setSearchBy}
+              searchBy={searchBy}
             />
-            <Route
-              path="/search"
-              element={
-                <Search
-                  filterData={filterData}
-                  searchText={searchText}
-                  setFilteredSum={setFilteredSum}
-                  searchBy={searchBy}
-                />
-              }
-            />
-            <Route path="/login" element={<Login />} />
-            <Route path="/watchlist" element={<Bookmark />} />
-            <Route path="/cms" element={<CMS />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/movieDetail/:id" element={<MovieDetail />} />
-          </Routes>
+          </div>
+          <div className="w-4/5 mx-auto">
+            <Routes>
+              <Route
+                path="/"
+                element={
+                  <Home filterData={filterData} searchText={searchText} />
+                }
+              />
+              <Route
+                path="/search"
+                element={
+                  <Search
+                    filterData={filterData}
+                    searchText={searchText}
+                    searchBy={searchBy}
+                  />
+                }
+              />
+              <Route path="/login" element={<Login setRole={setRole} />} />
+              <Route path="/watchlist" element={<Bookmark />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/movieDetail/:id" element={<MovieDetail />} />
+            </Routes>
+          </div>
         </div>
-        {/* <Footer filteredSum={filteredSum} /> */}
-      </div>
+      )}
     </Router>
   );
 }

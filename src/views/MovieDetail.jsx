@@ -151,7 +151,9 @@ export default function MovieDetail() {
                 ? film.otherTitles.join(", ")
                 : film.otherTitles}
             </p>
-            <p className="text-sm text-gray-600 mb-2">Year: {film.year}</p>
+            <p className="text-sm text-gray-600 mb-2">
+              Year: {film.release_date}
+            </p>
             <p className="text-gray-700 mb-4">{film.description}</p>
             <p className="text-gray-700 mb-2">
               Genres:{" "}
@@ -162,13 +164,16 @@ export default function MovieDetail() {
           </div>
         </div>
 
+        <div className="text-center mt-8">
+          <h2 className="text-2xl font-bold">Actor</h2>
+        </div>
         {/* Actor List */}
         <div className="mt-8 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4">
           {Array.isArray(actors) &&
             actors.map((actor, idx) => (
               <div key={idx} className="flex flex-col items-center">
                 <img
-                  src={actor.image}
+                  src={actor.photo_url}
                   alt={actor.name}
                   className="h-32 w-24 rounded-lg"
                 />
@@ -186,9 +191,8 @@ export default function MovieDetail() {
             <iframe
               width="100%"
               height="100%"
-              src={film.trailer} // Link dari backend
+              src={film.trailer}
               title={film.title}
-              frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
             ></iframe>

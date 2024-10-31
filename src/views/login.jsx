@@ -1,18 +1,27 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { Circles } from "react-loading-icons";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-const LoginPage = () => {
-  const [username, setUsername] = useState("AgimAgim");
-  const [password, setPassword] = useState("testingmoni");
+const LoginPage = ({ setRole }) => {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   const [remember, setRemember] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
 
   const handleSubmitLogin = (e) => {
     e.preventDefault();
+
+    if (!username || !password) {
+      setMessage("Email or password is required");
+      return;
+    }
+
+    setLoading(true);
 
     axios
       .post("http://localhost:8000/login", {
@@ -39,10 +48,19 @@ const LoginPage = () => {
             localStorage.setItem("remember_token_expiry", expiry);
           }
 
-          navigate("/");
+          if (response.data.role === "admin") {
+            setRole("admin");
+            navigate("/cms");
+          } else {
+            setRole("user");
+            navigate("/");
+          }
+          setLoading(false);
         }
       })
       .catch((error) => {
+        setLoading(false);
+        setMessage("Email or password is incorrect");
         console.error("There was an error!", error);
       });
   };
@@ -106,14 +124,30 @@ const LoginPage = () => {
               <span>Remember me</span>
             </label>
           </div>
-          <div>
+          {loading ? (
+            <div className="flex justify-center items-center rounded bg-yellow-500 py-2 w-full hover:bg-yellow-600">
+              <Circles
+                height="25"
+                width="25"
+                fill="#FFFFFF"
+                stroke="#0a0a0a"
+                ariaLabel="loading"
+              />
+            </div>
+          ) : (
             <button
               type="submit"
               className="w-full py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600"
             >
               Sign in
             </button>
-          </div>
+          )}
+          {/* <button
+            type="submit"
+            className="w-full py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600"
+          >
+            Sign in
+          </button> */}
           <div>
             <button
               type="button"
