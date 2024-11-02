@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import FilmCard from "./FilmCard";
 import axios from "axios";
 
@@ -9,12 +9,13 @@ function FilmList({
   filmShowed,
   setFilmShowed,
   sectionTitle,
-  setFilteredSum,
   increment = 20,
+  searchBy,
 }) {
-  const [filteredFilms, setFilteredFilms] = useState([]);
   const navigate = useNavigate();
+  const location = useLocation();
   const [films, setFilms] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const loadMore = useCallback(() => {
     setFilmShowed((prev) => prev + increment);
@@ -23,20 +24,34 @@ function FilmList({
   useEffect(() => {
     const fetchFilteredFilms = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:8000/api/films/search/${
-            filmShowed - (filmShowed - 1)
-          }/${filmShowed}`,
-          {
-            params: {
-              title: searchText,
-              filterData: Object.values(filterData),
-            },
-          }
-        );
+        let response;
+        if (searchBy === "title") {
+          response = await axios.get(
+            `http://localhost:8000/api/films/search/${
+              filmShowed - (filmShowed - 1)
+            }/${filmShowed}`,
+            {
+              params: {
+                title: searchText,
+                filterData: Object.values(filterData),
+              },
+            }
+          );
+        } else {
+          response = await axios.get(
+            `http://localhost:8000/api/films/search/actor/${
+              filmShowed - (filmShowed - 1)
+            }/${filmShowed}`,
+            {
+              params: {
+                name: searchText,
+                filterData: Object.values(filterData),
+              },
+            }
+          );
+        }
         setFilms(response.data);
-        setFilteredSum(response.data.length);
-        // console.log(response.data);
+        setLoading(false);
       } catch (error) {
         console.error("There was an error fetching the filtered films!", error);
       }
@@ -50,7 +65,7 @@ function FilmList({
           }/${filmShowed}`
         );
         setFilms(response.data);
-        setFilteredSum(response.data.length);
+        setLoading(false);
       } catch (error) {
         console.error("There was an error fetching the data!", error);
       }
@@ -64,7 +79,6 @@ function FilmList({
     } else {
       fetchFilms();
     }
-    // console.log(searchText, filterData);
   }, [searchText, filmShowed, filterData]);
 
   const handleFilmClick = (id) => {
@@ -74,35 +88,63 @@ function FilmList({
   return (
     <>
       {films.length === 0 ? (
-        <p className="text-2xl font-bold p-5">No films found</p>
+        <p className="text-2xl font-bold p-5">
+          {loading ? "" : "No films found"}
+        </p>
       ) : (
-        <h1 className="text-4xl font-bold p-5">{sectionTitle}</h1>
+        (console.log(films.length),
+        (<h1 className="text-4xl font-bold p-5">{sectionTitle}</h1>))
       )}
       <div className="grid grid-cols-5 gap-x-4 gap-y-24 mb-28 ">
-        {films.slice(0, filmShowed).map((film) => (
-          <div key={film.id} onClick={() => handleFilmClick(film.id)}>
-            <FilmCard
-              key={film.id}
-              title={film.title}
-              description={film.description}
-              posterUrl={film.image}
-              year={film.year}
-              rating={film.rating}
-              country={film.country}
-              status={film.status}
-              genre={film.genre}
-            />
-          </div>
-        ))}
+        {location.pathname === "/search" &&
+        (filterData.genre !== "" ||
+          filterData.year !== "" ||
+          filterData.country !== "" ||
+          searchBy === "actor")
+          ? films.slice(0, filmShowed).map((film) => (
+              <div
+                key={film.film_id}
+                onClick={() => handleFilmClick(film.film_id)}
+              >
+                <FilmCard
+                  key={film.film_id}
+                  title={film.title}
+                  description={film.description}
+                  posterUrl={film.image}
+                  year={film.year}
+                  rating={film.rating}
+                  country={film.country}
+                  status={film.status}
+                  genre={film.genre}
+                />
+              </div>
+            ))
+          : films.slice(0, filmShowed).map((film) => (
+              <div key={film.id} onClick={() => handleFilmClick(film.id)}>
+                <FilmCard
+                  key={film.id}
+                  title={film.title}
+                  description={film.description}
+                  posterUrl={film.image}
+                  year={film.year}
+                  rating={film.rating}
+                  country={film.country}
+                  status={film.status}
+                  genre={film.genre}
+                />
+              </div>
+            ))}
       </div>
-      <button
-        className={`bg-red-400 text-white font-bold py-2 px-4 w-1/6 rounded self-center ${
-          120 <= filmShowed ? "hidden" : ""
-        }`}
-        onClick={loadMore}
-      >
-        Load More
-      </button>
+      {films.length >= filmShowed ? (
+        <button
+          className="bg-red-400 text-white font-bold py-2 px-4 w-1/6 rounded self-center mb-10"
+          onClick={loadMore}
+        >
+          Load More
+        </button>
+      ) : (
+        <div></div>
+      )}
     </>
   );
 }

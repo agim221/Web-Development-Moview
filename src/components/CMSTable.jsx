@@ -4,7 +4,7 @@ function CMSTable({ headers, datas, children }) {
   return (
     <>
       {children}
-      <table className="text-center">
+      <table className="text-center w-full">
         <thead className="bg-slate-300 h-10">
           <tr>
             {headers.map((header, index) => (

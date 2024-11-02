@@ -1,29 +1,24 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
+import axios from "axios";
 
 import "../styles/style.css";
 
 import { useNavigate } from "react-router-dom";
 
 function Filterbar({ isOpen, toggleFilterBar, onSubmit }) {
-  const [status, setStatus] = useState("");
-  const [rating, setRating] = useState("");
   const [genre, setGenre] = useState("");
   const [year, setYear] = useState("");
   const [country, setCountry] = useState("");
   const [sort, setSort] = useState("");
   const [savedValues, setSavedValues] = useState({});
 
+  let [years, setYears] = useState([]);
+  let [countries, setCountries] = useState([]);
+  let [genres, setGenres] = useState([]);
+
   const navigate = useNavigate();
 
   const form = useRef(null);
-
-  const handleStatusChange = (e) => {
-    setStatus(e.target.value);
-  };
-
-  const handleRatingChange = (e) => {
-    setRating(e.target.value);
-  };
 
   const handleYearChange = (e) => {
     setYear(e.target.value);
@@ -44,8 +39,6 @@ function Filterbar({ isOpen, toggleFilterBar, onSubmit }) {
   const handleClose = () => {
     toggleFilterBar();
     setGenre(savedValues.genre);
-    setStatus(savedValues.status);
-    setRating(savedValues.rating);
     setYear(savedValues.year);
     setCountry(savedValues.country);
     setSort(savedValues.sort);
@@ -54,9 +47,7 @@ function Filterbar({ isOpen, toggleFilterBar, onSubmit }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     const formData = {
-      status,
       genre,
-      rating,
       year,
       country,
       sort,
@@ -70,14 +61,45 @@ function Filterbar({ isOpen, toggleFilterBar, onSubmit }) {
 
   const handleReset = (e) => {
     e.preventDefault();
-    setStatus("");
     setGenre("");
-    setRating("");
     setYear("");
     setCountry("");
     setSort("");
     form.current.reset();
   };
+
+  useEffect(() => {
+    const fetchYears = async () => {
+      try {
+        const response = await axios.get("http://localhost:8000/api/years");
+        setYears(response.data);
+      } catch (error) {
+        console.error("Error fetching years:", error);
+      }
+    };
+
+    const fetchCountries = async () => {
+      try {
+        const response = await axios.get("http://localhost:8000/api/countries");
+        setCountries(response.data);
+      } catch (error) {
+        console.error("Error fetching countries:", error);
+      }
+    };
+
+    const fetchGenres = async () => {
+      try {
+        const response = await axios.get("http://localhost:8000/api/genres");
+        setGenres(response.data);
+      } catch (error) {
+        console.error("Error fetching genres:", error);
+      }
+    };
+
+    fetchGenres();
+    fetchYears();
+    fetchCountries();
+  }, []);
 
   return (
     <section
@@ -116,27 +138,14 @@ function Filterbar({ isOpen, toggleFilterBar, onSubmit }) {
                   value={genre}
                 >
                   <option value="" default></option>
-                  <option value="action">Action</option>
-                  <option value="drama">Drama</option>
-                  <option value="comedy">Comedy</option>
-                  <option value="horror">Horror</option>
+                  {genres.map((genre) => (
+                    <option key={genre.id} value={genre.name}>
+                      {genre.name}
+                    </option>
+                  ))}
                 </select>
               </div>
-              <div className="flex flex-col gap-2">
-                <label htmlFor="status">Status</label>
-                <select
-                  name="status"
-                  id="status"
-                  className="border border-gray-300 p-2 rounded-xl"
-                  onChange={handleStatusChange}
-                  value={status}
-                >
-                  <option value="" default></option>
-                  <option value="ongoing">Ongoing</option>
-                  <option value="completed">Completed</option>
-                </select>
-              </div>
-              <div className="flex flex-col gap-2">
+              {/* <div className="flex flex-col gap-2">
                 <label htmlFor="rating">Rating</label>
                 <select
                   name="rating"
@@ -146,12 +155,13 @@ function Filterbar({ isOpen, toggleFilterBar, onSubmit }) {
                   value={rating}
                 >
                   <option value="" default></option>
-                  <option value="1">1</option>
-                  <option value="2">2</option>
-                  <option value="3">3</option>
-                  <option value="4">4</option>
+                  {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((rating) => (
+                    <option key={rating} value={rating}>
+                      {rating}
+                    </option>
+                  ))}
                 </select>
-              </div>
+              </div> */}
               <div className="flex flex-col gap-2">
                 <label htmlFor="year">Year</label>
                 <select
@@ -162,10 +172,11 @@ function Filterbar({ isOpen, toggleFilterBar, onSubmit }) {
                   value={year}
                 >
                   <option value="" default></option>
-                  <option value="2021">2021</option>
-                  <option value="2020">2020</option>
-                  <option value="2019">2019</option>
-                  <option value="2018">2018</option>
+                  {years.map((year) => (
+                    <option key={year} value={year.year}>
+                      {year.year}
+                    </option>
+                  ))}
                 </select>
               </div>
               <div className="flex flex-col gap-2">
@@ -178,10 +189,11 @@ function Filterbar({ isOpen, toggleFilterBar, onSubmit }) {
                   value={country}
                 >
                   <option value="" default></option>
-                  <option value="indonesia">Indonesia</option>
-                  <option value="korea">Korea</option>
-                  <option value="japan">Japan</option>
-                  <option value="america">America</option>
+                  {countries.map((country) => (
+                    <option key={country.id} value={country.name}>
+                      {country.name}
+                    </option>
+                  ))}
                 </select>
               </div>
             </div>

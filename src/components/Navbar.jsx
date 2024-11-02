@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import "../styles/style.css";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
-function Navbar({ toggleFilterBar, setSearchText, setFilterData }) {
+function Navbar({ toggleFilterBar, setSearchText, setFilterData, searchBy, setSearchBy }) {
   let [text, setText] = useState("");
   const [cookie, setCookie] = useState("");
 
@@ -32,22 +33,31 @@ function Navbar({ toggleFilterBar, setSearchText, setFilterData }) {
     }
   }, [cookie, navigate]);
 
+  const handleSearchBy = (e) => {
+    setSearchBy(e.target.value);
+    console.log(e.target.value);
+  };
+
   const handleLogout = (e) => {
     e.preventDefault();
 
     localStorage.removeItem("remember_token");
     localStorage.removeItem("remember_token_expiry");
+
+    setCookie("");
+    window.location.href = "/";
+  };
+
+  const handleHome = () => {
     setSearchText("");
     setFilterData({
-      status: "",
       genre: "",
-      rating: "",
       year: "",
       country: "",
       sort: "",
     });
-    setCookie("");
-    navigate("/");
+    setSearchBy("title");
+    window.location.href = "/";
   };
 
   return (
@@ -57,7 +67,7 @@ function Navbar({ toggleFilterBar, setSearchText, setFilterData }) {
           <span
             role="button"
             className="text-lg font-semibold text-gray-800"
-            onClick={() => navigate("/")}
+            onClick={handleHome}
           >
             Moview
           </span>
@@ -89,6 +99,10 @@ function Navbar({ toggleFilterBar, setSearchText, setFilterData }) {
                 />
               </svg>
             </form>
+            <select className="bg-orange-500 rounded text-white" value={searchBy} onChange={handleSearchBy}>
+              <option value="title">Title</option>
+              <option value="actor">Actor</option>
+            </select>
             <svg
               role="button"
               xmlns="http://www.w3.org/2000/svg"
@@ -105,12 +119,16 @@ function Navbar({ toggleFilterBar, setSearchText, setFilterData }) {
                 d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75"
               />
             </svg>
+            
           </div>
         </div>
         <div className="flex space-x-2 justify-end w-1/4">
           {cookie !== "" ? (
             <>
-              <div className="flex flex-row bg-orange-500 rounded px-2">
+              <div
+                className="flex flex-row bg-orange-500 rounded px-2"
+                onClick={() => navigate("/watchlist")}
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="#fff"

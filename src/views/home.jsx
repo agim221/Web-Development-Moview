@@ -5,7 +5,7 @@ import FilmList from "../components/FilmList";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-function Home({ filterData, searchText, setFilteredSum }) {
+function Home({ filterData, searchText }) {
   let [scrollLeft, setScrollLeft] = useState(0);
   let [filmShowed, setFilmShowed] = useState(20);
   let [bookmarks, setBookmarks] = useState([]);
@@ -51,33 +51,35 @@ function Home({ filterData, searchText, setFilteredSum }) {
   }, [navigate]);
 
   useEffect(() => {
-    if (!rememberToken) {
-      return;
-    }
+    const fetchBookmarks = async () => {
+      if (!rememberToken) {
+        return;
+      }
 
-    axios
-      .get(
-        `http://localhost:8000/api/bookmarks/${localStorage.getItem(
-          "remember_token"
-        )}`
-      )
-      .then((response) => {
+      try {
+        const response = await axios.get(
+          `http://localhost:8000/api/bookmarks/${localStorage.getItem(
+            "remember_token"
+          )}`
+        );
         setBookmarks(response.data);
-      });
-  }, [rememberToken]);
+      } catch (error) {
+        console.error("Error fetching bookmarks:", error);
+      }
+    };
 
+    fetchBookmarks();
+  }, [rememberToken]);
   return (
     <>
       <MainSlider />
       <section className="flex flex-col w-4/5 mx-auto mt-16 relative">
-        {/* <h1 className="text-4xl font-bold p-5">Watchlist</h1> */}
-
-        {rememberToken ? (
+        {rememberToken && bookmarks.length !== 0 ? (
           <h1 className="text-4xl font-bold p-5">Watchlist</h1>
         ) : (
           <p></p>
         )}
-        {rememberToken ? (
+        {rememberToken && bookmarks.length !== 0 ? (
           <div
             className="flex flex-row gap-4 scroll-smooth overflow-x-scroll no-scrollbar h-96"
             ref={containerRef}
@@ -147,7 +149,6 @@ function Home({ filterData, searchText, setFilteredSum }) {
           searchText={searchText}
           filmShowed={filmShowed}
           setFilmShowed={setFilmShowed}
-          setFilteredSum={setFilteredSum}
           sectionTitle={"More Films"}
         />
       </section>

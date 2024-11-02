@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import FilmList from "../components/FilmList";
 
-function Search({ filterData, searchText, searchBy }) {
+function Bookmarks({ filterData, searchText }) {
   let [filmShowed, setFilmShowed] = useState(30);
 
   return (
@@ -14,11 +14,10 @@ function Search({ filterData, searchText, searchBy }) {
           setFilmShowed={setFilmShowed}
           increment={30}
           sectionTitle={"More Films"}
-          searchBy={searchBy}
         />
       </section>
     </>
   );
 }
 
-export default Search;
+export default Bookmarks;
