@@ -14,7 +14,14 @@ function CMSSidebar({ onViewChange, view }) {
 
       <nav className="flex-1 space-y-4">
         <div className="mb-4">
-          <h3 className="text-lg font-medium">Dramas</h3>
+          <button
+          onClick={() => onViewChange("films")}
+          className={`w-full text-left p-2 rounded hover:bg-gray-700 ${
+            view === "film" && "bg-gray-700"
+          }`}
+        >
+          Films
+        </button>
           <ul className="ml-4 space-y-2">
             <li>
               <button
@@ -38,15 +45,6 @@ function CMSSidebar({ onViewChange, view }) {
             </li>
           </ul>
         </div>
-
-        <button
-          onClick={() => onViewChange("film")}
-          className={`w-full text-left p-2 rounded hover:bg-gray-700 ${
-            view === "film" && "bg-gray-700"
-          }`}
-        >
-          Films
-        </button>
 
         <button
           onClick={() => onViewChange("countries")}

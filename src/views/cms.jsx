@@ -8,6 +8,7 @@ import Comments from "../components/cmsComp/comments";
 import Awards from "../components/cmsComp/awards";
 import Actors from "../components/cmsComp/actors";
 import Users from "../components/cmsComp/users";
+import Films from "../components/cmsComp/films";
 
 function CMS() {
   const [view, setView] = useState("home");
@@ -33,6 +34,7 @@ function CMS() {
           {view === "home" && (
             <p className="text-gray-600">Select a section from the sidebar.</p>
           )}
+          {view === "films" && <Films />}
         </div>
       </div>
     </div>
