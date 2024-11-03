@@ -1,70 +1,156 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import "tailwindcss/tailwind.css";
 import Comment from "../components/Comment";
 import { useParams } from "react-router-dom";
 import axios from "axios"; // Untuk melakukan fetching data
+import { useNavigate } from "react-router-dom";
+import { Circles } from "react-loading-icons"; // Import Circles
 
 export default function MovieDetail() {
-  let [isOpen, setIsOpen] = useState("-translate-y-full");
-  let [scrollLeft, setScrollLeft] = useState(0);
+  const [isOpen, setIsOpen] = useState("-translate-y-full");
+  const [scrollLeft, setScrollLeft] = useState(0);
+  const navigate = useNavigate();
 
   const { id } = useParams(); // Mengambil ID dari URL
   const [film, setFilm] = useState(null); // State untuk menyimpan data film
+  const [actors, setActors] = useState([]); // State untuk menyimpan data aktor
   const [loading, setLoading] = useState(true); // State untuk status loading
   const [error, setError] = useState(null); // State untuk error handling
+  const [comments, setComments] = useState([]); // State untuk menyimpan data komentar film
+  const [comment, setComment] = useState(""); // State untuk menyimpan komentar yang diinput
+  const [rating, setRating] = useState(5); // State untuk menyimpan rating yang diinput
+  const [genres, setGenres] = useState([]); // State untuk menyimpan data genre film
 
-  useEffect(() => {
-    // Fetching data film berdasarkan ID dari URL
-    const fetchFilm = async () => {
-      try {
-        const response = await axios.get(
-          `http://localhost:8000/api/films_detail/${id}`
-        );
-        setFilm(response.data); // Set data film yang diambil dari backend
-        setLoading(false); // Hentikan loading setelah data diterima
-      } catch (error) {
-        console.error("Error fetching film details:", error);
-        setError("Failed to load film details."); // Set error jika terjadi kesalahan
-        setLoading(false); // Hentikan loading meskipun terjadi error
-      }
+  const formatDate = useCallback((dateString) => {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are zero-indexed
+    const day = String(date.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  }, []);
+
+  const fetchFilm = useCallback(async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:8000/api/films_detail/${id}`
+      );
+      setFilm(response.data);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching film details:", error);
+      setError("Failed to load film details.");
+      setLoading(false);
+    }
+  }, [id]);
+
+  const fetchActor = useCallback(async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:8000/api/films_detail/${id}/actors`
+      );
+      setActors(response.data);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching actor details:", error);
+      setError("Failed to load actor details.");
+      setLoading(false);
+    }
+  }, [id]);
+
+  const fetchComments = useCallback(async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:8000/api/films_detail/${id}/comments`
+      );
+      setComments(response.data);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching comments:", error);
+      setError("Failed to load comments.");
+      setLoading(false);
+    }
+  }, [id]);
+
+  const fetchGenres = useCallback(async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:8000/api/films_detail/${id}/genres`
+      );
+      setGenres(response.data);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching genres:", error);
+      setError("Failed to load genres.");
+      setLoading(false);
+    }
+  }, [id]);
+
+  const handleSubmitComment = async (e) => {
+    e.preventDefault();
+    const form = e.target;
+
+    const data = {
+      remember_token: localStorage.getItem("remember_token"),
+      film_id: id,
+      rating: rating,
+      comment: comment,
     };
 
-    fetchFilm();
-  }, [id]); // useEffect akan berjalan setiap kali id berubah
-
-  if (loading) {
-    return <p>Loading...</p>; // Tampilkan pesan loading ketika data belum siap
-  }
-
-  if (error) {
-    return <p>{error}</p>; // Tampilkan pesan error jika gagal fetching
-  }
-
-  if (!film) {
-    return <p>Film not found</p>; // Tampilkan pesan jika film tidak ditemukan
-  }
-
-  const toggleFilterBar = () => {
-    setIsOpen((prev) =>
-      prev === "-translate-y-full" ? "translate-y-0" : "-translate-y-full"
-    );
-  };
-
-  const scrollMore = (direction) => {
-    const container = document.querySelector(".watch-list");
-    const containerScrollAmount = container.scrollWidth - container.clientWidth;
-    if (direction === "right") {
-      if (scrollLeft < containerScrollAmount) {
-        setScrollLeft((prev) => prev + 300);
-        container.scrollLeft += 300;
-      }
-    } else if (direction === "left") {
-      if (scrollLeft > 0) {
-        setScrollLeft((prev) => prev - 300);
-        container.scrollLeft -= 300;
+    try {
+      await axios.post("http://localhost:8000/api/add-comments", data);
+      fetchComments();
+      setComment("");
+      setRating(5);
+    } catch (error) {
+      if (error.response.status === 400) {
+        alert("You have already submitted a comment for this film.");
+      } else if (error.response.status === 422) {
+        alert("You need to login to submit a comment.");
+        navigate("/login");
+      } else {
+        console.error("Error submitting comment:", error);
       }
     }
   };
+
+  useEffect(() => {
+    fetchGenres();
+    fetchComments();
+    fetchActor();
+    fetchFilm();
+  }, [id, fetchGenres, fetchComments, fetchActor, fetchFilm]); // Tambahkan depedensi fungsi
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <Circles
+          height="80"
+          width="80"
+          fill="#BCCFC0"
+          stroke="#0a0a0a"
+          aria-label="loading"
+        />
+      </div>
+    ); // Tampilkan Circles saat loading
+  }
+
+  if (error) {
+    return <p className="text-center text-red-500">{error}</p>; // Tampilkan pesan error
+  }
+
+  if (!film) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <Circles
+          height="80"
+          width="80"
+          fill="#BCCFC0"
+          stroke="#0a0a0a"
+          aria-label="loading"
+        />
+      </div>
+    );
+  }
 
   return (
     <>
@@ -89,24 +175,34 @@ export default function MovieDetail() {
                 ? film.otherTitles.join(", ")
                 : film.otherTitles}
             </p>
-            <p className="text-sm text-gray-600 mb-2">Year: {film.year}</p>
+            <p className="text-sm text-gray-600 mb-2">
+              Year: {film.release_date}
+            </p>
             <p className="text-gray-700 mb-4">{film.description}</p>
             <p className="text-gray-700 mb-2">
               Genres:{" "}
-              {Array.isArray(film.genre) ? film.genre.join(", ") : film.genre}
+              {Array.isArray(genres) &&
+                genres.map((genre) => genre.genre.name).join(", ")}
             </p>
             <p className="text-gray-700 mb-2">Rating: {film.rating}/10</p>
             <p className="text-gray-700">Availability: {film.availability}</p>
           </div>
         </div>
 
+        <div className="text-center mt-8">
+          <h2 className="text-2xl font-bold">Actor</h2>
+        </div>
         {/* Actor List */}
         <div className="mt-8 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4">
-          {Array.isArray(film.actors) &&
-            film.actors.map((actor, idx) => (
+          {Array.isArray(actors) &&
+            actors.map((actor, idx) => (
               <div key={idx} className="flex flex-col items-center">
-                <div className="bg-gray-200 h-24 w-24 rounded-lg"></div>
-                <div className="text-center mt-2">{actor}</div>
+                <img
+                  src={actor.photo_url}
+                  alt={actor.name}
+                  className="h-32 w-24 rounded-lg"
+                />
+                <div className="text-center mt-2">{actor.name}</div>
               </div>
             ))}
         </div>
@@ -120,9 +216,8 @@ export default function MovieDetail() {
             <iframe
               width="100%"
               height="100%"
-              src={film.trailer} // Link dari backend
+              src={film.trailer}
               title={film.title}
-              frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
             ></iframe>
@@ -145,8 +240,7 @@ export default function MovieDetail() {
         <div className="mt-8">
           <div className="flex justify-between items-center mb-4">
             <h3 className="text-lg font-bold">
-              ({Array.isArray(film.comments) ? film.comments.length : 0}) People
-              think about this drama
+              ({comments.length}) People think about this drama
             </h3>
             <div className="flex items-center space-x-2">
               <span className="text-gray-700">Filtered by:</span>
@@ -165,30 +259,28 @@ export default function MovieDetail() {
           </div>
 
           <div className="space-y-4">
-            {Array.isArray(film.comments) &&
-              film.comments.map((comment, idx) => (
-                <Comment
-                  key={idx}
-                  name={comment.name}
-                  date={comment.date}
-                  rating={comment.rating}
-                  comment={comment.comment}
-                />
-              ))}
+            {comments.map((comment, idx) => (
+              <Comment
+                key={idx}
+                name={comment.user.username}
+                date={formatDate(comment.created_at)}
+                rating={comment.rating}
+                comment={comment.comment}
+              />
+            ))}
           </div>
         </div>
 
         {/* Add Comment Section */}
         <div className="mt-8">
           <h3 className="text-lg font-bold mb-4">Add yours!</h3>
-          <form className="space-y-4">
+          <form className="space-y-4" onSubmit={handleSubmitComment}>
             <div className="flex space-x-4">
-              <input
-                type="text"
-                placeholder="Name"
-                className="w-1/3 px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-orange-500"
-              />
-              <select className="w-1/3 border border-gray-300 rounded py-2 px-4">
+              <select
+                className="w-1/3 border border-gray-300 rounded py-2 px-4"
+                value={rating}
+                onChange={(e) => setRating(e.target.value)}
+              >
                 <option value="5">★★★★★</option>
                 <option value="4">★★★★☆</option>
                 <option value="3">★★★☆☆</option>
@@ -199,6 +291,8 @@ export default function MovieDetail() {
             <textarea
               placeholder="Your thoughts"
               className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-orange-500"
+              value={comment}
+              onChange={(e) => setComment(e.target.value)}
             ></textarea>
             <div className="text-sm text-gray-500">
               You can only submit your comment once.

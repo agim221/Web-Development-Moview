@@ -1,44 +1,147 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import CMSTable from "../../components/CMSTable";
 
-function genres() {
-  function button() {
-    return (
-      <>
-        <div>
-          <button className="hover:underline">Rename</button>
-          <span className="">|</span>
-          <button className="hover:underline">Delete</button>
-        </div>
-      </>
-    );
-  }
+function Genres() {
+  const [genres, setGenres] = useState([]);
+  const [newGenre, setNewGenre] = useState("");
+  const [editingGenre, setEditingGenre] = useState(null);
+
+  useEffect(() => {
+    fetchGenres();
+  }, []);
+
+  const fetchGenres = async () => {
+    try {
+      const response = await axios.get("http://localhost:8000/api/genres");
+      setGenres(response.data);
+    } catch (error) {
+      console.error("Error fetching genres:", error);
+    }
+  };
+
+  const addGenre = async () => {
+    try {
+      if (!newGenre) return;
+      const response = await axios.post("http://localhost:8000/api/genres", {
+        name: newGenre,
+      });
+      setGenres([...genres, response.data]);
+      setNewGenre("");
+    } catch (error) {
+      console.error("Error adding genre:", error);
+    }
+  };
+
+  const deleteGenre = async (id) => {
+    try {
+      await axios.delete(`http://localhost:8000/api/genres/${id}`);
+      setGenres(genres.filter((genre) => genre.id !== id));
+    } catch (error) {
+      console.error("Error deleting genre:", error);
+    }
+  };
+
+  const updateGenre = async (id) => {
+    try {
+      if (!editingGenre) return;
+      await axios.put(`http://localhost:8000/api/genres/${id}`, {
+        name: editingGenre.name,
+      });
+      setGenres(
+        genres.map((genre) =>
+          genre.id === id ? { ...genre, name: editingGenre.name } : genre
+        )
+      );
+      setEditingGenre(null);
+    } catch (error) {
+      console.error("Error updating genre:", error);
+    }
+  };
+
+  const startEditing = (genre) => {
+    setEditingGenre({ ...genre });
+  };
 
   return (
-    <section className="w-full">
+    <section className="w-full h-[850px] overflow-y-scroll">
       <div className="flex flex-col w-3/4 mx-auto">
-        <div className="flex flex-row mb-8 gap-4 bg-slate-100 p-2 rounded">
-          <span className="text-sm self-center">Genre</span>
+        {/* Input for Adding Genre */}
+        <div className="flex items-center mb-6 p-4 bg-slate-100 rounded">
+          <label htmlFor="genre" className="mr-4 text-sm font-medium">
+            Genre:
+          </label>
           <input
             type="text"
-            name="country"
-            id="country"
-            className="bg-slate-300 text-white ml-4"
+            id="genre"
+            className="flex-1 bg-slate-300 text-black px-3 py-1 rounded"
+            value={newGenre}
+            onChange={(e) => setNewGenre(e.target.value)}
           />
-          <button className="bg-slate-300 text-white text-xs p-1 rounded hover:text-black hover:bg-white">
+          <button
+            className="ml-4 bg-slate-500 text-white text-xs px-3 py-1 rounded hover:bg-slate-600"
+            onClick={addGenre}
+          >
             Submit
           </button>
         </div>
+
+        {/* Genres Table */}
         <CMSTable
-          headers={["", "Genre", "Action"]}
-          datas={[
-            [1, "Comedy", button()],
-            [2, "Drama", button()],
-          ]}
-        ></CMSTable>
+          headers={["No", "Genre", "Actions"]}
+          datas={genres.map((genre, i) => [
+            i + 1,
+            editingGenre && editingGenre.id === genre.id ? (
+              <input
+                type="text"
+                value={editingGenre.name}
+                onChange={(e) =>
+                  setEditingGenre({ ...editingGenre, name: e.target.value })
+                }
+                className="bg-slate-200 p-1 text-black rounded w-full"
+              />
+            ) : (
+              <span className="block p-1">{genre.name}</span>
+            ),
+            <div className="flex gap-2">
+              {editingGenre && editingGenre.id === genre.id ? (
+                <>
+                  <button
+                    className="text-blue-600 hover:underline"
+                    onClick={() => updateGenre(genre.id)}
+                  >
+                    Save
+                  </button>
+                  <button
+                    className="text-red-600 hover:underline"
+                    onClick={() => setEditingGenre(null)}
+                  >
+                    Cancel
+                  </button>
+                </>
+              ) : (
+                <>
+                  <button
+                    className="text-blue-600 hover:underline"
+                    onClick={() => startEditing(genre)}
+                  >
+                    Rename
+                  </button>
+                  <span>|</span>
+                  <button
+                    className="text-red-600 hover:underline"
+                    onClick={() => deleteGenre(genre.id)}
+                  >
+                    Delete
+                  </button>
+                </>
+              )}
+            </div>,
+          ])}
+        />
       </div>
     </section>
   );
 }
 
-export default genres;
+export default Genres;

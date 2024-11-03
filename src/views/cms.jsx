@@ -8,35 +8,36 @@ import Comments from "../components/cmsComp/comments";
 import Awards from "../components/cmsComp/awards";
 import Actors from "../components/cmsComp/actors";
 import Users from "../components/cmsComp/users";
+import Film from "../components/cmsComp/films";
 
 function CMS() {
-  const [view, setView] = useState("home"); // Menggunakan useState
+  const [view, setView] = useState("home");
 
   const handleViewChange = (view) => {
     setView(view);
   };
 
   return (
-    <>
-      <div className="flex flex-row">
-        <span>
-          <span className="text-xl font-semibold text-gray-800">Moview</span>
-          <div className="flex flex-row mt-4 ml-4">
-            <CMSSidebar onViewChange={handleViewChange} />
-          </div>
-        </span>
-        <div className="flex w-full">
+    <div className="flex h-screen">
+      <CMSSidebar onViewChange={handleViewChange} view={view} />
+
+      <div className="flex-1 bg-gray-100">
+        <div className="content">
           {view === "genres" && <Genres />}
           {view === "countries" && <Countries />}
           {view === "validate" && <Validate />}
           {view === "input" && <InputFilm />}
-          {view === "comments" && <Comments />}
+          {/* {view === "comments" && <Comments />} */}
           {view === "awards" && <Awards />}
           {view === "actors" && <Actors />}
           {view === "users" && <Users />}
+          {view === "film" && <Film />}
+          {view === "home" && (
+            <p className="text-gray-600">Select a section from the sidebar.</p>
+          )}
         </div>
       </div>
-    </>
+    </div>
   );
 }
 

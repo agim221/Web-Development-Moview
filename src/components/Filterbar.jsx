@@ -6,29 +6,21 @@ import "../styles/style.css";
 import { useNavigate } from "react-router-dom";
 
 function Filterbar({ isOpen, toggleFilterBar, onSubmit }) {
-  const [status, setStatus] = useState("");
-  const [rating, setRating] = useState("");
   const [genre, setGenre] = useState("");
   const [year, setYear] = useState("");
   const [country, setCountry] = useState("");
   const [sort, setSort] = useState("");
+  const [award, setAward] = useState("");
   const [savedValues, setSavedValues] = useState({});
 
   let [years, setYears] = useState([]);
   let [countries, setCountries] = useState([]);
   let [genres, setGenres] = useState([]);
+  let [awards, setAwards] = useState([]);
 
   const navigate = useNavigate();
 
   const form = useRef(null);
-
-  const handleStatusChange = (e) => {
-    setStatus(e.target.value);
-  };
-
-  const handleRatingChange = (e) => {
-    setRating(e.target.value);
-  };
 
   const handleYearChange = (e) => {
     setYear(e.target.value);
@@ -46,27 +38,30 @@ function Filterbar({ isOpen, toggleFilterBar, onSubmit }) {
     setGenre(e.target.value);
   };
 
+  const handleAwardChange = (e) => {
+    setAward(e.target.value);
+  };
+
   const handleClose = () => {
     toggleFilterBar();
     setGenre(savedValues.genre);
-    setStatus(savedValues.status);
-    setRating(savedValues.rating);
     setYear(savedValues.year);
     setCountry(savedValues.country);
     setSort(savedValues.sort);
+    setAward(savedValues.award);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const formData = {
-      status,
       genre,
-      rating,
       year,
       country,
       sort,
+      award,
     };
 
+    console.log(Object.values(formData));
     navigate("/search");
     toggleFilterBar();
     setSavedValues(formData);
@@ -75,12 +70,11 @@ function Filterbar({ isOpen, toggleFilterBar, onSubmit }) {
 
   const handleReset = (e) => {
     e.preventDefault();
-    setStatus("");
     setGenre("");
-    setRating("");
     setYear("");
     setCountry("");
     setSort("");
+    setAward("");
     form.current.reset();
   };
 
@@ -112,6 +106,16 @@ function Filterbar({ isOpen, toggleFilterBar, onSubmit }) {
       }
     };
 
+    const fetchAwards = async () => {
+      try {
+        const response = await axios.get("http://localhost:8000/api/awards");
+        setAwards(response.data);
+      } catch (error) {
+        console.error("Error fetching awards:", error);
+      }
+    };
+
+    fetchAwards();
     fetchGenres();
     fetchYears();
     fetchCountries();
@@ -119,9 +123,9 @@ function Filterbar({ isOpen, toggleFilterBar, onSubmit }) {
 
   return (
     <section
-      className={`filter-sec bg-gray-500/90 h-[600px] w-full absolute z-10 transition-transform duration-500 ease-in-out ${isOpen}`}
+      className={`filter-sec bg-gray-500/90 h-full w-full absolute z-10 transition-transform duration-500 ease-in-out ${isOpen}`}
     >
-      <div className="p-4 flex flex-col w-2/4 mx-auto mt-10">
+      <div className="p-4 flex flex-col w-3/5 mx-auto mt-10">
         <div className="flex flex-row justify-between">
           <h1 className="text-4xl font-bold">Filtered By</h1>
           <svg
@@ -162,37 +166,6 @@ function Filterbar({ isOpen, toggleFilterBar, onSubmit }) {
                 </select>
               </div>
               <div className="flex flex-col gap-2">
-                <label htmlFor="status">Status</label>
-                <select
-                  name="status"
-                  id="status"
-                  className="border border-gray-300 p-2 rounded-xl"
-                  onChange={handleStatusChange}
-                  value={status}
-                >
-                  <option value="" default></option>
-                  <option value="ongoing">Ongoing</option>
-                  <option value="completed">Completed</option>
-                </select>
-              </div>
-              {/* <div className="flex flex-col gap-2">
-                <label htmlFor="rating">Rating</label>
-                <select
-                  name="rating"
-                  id="rating"
-                  className="border border-gray-300 p-2 rounded-xl"
-                  onChange={handleRatingChange}
-                  value={rating}
-                >
-                  <option value="" default></option>
-                  {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((rating) => (
-                    <option key={rating} value={rating}>
-                      {rating}
-                    </option>
-                  ))}
-                </select>
-              </div> */}
-              <div className="flex flex-col gap-2">
                 <label htmlFor="year">Year</label>
                 <select
                   name="year"
@@ -222,6 +195,23 @@ function Filterbar({ isOpen, toggleFilterBar, onSubmit }) {
                   {countries.map((country) => (
                     <option key={country.id} value={country.name}>
                       {country.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className="flex flex-col gap-2">
+                <label htmlFor="award">Award</label>
+                <select
+                  name="award"
+                  id="award"
+                  className="border border-gray-300 p-2 rounded-xl"
+                  onChange={handleAwardChange}
+                  value={award}
+                >
+                  <option value="" default></option>
+                  {awards.map((award) => (
+                    <option key={award.id} value={award.name}>
+                      {award.name}
                     </option>
                   ))}
                 </select>

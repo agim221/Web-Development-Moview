@@ -2,43 +2,45 @@ import React, { useEffect, useState } from "react";
 import CMSTable from "../../components/CMSTable";
 import axios from "axios";
 
-function Users() {
-  const [users, setUsers] = useState([]);
+function Movies() {
+  const [movies, setMovies] = useState([]);
 
-  useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        // Fetch users from the API
-        const response = await axios.get("http://localhost:8000/api/users");
-        setUsers(response.data);
-      } catch (error) {
-        console.error("Error fetching users:", error);
-      }
-    };
-
-    fetchUsers();
-  }, []);
-
-  // Render action buttons for each user row
   function renderActions() {
     return (
       <td>
-        <button className="hover:underline">Block</button>
+        <button className="hover:underline">Edit</button>
+        <span className="mx-2">|</span>
+        <button className="hover:underline">Delete</button>
       </td>
     );
   }
 
-  // Map the users data to match the table's expected format
-  const formattedUsers = users.map((user, index) => [
-    index + 1, // Row number
-    user.username, // Username
-    user.email, // Email
+  useEffect(() => {
+    const fetchMovies = async () => {
+      try {
+        // Fetch movies from the API
+        const response = await axios.get("http://localhost:8000/api/films");
+        setMovies(response.data);
+      } catch (error) {
+        console.error("Error fetching movies:", error);
+      }
+    };
+
+    fetchMovies();
+  }, []);
+
+  // Map the movies data to only include id, image, title, and release_date
+  const formattedMovies = movies.map((movie, index) => [
+    index, // ID
+    <img src={movie.image} alt={movie.title} width="50" />, // Image thumbnail
+    movie.title, // Title
+    movie.release_date, // Year
     renderActions(), // Actions
   ]);
 
   return (
     <section className="w-full h-screen flex flex-col">
-      <div className="flex flex-col w-3/4 mx-auto h-full bg-white rounded-lg shadow-lg p-4 overflow-y-auto">
+      <div className="flex flex-col w-3/4 mx-auto bg-white rounded-lg shadow-lg p-4 overflow-y-auto">
         {/* Form layout for adding a new user */}
         <div className="flex flex-row mb-8 gap-4 bg-slate-100 p-4 rounded">
           <div className="flex flex-col">
@@ -63,12 +65,14 @@ function Users() {
             Submit
           </button>
         </div>
+      </div>
 
-        {/* Table layout for displaying users */}
+      <div className="flex flex-col w-3/4 mx-auto h-full bg-white rounded-lg shadow-lg p-4 overflow-y-auto">
+        {/* Table layout for displaying movies */}
         <div className="overflow-y-auto">
           <CMSTable
-            headers={["No", "Username", "Email", "Actions"]}
-            datas={formattedUsers}
+            headers={["No", "Image", "Title", "Year", "Actions"]}
+            datas={formattedMovies}
           />
         </div>
       </div>
@@ -76,4 +80,4 @@ function Users() {
   );
 }
 
-export default Users;
+export default Movies;

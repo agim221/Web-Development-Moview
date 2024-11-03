@@ -1,22 +1,52 @@
 import React from "react";
 import CMSTable from "../../components/CMSTable";
 
-function validate() {
-  function button() {
-    return (
-      <>
-        <td>
-          <button className="hover:underline">Rename</button>
-          <span className="">|</span>
-          <button className="hover:underline">Delete</button>
-        </td>
-      </>
-    );
-  }
+function Validate() {
+  const renderActions = () => (
+    <td>
+      <button className="hover:underline">Rename</button>
+      <span className="mx-1">|</span>
+      <button className="hover:underline">Delete</button>
+    </td>
+  );
 
   return (
-    <section className="w-full">
-      <div className="flex flex-col w-3/4 mx-auto gap-4">
+    <section className="w-full py-8">
+      <div className="flex flex-col w-3/4 mx-auto gap-6">
+        {/* Filter and Search Bar */}
+        <div className="flex flex-row items-center mb-8 gap-4 bg-slate-100 p-4 rounded">
+          <label>Filtered by:</label>
+          <select
+            name="status"
+            id="status"
+            className="bg-slate-400 text-white p-1 rounded"
+          >
+            <option value="unapproved">Unapproved</option>
+            <option value="approved">Approved</option>
+          </select>
+
+          <label>Shows:</label>
+          <select
+            name="showCount"
+            id="showCount"
+            className="bg-slate-400 text-white p-1 rounded"
+          >
+            <option value="10">10</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+          </select>
+
+          <input
+            title="search"
+            type="text"
+            name="search"
+            id="search"
+            placeholder="Search..."
+            className="bg-slate-300 text-white ml-4 p-1 rounded"
+          />
+        </div>
+
+        {/* Table Component */}
         <CMSTable
           headers={[
             "",
@@ -35,49 +65,22 @@ function validate() {
               "Drama",
               "Two imprisoned men bond over a number of years, finding solace and eventual redemption through acts of common decency.",
               "Released",
-              button(),
+              renderActions(),
             ],
           ]}
-        >
-          <div className="flex flex-row mb-8 gap-2 bg-slate-100 p-2 rounded self-center">
-            <label>Filtered by : </label>
-            <select
-              name="status"
-              id="status"
-              className="bg-slate-400 text-white p-1 rounded"
-            >
-              <option value="unapproved">Unapproved</option>
-              <option value="approved">Approved</option>
-            </select>
-            <label>Shows</label>
-            <select
-              name="status"
-              id="status"
-              className="bg-slate-400 text-white p-1 rounded"
-            >
-              <option value="10">10</option>
+        />
 
-              <option value="50">50</option>
-              <option value="100">100</option>
-            </select>
-            <input
-              title="search"
-              type="text"
-              name="search"
-              id="search"
-              className="bg-slate-300 text-white ml-4 p-1 self-end rounded"
-            />
-          </div>
-        </CMSTable>
-        <span role="button" className="">
-          Select All
-        </span>
-        <div className="flex flex-col">
+        {/* Bulk Actions */}
+        <div className="flex flex-col items-start gap-4 mt-4">
+          <button role="button" className="text-blue-600 hover:underline">
+            Select All
+          </button>
+
           <div className="flex flex-row gap-2">
-            <button className="bg-slate-300 text-white p-1 rounded">
+            <button className="bg-slate-400 text-white p-2 rounded">
               Approve
             </button>
-            <button className="bg-slate-300 text-white p-1 rounded">
+            <button className="bg-slate-400 text-white p-2 rounded">
               Delete
             </button>
           </div>
@@ -87,4 +90,4 @@ function validate() {
   );
 }
 
-export default validate;
+export default Validate;

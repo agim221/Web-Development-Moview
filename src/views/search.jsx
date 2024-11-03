@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import FilmList from "../components/FilmList";
 
-function Search({ filterData, searchText, setFilteredSum }) {
+function Search({ filterData, searchText, searchBy }) {
   let [filmShowed, setFilmShowed] = useState(30);
 
   return (
@@ -12,9 +12,9 @@ function Search({ filterData, searchText, setFilteredSum }) {
           searchText={searchText}
           filmShowed={filmShowed}
           setFilmShowed={setFilmShowed}
-          setFilteredSum={setFilteredSum}
           increment={30}
           sectionTitle={"More Films"}
+          searchBy={searchBy}
         />
       </section>
     </>

@@ -4,7 +4,7 @@ import ActorInput from "../../components/ActorInput";
 import picture from "../../assets/images/main-slider/download.jpeg";
 
 function InputFilm() {
-  const [awards, setAwards] = useState([
+  const [awards] = useState([
     "award 1",
     "award 2",
     "award 3",
@@ -17,43 +17,10 @@ function InputFilm() {
     "award 10",
   ]);
 
-  const [actors, setActors] = useState([
-    {
-      name: "Actor Name",
-      picture: "./picture/download (1).jpeg",
-    },
-    {
-      name: "Actor Name",
-      picture: "./picture/download (1).jpeg",
-    },
-    {
-      name: "Actor Name",
-      picture: "./picture/download (1).jpeg",
-    },
-    {
-      name: "Actor Name",
-      picture: "./picture/download (1).jpeg",
-    },
-    {
-      name: "Actor Name",
-      picture: "./picture/download (1).jpeg",
-    },
-    {
-      name: "Actor Name",
-      picture: "./picture/download (1).jpeg",
-    },
-    {
-      name: "Actor Name",
-      picture: "./picture/download (1).jpeg",
-    },
-    {
-      name: "Actor Name",
-      picture: "./picture/download (1).jpeg",
-    },
-    {
-      name: "Actor Name",
-      picture: "./picture/download (1).jpeg",
-    },
+  const [actors] = useState([
+    { name: "Actor Name", picture: "./picture/download (1).jpeg" },
+    { name: "Actor Name", picture: "./picture/download (1).jpeg" },
+    // Add other actors here...
   ]);
 
   const [years] = useState([
@@ -70,7 +37,7 @@ function InputFilm() {
     "2011",
   ]);
 
-  const [genres, setGenres] = useState([
+  const [genres] = useState([
     "Action",
     "Adventure",
     "Comedy",
@@ -80,61 +47,55 @@ function InputFilm() {
     "Mystery",
     "Romance",
     "Thriller",
-    "Action",
-    "Adventure",
-    "Comedy",
-    "Drama",
-    "Fantasy",
-    "Horror",
-    "Mystery",
   ]);
 
   return (
-    <section className="input-section w-full">
-      <div className="flex flex-row gap-2">
-        <div className="flex flex-col w-3/12">
-          <div className="w-4/5 mx-auto">
-            <img
-              className="w-full h-full mx-auto rounded-xl"
-              src={picture}
-              alt=""
-            />
-          </div>
-          <button
-            title="submit"
-            className="mt-4 bg-slate-500 text-white rounded-lg w-2/5 h-10 mx-auto"
-          >
+    <section className="input-section w-full p-6">
+      <div className="flex gap-6">
+        {/* Left Column: Image and Submit Button */}
+        <div className="flex flex-col items-center w-1/4">
+          <img
+            className="w-full h-auto rounded-xl"
+            src={picture}
+            alt="Film Cover"
+          />
+          <button className="mt-4 bg-slate-500 text-white rounded-lg w-2/5 h-10">
             Submit
           </button>
         </div>
-        <div className="flex flex-col w-full">
-          <div className="flex flex-row gap-4">
-            <div className="flex flex-col w-full">
+
+        {/* Right Column: Film Details Form */}
+        <div className="flex flex-col w-3/4 gap-4">
+          {/* Title and Alternative Title */}
+          <div className="flex gap-4">
+            <div className="w-1/2">
               <label htmlFor="title">Title</label>
               <input
                 type="text"
                 name="title"
                 id="title"
-                className="bg-slate-400 text-white p-1 rounded"
+                className="bg-slate-400 text-white p-2 rounded w-full"
               />
             </div>
-            <div className="flex flex-col w-full">
+            <div className="w-1/2">
               <label htmlFor="alt-title">Alternative Title</label>
               <input
                 type="text"
                 name="alt-title"
                 id="alt-title"
-                className="bg-slate-400 text-white p-1 rounded"
+                className="bg-slate-400 text-white p-2 rounded w-full"
               />
             </div>
           </div>
-          <div className="flex flex-row gap-8">
-            <div className="flex flex-col">
+
+          {/* Year, Country, and Status */}
+          <div className="flex gap-4">
+            <div className="flex-1">
               <label htmlFor="year">Year</label>
               <select
                 name="year"
                 id="year"
-                className="bg-slate-400 rounded text-white p-1"
+                className="bg-slate-400 text-white p-2 rounded w-full"
               >
                 {years.map((year, index) => (
                   <option key={index} value={year}>
@@ -143,77 +104,76 @@ function InputFilm() {
                 ))}
               </select>
             </div>
-            <div className="flex flex-col">
+            <div className="flex-1">
               <label htmlFor="country">Country</label>
               <input
                 type="text"
                 name="country"
                 id="country"
-                className="bg-slate-400 rounded text-white p-1"
+                className="bg-slate-400 text-white p-2 rounded w-full"
               />
             </div>
-            <div className="flex flex-col">
-              <label htmlFor="status">Status</label>
-              <select
-                name="status"
-                id="status"
-                className="bg-slate-400 text-white p-1 rounded"
-              >
-                <option value="ongoing">Ongoing</option>
-                <option value="completed">Completed</option>
-              </select>
-            </div>
           </div>
-          <div className="flex flex-col">
+
+          {/* Synopsis */}
+          <div>
             <label htmlFor="synopsis">Synopsis</label>
             <textarea
               name="synopsis"
               id="synopsis"
-              className="bg-slate-400 text-white p-1 rounded"
+              className="bg-slate-400 text-white p-2 rounded w-full"
+              rows="4"
             ></textarea>
           </div>
-          <div className="flex flex-col">
+
+          {/* Availability */}
+          <div>
             <label htmlFor="available">Availability</label>
             <input
               type="text"
               name="available"
               id="available"
-              className="bg-slate-400 text-white p-1 rounded"
+              className="bg-slate-400 text-white p-2 rounded w-full"
             />
           </div>
+
+          {/* Genre Input */}
           <div>
             <label htmlFor="genre">Add Genre</label>
-
             <GenreInput genres={genres} />
           </div>
-          <div className="flex flex-col gap-2">
+
+          {/* Actor Input */}
+          <div>
             <label htmlFor="actor">Add Actors (Up to 9)</label>
             <input
               type="text"
               name="actor"
               id="actor"
-              className="bg-slate-400 p-1 text-white rounded w-1/3"
+              className="bg-slate-400 text-white p-2 rounded w-1/3"
             />
-            <div className="grid grid-cols-3 gap-2">
+            <div className="grid grid-cols-3 gap-2 mt-2">
               <ActorInput actors={actors} />
             </div>
           </div>
-          <div className="flex flex-row gap-2">
-            <div className="flex flex-col w-full">
+
+          {/* Trailer Link and Awards */}
+          <div className="flex gap-4">
+            <div className="flex-1">
               <label htmlFor="trailer">Link Trailer</label>
               <input
                 type="text"
                 name="trailer"
                 id="trailer"
-                className="bg-slate-400 text-white p-1 rounded"
+                className="bg-slate-400 text-white p-2 rounded w-full"
               />
             </div>
-            <div className="flex flex-col w-full">
+            <div className="flex-1">
               <label htmlFor="award">Award</label>
               <select
                 name="award"
                 id="award"
-                className="bg-slate-400 text-white p-1 rounded"
+                className="bg-slate-400 text-white p-2 rounded w-full"
               >
                 {awards.map((award, index) => (
                   <option key={index} value={award}>

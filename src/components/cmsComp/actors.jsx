@@ -1,111 +1,150 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import CMSTable from "../../components/CMSTable";
 
 function Actors() {
-  const [actorData, setActorData] = useState([
-    { country: "Japan", name: "Takuya Kimura", birthDate: "19 Desember 1975", photo: "" },
-    { country: "Japan", name: "Yuko Takeuchi", birthDate: "19 Oktober 1977", photo: "" },
-  ]);
+  const [actorData, setActorData] = useState([]);
+  const [newActor, setNewActor] = useState({ name: "", photo_url: "" });
+  const [editingIndex, setEditingIndex] = useState(null);
 
-  // State to store the uploaded image preview
-  const [imagePreview, setImagePreview] = useState(null);
+  useEffect(() => {
+    fetchActors();
+  }, []);
 
-  // Handle the image upload and set preview
-  const handleImageUpload = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      setImagePreview(URL.createObjectURL(file));
+  const fetchActors = async () => {
+    try {
+      const response = await axios.get("http://localhost:8000/api/actors");
+      setActorData(response.data);
+    } catch (error) {
+      console.error("Error fetching actors:", error);
     }
   };
 
-  // Button actions for each row
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setNewActor({ ...newActor, [name]: value });
+  };
+
+  const addActor = async () => {
+    try {
+      if (editingIndex !== null) {
+        const actorToUpdate = actorData[editingIndex];
+        await axios.put(
+          `http://localhost:8000/api/actors/${actorToUpdate.id}`,
+          newActor
+        );
+        const updatedActors = [...actorData];
+        updatedActors[editingIndex] = newActor;
+        setActorData(updatedActors);
+        setEditingIndex(null);
+      } else {
+        const response = await axios.post(
+          "http://localhost:8000/api/actors",
+          newActor
+        );
+        setActorData([...actorData, response.data]);
+      }
+      setNewActor({ name: "", photo_url: "" });
+    } catch (error) {
+      console.error("Error adding/updating actor:", error);
+    }
+  };
+
+  const editActor = (index) => {
+    setNewActor(actorData[index]);
+    setEditingIndex(index);
+  };
+
+  const deleteActor = async (index) => {
+    try {
+      const actorToDelete = actorData[index];
+      await axios.delete(
+        `http://localhost:8000/api/actors/${actorToDelete.id}`
+      );
+      const filteredData = actorData.filter((_, i) => i !== index);
+      setActorData(filteredData);
+    } catch (error) {
+      console.error("Error deleting actor:", error);
+    }
+  };
+
   function actions(index) {
     return (
-      <>
-        <td>
-          <button className="hover:underline">Edit</button>
-          <span className="">|</span>
-          <button className="hover:underline">Delete</button>
-        </td>
-      </>
+      <td>
+        <button className="hover:underline" onClick={() => editActor(index)}>
+          Edit
+        </button>
+        <span className="mx-2">|</span>
+        <button className="hover:underline" onClick={() => deleteActor(index)}>
+          Delete
+        </button>
+      </td>
     );
   }
 
-  // Function to render photo cell
-  function renderPhotoCell(photo) {
+  function renderPhotoCell(photo_url) {
     return (
-      <td>
-        {photo ? <img src={photo} alt="actor" className="w-12 h-12" /> : <div className="w-12 h-12 bg-gray-300"></div>}
+      <td className="flex items-center justify-center">
+        {photo_url ? (
+          <img
+            src={photo_url}
+            alt="actor"
+            className="object-cover w-12 h-12 rounded-full"
+          />
+        ) : (
+          <div className="w-12 h-12 bg-gray-300 rounded-full"></div>
+        )}
       </td>
     );
   }
 
   return (
-    <section className="w-full">
-      <div className="flex flex-col w-3/4 mx-auto">
+    <section className="w-full h-screen flex flex-col">
+      <div className="flex flex-col w-3/4 mx-auto h-full bg-white rounded-lg shadow-lg p-4 overflow-y-auto">
         {/* Form layout */}
         <div className="flex flex-row mb-8 gap-4 bg-slate-100 p-4 rounded">
           <div className="flex flex-col flex-grow">
             <div className="mb-4">
-              <label className="text-sm">Country</label>
-              <input
-                type="text"
-                name="country"
-                id="country"
-                className="bg-slate-300 text-white p-1 rounded w-full"
-              />
-            </div>
-            <div className="mb-4">
               <label className="text-sm">Actor Name</label>
               <input
                 type="text"
-                name="actorName"
-                id="actorName"
-                className="bg-slate-300 text-white p-1 rounded w-full"
+                name="name"
+                value={newActor.name}
+                onChange={handleInputChange}
+                className="bg-slate-300 text-black p-1 rounded w-full"
               />
             </div>
             <div className="mb-4">
-              <label className="text-sm">Birth Date</label>
+              <label className="text-sm">Photo URL</label>
               <input
-                type="date"
-                name="birthDate"
-                id="birthDate"
-                className="bg-slate-300 text-white p-1 rounded w-full"
+                type="text"
+                name="photo_url"
+                value={newActor.photo_url}
+                onChange={handleInputChange}
+                className="bg-slate-300 text-black p-1 rounded w-full"
               />
             </div>
-            <button className="bg-orange-500 text-white text-xs p-2 rounded hover:text-black hover:bg-white w-1/4">
-              Submit
+            <button
+              className="bg-orange-500 text-white text-xs p-2 rounded hover:text-black hover:bg-white w-1/4"
+              onClick={addActor}
+            >
+              {editingIndex !== null ? "Update" : "Submit"}
             </button>
-          </div>
-
-          {/* Image Upload and Preview */}
-          <div className="flex flex-col justify-center">
-            <label className="text-sm">Upload Picture</label>
-            <input
-              type="file"
-              name="photo"
-              id="photo"
-              className="bg-slate-300 text-white p-1 rounded"
-              onChange={handleImageUpload}
-            />
-            {imagePreview && (
-              <img src={imagePreview} alt="Preview" className="mt-4 w-32 h-32 object-cover bg-slate-300 text-white p-1 rounded" />
-            )}
           </div>
         </div>
 
         {/* Table layout */}
-        <CMSTable
-          headers={["", "Countries", "Actor Name", "Birth Date", "Photos", "Actions"]}
-          datas={actorData.map((actor, index) => [
-            index + 1,
-            actor.country,
-            actor.name,
-            actor.birthDate,
-            renderPhotoCell(actor.photo),
-            actions(index),
-          ])}
-        />
+        <div className="overflow-y-auto">
+          <CMSTable
+            headers={["#", "Actor Name", "Photo", "Actions"]}
+            datas={actorData.map((actor, index) => [
+              index + 1,
+              actor.name,
+              renderPhotoCell(actor.photo_url),
+              actions(index),
+            ])}
+          />
+        </div>
       </div>
     </section>
   );

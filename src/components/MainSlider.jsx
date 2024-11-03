@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
+import { Circles } from "react-loading-icons";
 import axios from "axios";
 
 export default function MainSlider() {
   const [activePicture, setActivePicture] = useState(0);
   const [trending, setTrending] = useState([]);
-  const [loading, setLoading] = useState(true); // Tambahkan state loading
+  const [loading, setLoading] = useState(true);
 
   const nextPicture = (button) => {
     setActivePicture((prev) => {
@@ -23,10 +24,10 @@ export default function MainSlider() {
       try {
         const response = await axios.get("http://localhost:8000/api/trending");
         setTrending(response.data);
-        setLoading(false); // Set loading ke false setelah data di-fetch
+        setLoading(false);
       } catch (error) {
         console.error("There was an error fetching the trending data!", error);
-        setLoading(false); // Set loading ke false meskipun terjadi error
+        setLoading(false);
       }
     };
 
@@ -34,7 +35,17 @@ export default function MainSlider() {
   }, []);
 
   if (loading) {
-    return <div>Loading...</div>; // Tampilkan indikator loading
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <Circles
+          height="80"
+          width="80"
+          fill="#BCCFC0"
+          stroke="#0a0a0a"
+          aria-label="loading"
+        />
+      </div>
+    );
   }
 
   return (
@@ -47,8 +58,8 @@ export default function MainSlider() {
                 key={index}
                 className={`w-full h-full mx-auto shrink-0 transition-transform duration-300 ease-in-out will-change-transform`}
                 style={{ transform: `translateX(-${activePicture * 100}%)` }}
-                src={item.image} // Assuming the API returns an image URL in the 'image' field
-                alt={item.title} // Assuming the API returns a title in the 'title' field
+                src={item.image}
+                alt={item.title}
                 loading="eager"
               />
             ))}
@@ -58,8 +69,8 @@ export default function MainSlider() {
             <div className="absolute bg-blue-500 h-56 bottom-0 left-0 translate-y-1/4 translate-x-3 rounded-xl max-lg:h-4/6">
               <img
                 className="w-full h-full mx-auto rounded-xl"
-                src={trending[activePicture].image} // Change image based on activePicture
-                alt={trending[activePicture].title} // Change alt text based on activePicture
+                src={trending[activePicture].image}
+                alt={trending[activePicture].title}
               />
             </div>
           )}
@@ -126,3 +137,21 @@ export default function MainSlider() {
     </>
   );
 }
+
+// Tambahkan CSS ini untuk animasi loading lingkaran
+<style jsx>{`
+  .spinner {
+    width: 50px;
+    height: 50px;
+    border: 6px solid #ddd;
+    border-top-color: #4fa94d;
+    border-radius: 50%;
+    animation: spin 1s ease infinite;
+  }
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+`}</style>;

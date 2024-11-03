@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import FilmList from "../components/FilmList";
 
-function Bookmarks({ filterData, searchText, setFilteredSum }) {
+function Bookmarks({ filterData, searchText }) {
   let [filmShowed, setFilmShowed] = useState(30);
 
   return (
@@ -12,7 +12,6 @@ function Bookmarks({ filterData, searchText, setFilteredSum }) {
           searchText={searchText}
           filmShowed={filmShowed}
           setFilmShowed={setFilmShowed}
-          setFilteredSum={setFilteredSum}
           increment={30}
           sectionTitle={"More Films"}
         />

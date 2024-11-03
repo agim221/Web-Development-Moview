@@ -3,7 +3,13 @@ import "../styles/style.css";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-function Navbar({ toggleFilterBar, setSearchText, setFilterData }) {
+function Navbar({
+  toggleFilterBar,
+  setSearchText,
+  setFilterData,
+  searchBy,
+  setSearchBy,
+}) {
   let [text, setText] = useState("");
   const [cookie, setCookie] = useState("");
 
@@ -33,6 +39,11 @@ function Navbar({ toggleFilterBar, setSearchText, setFilterData }) {
     }
   }, [cookie, navigate]);
 
+  const handleSearchBy = (e) => {
+    setSearchBy(e.target.value);
+    console.log(e.target.value);
+  };
+
   const handleLogout = (e) => {
     e.preventDefault();
 
@@ -46,13 +57,13 @@ function Navbar({ toggleFilterBar, setSearchText, setFilterData }) {
   const handleHome = () => {
     setSearchText("");
     setFilterData({
-      status: "",
       genre: "",
-      rating: "",
       year: "",
       country: "",
       sort: "",
+      award: "",
     });
+    setSearchBy("title");
     window.location.href = "/";
   };
 
@@ -95,6 +106,14 @@ function Navbar({ toggleFilterBar, setSearchText, setFilterData }) {
                 />
               </svg>
             </form>
+            <select
+              className="bg-orange-500 rounded text-white"
+              value={searchBy}
+              onChange={handleSearchBy}
+            >
+              <option value="title">Title</option>
+              <option value="actor">Actor</option>
+            </select>
             <svg
               role="button"
               xmlns="http://www.w3.org/2000/svg"

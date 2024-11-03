@@ -5,7 +5,7 @@ import FilmList from "../components/FilmList";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-function Home({ filterData, searchText, setFilteredSum }) {
+function Home({ filterData, searchText }) {
   let [scrollLeft, setScrollLeft] = useState(0);
   let [filmShowed, setFilmShowed] = useState(20);
   let [bookmarks, setBookmarks] = useState([]);
@@ -64,7 +64,7 @@ function Home({ filterData, searchText, setFilteredSum }) {
         );
         setBookmarks(response.data);
       } catch (error) {
-        // console.error("Error fetching bookmarks:", error);
+        console.error("Error fetching bookmarks:", error);
       }
     };
 
@@ -74,8 +74,6 @@ function Home({ filterData, searchText, setFilteredSum }) {
     <>
       <MainSlider />
       <section className="flex flex-col w-4/5 mx-auto mt-16 relative">
-        {/* <h1 className="text-4xl font-bold p-5">Watchlist</h1> */}
-
         {rememberToken && bookmarks.length !== 0 ? (
           <h1 className="text-4xl font-bold p-5">Watchlist</h1>
         ) : (
@@ -151,7 +149,6 @@ function Home({ filterData, searchText, setFilteredSum }) {
           searchText={searchText}
           filmShowed={filmShowed}
           setFilmShowed={setFilmShowed}
-          setFilteredSum={setFilteredSum}
           sectionTitle={"More Films"}
         />
       </section>
