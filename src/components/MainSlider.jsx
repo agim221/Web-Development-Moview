@@ -42,7 +42,7 @@ export default function MainSlider() {
           width="80"
           fill="#BCCFC0"
           stroke="#0a0a0a"
-          ariaLabel="loading"
+          aria-label="loading"
         />
       </div>
     );

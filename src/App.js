@@ -21,6 +21,7 @@ function App() {
     year: "",
     country: "",
     sort: "",
+    award: "",
   });
   const [searchText, setSearchText] = useState("");
   const [searchBy, setSearchBy] = useState("title");
@@ -63,7 +64,7 @@ function App() {
           width="80"
           fill="#BCCFC0"
           stroke="#0a0a0a"
-          ariaLabel="loading"
+          aria-label="loading"
         />
       </div>
     );

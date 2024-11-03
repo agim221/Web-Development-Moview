@@ -3,10 +3,13 @@ import "tailwindcss/tailwind.css";
 import Comment from "../components/Comment";
 import { useParams } from "react-router-dom";
 import axios from "axios"; // Untuk melakukan fetching data
+import { useNavigate } from "react-router-dom";
+import { Circles } from "react-loading-icons"; // Import Circles
 
 export default function MovieDetail() {
-  let [isOpen, setIsOpen] = useState("-translate-y-full");
-  let [scrollLeft, setScrollLeft] = useState(0);
+  const [isOpen, setIsOpen] = useState("-translate-y-full");
+  const [scrollLeft, setScrollLeft] = useState(0);
+  const navigate = useNavigate();
 
   const { id } = useParams(); // Mengambil ID dari URL
   const [film, setFilm] = useState(null); // State untuk menyimpan data film
@@ -16,6 +19,7 @@ export default function MovieDetail() {
   const [comments, setComments] = useState([]); // State untuk menyimpan data komentar film
   const [comment, setComment] = useState(""); // State untuk menyimpan komentar yang diinput
   const [rating, setRating] = useState(5); // State untuk menyimpan rating yang diinput
+  const [genres, setGenres] = useState([]); // State untuk menyimpan data genre film
 
   const formatDate = useCallback((dateString) => {
     const date = new Date(dateString);
@@ -67,6 +71,20 @@ export default function MovieDetail() {
     }
   }, [id]);
 
+  const fetchGenres = useCallback(async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:8000/api/films_detail/${id}/genres`
+      );
+      setGenres(response.data);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching genres:", error);
+      setError("Failed to load genres.");
+      setLoading(false);
+    }
+  }, [id]);
+
   const handleSubmitComment = async (e) => {
     e.preventDefault();
     const form = e.target;
@@ -84,49 +102,55 @@ export default function MovieDetail() {
       setComment("");
       setRating(5);
     } catch (error) {
-      console.error("Error submitting comment:", error);
+      if (error.response.status === 400) {
+        alert("You have already submitted a comment for this film.");
+      } else if (error.response.status === 422) {
+        alert("You need to login to submit a comment.");
+        navigate("/login");
+      } else {
+        console.error("Error submitting comment:", error);
+      }
     }
   };
 
   useEffect(() => {
+    fetchGenres();
     fetchComments();
     fetchActor();
     fetchFilm();
-  }, [id]); // useEffect akan berjalan setiap kali id berubah
+  }, [id, fetchGenres, fetchComments, fetchActor, fetchFilm]); // Tambahkan depedensi fungsi
 
   if (loading) {
-    return <p>Loading...</p>; // Tampilkan pesan loading ketika data belum siap
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <Circles
+          height="80"
+          width="80"
+          fill="#BCCFC0"
+          stroke="#0a0a0a"
+          aria-label="loading"
+        />
+      </div>
+    ); // Tampilkan Circles saat loading
   }
 
   if (error) {
-    return <p>{error}</p>; // Tampilkan pesan error jika gagal fetching
+    return <p className="text-center text-red-500">{error}</p>; // Tampilkan pesan error
   }
 
   if (!film) {
-    return <p>Film not found</p>; // Tampilkan pesan jika film tidak ditemukan
-  }
-
-  const toggleFilterBar = () => {
-    setIsOpen((prev) =>
-      prev === "-translate-y-full" ? "translate-y-0" : "-translate-y-full"
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <Circles
+          height="80"
+          width="80"
+          fill="#BCCFC0"
+          stroke="#0a0a0a"
+          aria-label="loading"
+        />
+      </div>
     );
-  };
-
-  const scrollMore = (direction) => {
-    const container = document.querySelector(".watch-list");
-    const containerScrollAmount = container.scrollWidth - container.clientWidth;
-    if (direction === "right") {
-      if (scrollLeft < containerScrollAmount) {
-        setScrollLeft((prev) => prev + 300);
-        container.scrollLeft += 300;
-      }
-    } else if (direction === "left") {
-      if (scrollLeft > 0) {
-        setScrollLeft((prev) => prev - 300);
-        container.scrollLeft -= 300;
-      }
-    }
-  };
+  }
 
   return (
     <>
@@ -157,7 +181,8 @@ export default function MovieDetail() {
             <p className="text-gray-700 mb-4">{film.description}</p>
             <p className="text-gray-700 mb-2">
               Genres:{" "}
-              {Array.isArray(film.genre) ? film.genre.join(", ") : film.genre}
+              {Array.isArray(genres) &&
+                genres.map((genre) => genre.genre.name).join(", ")}
             </p>
             <p className="text-gray-700 mb-2">Rating: {film.rating}/10</p>
             <p className="text-gray-700">Availability: {film.availability}</p>

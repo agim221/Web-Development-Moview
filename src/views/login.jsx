@@ -131,7 +131,7 @@ const LoginPage = ({ setRole }) => {
                 width="25"
                 fill="#FFFFFF"
                 stroke="#0a0a0a"
-                ariaLabel="loading"
+                aria-label="loading"
               />
             </div>
           ) : (
