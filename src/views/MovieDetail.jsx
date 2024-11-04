@@ -88,6 +88,21 @@ export default function MovieDetail() {
     }
   };
 
+  const handleAddBookmark = async () => {
+    const data = {
+      remember_token: localStorage.getItem("remember_token"),
+      film_id: id,
+    };
+
+    try {
+      await axios.post("http://localhost:8000/api/bookmarks", data);
+      alert("Film added to bookmarks!");
+    } catch (error) {
+      console.error("Error adding bookmark:", error);
+      alert("Failed to add bookmark.");
+    }
+  };
+
   useEffect(() => {
     fetchComments();
     fetchActor();
@@ -161,6 +176,12 @@ export default function MovieDetail() {
             </p>
             <p className="text-gray-700 mb-2">Rating: {film.rating}/10</p>
             <p className="text-gray-700">Availability: {film.availability}</p>
+            <button
+              onClick={handleAddBookmark}
+              className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 mt-4"
+            >
+              Add to Bookmark
+            </button>
           </div>
         </div>
 
