@@ -1,19 +1,40 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import CMSTable from "../../components/CMSTable";
+import axios from "axios";
 
 function Users() {
+  const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        // Fetch users from the API
+        const response = await axios.get("http://localhost:8000/api/users");
+        setUsers(response.data);
+      } catch (error) {
+        console.error("Error fetching users:", error);
+      }
+    };
+
+    fetchUsers();
+  }, []);
+
   // Render action buttons for each user row
   function renderActions() {
     return (
       <td>
-        <button className="hover:underline">Send first email</button>
-        <span className="mx-2">|</span>
-        <button className="hover:underline">Edit</button>
-        <span className="mx-2">|</span>
-        <button className="hover:underline">Delete</button>
+        <button className="hover:underline">Block</button>
       </td>
     );
   }
+
+  // Map the users data to match the table's expected format
+  const formattedUsers = users.map((user, index) => [
+    index + 1, // Row number
+    user.username, // Username
+    user.email, // Email
+    renderActions(), // Actions
+  ]);
 
   return (
     <section className="w-full h-screen flex flex-col">
@@ -46,11 +67,8 @@ function Users() {
         {/* Table layout for displaying users */}
         <div className="overflow-y-auto">
           <CMSTable
-            headers={["#", "Username", "Email", "Actions"]}
-            datas={[
-              [1, "anita1", "anita@gmail.com", renderActions()],
-              [2, "borang", "bora@yahoo.com", renderActions()],
-            ]}
+            headers={["No", "Username", "Email", "Actions"]}
+            datas={formattedUsers}
           />
         </div>
       </div>
