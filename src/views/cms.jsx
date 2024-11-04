@@ -35,6 +35,7 @@ function CMS() {
           {view === "home" && (
             <p className="text-gray-600">Select a section from the sidebar.</p>
           )}
+          {view === "films" && <Films />}
         </div>
       </div>
     </div>

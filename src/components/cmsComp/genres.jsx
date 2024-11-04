@@ -89,8 +89,8 @@ function Genres() {
         {/* Genres Table */}
         <CMSTable
           headers={["No", "Genre", "Actions"]}
-          datas={genres.map((genre, i) => [
-            i + 1,
+          datas={genres.map((genre, index) => [
+            index + 1,
             editingGenre && editingGenre.id === genre.id ? (
               <input
                 type="text"

@@ -91,8 +91,8 @@ function Countries() {
         {/* Countries Table */}
         <CMSTable
           headers={["No", "Country", "Actions"]}
-          datas={countries.map((country, i) => [
-            i + 1,
+          datas={countries.map((country, index) => [
+            index + 1,
             editingCountry && editingCountry.id === country.id ? (
               <input
                 type="text"

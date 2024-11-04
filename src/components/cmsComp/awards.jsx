@@ -105,8 +105,8 @@ function Awards() {
         {/* Awards Table */}
         <CMSTable
           headers={["No", "Year", "Award Name", "Actions"]}
-          datas={awards.map((award, i) => [
-            i,
+          datas={awards.map((award, index) => [
+            index + 1,
             editingAward && editingAward.id === award.id ? (
               <input
                 type="text"

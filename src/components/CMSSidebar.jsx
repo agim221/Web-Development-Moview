@@ -13,6 +13,7 @@ function CMSSidebar({ onViewChange, view }) {
       <h2 className="text-2xl font-semibold mb-6">Moview</h2>
 
       <nav className="flex-1 space-y-4">
+
         {/* <div className="mb-4">
           <h3 className="text-lg font-medium">Dramas</h3>
           <ul className="ml-4 space-y-2">
@@ -46,15 +47,6 @@ function CMSSidebar({ onViewChange, view }) {
           }`}
         >
           Input New Drama
-        </button>
-
-        <button
-          onClick={() => onViewChange("film")}
-          className={`w-full text-left p-2 rounded hover:bg-gray-700 ${
-            view === "film" && "bg-gray-700"
-          }`}
-        >
-          Films
         </button>
 
         <button

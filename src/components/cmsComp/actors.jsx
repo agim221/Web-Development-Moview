@@ -165,7 +165,7 @@ function Actors() {
 
         <div className="overflow-y-auto">
           <CMSTable
-            headers={["#", "Actor Name", "Photo", "Actions"]}
+            headers={["No", "Actor Name", "Photo", "Actions"]}
             datas={actorData.map((actor, index) => [
               index + 1,
               actor.name,
