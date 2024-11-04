@@ -92,8 +92,7 @@ function FilmList({
           {loading ? "" : "No films found"}
         </p>
       ) : (
-        (console.log(films.length),
-        (<h1 className="text-4xl font-bold p-5">{sectionTitle}</h1>))
+        <h1 className="text-4xl font-bold p-5">{sectionTitle}</h1>
       )}
       <div className="grid grid-cols-5 gap-x-4 gap-y-24 mb-28 ">
         {location.pathname === "/search" &&

@@ -27,7 +27,7 @@ function CMSTable({ headers, datas, children }) {
           {datas.map((data, index) => (
             <tr key={index} className="odd:bg-red-100 even:bg-red-100/20">
               {data.map((item, index) => (
-                <td key={index} className="p-3">
+                <td key={index} className="p-3 place-items-center">
                   {item}
                 </td>
               ))}
