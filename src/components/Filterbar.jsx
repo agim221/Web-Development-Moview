@@ -61,7 +61,6 @@ function Filterbar({ isOpen, toggleFilterBar, onSubmit }) {
       award,
     };
 
-    console.log(Object.values(formData));
     navigate("/search");
     toggleFilterBar();
     setSavedValues(formData);
