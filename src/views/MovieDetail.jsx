@@ -20,6 +20,7 @@ export default function MovieDetail() {
   const [comment, setComment] = useState(""); // State untuk menyimpan komentar yang diinput
   const [rating, setRating] = useState(5); // State untuk menyimpan rating yang diinput
   const [genres, setGenres] = useState([]); // State untuk menyimpan data genre film
+  const [isBookmarked, setIsBookmarked] = useState(false);
 
   const formatDate = useCallback((dateString) => {
     const date = new Date(dateString);
@@ -85,6 +86,20 @@ export default function MovieDetail() {
     }
   }, [id]);
 
+  const checkBookmark = useCallback(async () => {
+    const data = {
+      remember_token: localStorage.getItem("remember_token"),
+      film_id: id,
+    };
+
+    try {
+      const response = await axios.post("http://localhost:8000/api/bookmarks/check", data);
+      setIsBookmarked(response.data.exists);
+    } catch (error) {
+      console.error("Error checking bookmark:", error);
+    }
+  }, [id]);
+
   const handleSubmitComment = async (e) => {
     e.preventDefault();
     const form = e.target;
@@ -121,10 +136,27 @@ export default function MovieDetail() {
 
     try {
       await axios.post("http://localhost:8000/api/bookmarks", data);
+      setIsBookmarked(true);
       alert("Film added to bookmarks!");
     } catch (error) {
       console.error("Error adding bookmark:", error);
       alert("Failed to add bookmark.");
+    }
+  };
+
+  const handleRemoveBookmark = async () => {
+    const data = {
+      remember_token: localStorage.getItem("remember_token"),
+      film_id: id,
+    };
+
+    try {
+      await axios.post("http://localhost:8000/api/bookmarks/remove", data);
+      setIsBookmarked(false);
+      alert("Film removed from bookmarks!");
+    } catch (error) {
+      console.error("Error removing bookmark:", error);
+      alert("Failed to remove bookmark.");
     }
   };
 
@@ -133,7 +165,8 @@ export default function MovieDetail() {
     fetchComments();
     fetchActor();
     fetchFilm();
-  }, [id, fetchGenres, fetchComments, fetchActor, fetchFilm]); // Tambahkan depedensi fungsi
+    checkBookmark();
+  }, [id, fetchGenres, fetchComments, fetchActor, fetchFilm, checkBookmark]); // Tambahkan depedensi fungsi
 
   if (loading) {
     return (
@@ -199,14 +232,23 @@ export default function MovieDetail() {
               {Array.isArray(genres) &&
                 genres.map((genre) => genre.genre.name).join(", ")}
             </p>
-            <p className="text-gray-700 mb-2">Rating: {film.rating}/10</p>
+            <p className="text-gray-700 mb-2">Rating: {film.rating}/5</p>
             <p className="text-gray-700">Availability: {film.availability}</p>
-            <button
-              onClick={handleAddBookmark}
-              className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 mt-4"
-            >
-              Add to Bookmark
-            </button>
+            {isBookmarked ? (
+              <button
+                onClick={handleRemoveBookmark}
+                className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 mt-4"
+              >
+                Remove Watchlist
+              </button>
+            ) : (
+              <button
+                onClick={handleAddBookmark}
+                className="bg-orange-500 text-white py-2 px-4 rounded hover:bg-orange-600 mt-4"
+              >
+                Add to Watchlist
+              </button>
+            )}
           </div>
         </div>
 
