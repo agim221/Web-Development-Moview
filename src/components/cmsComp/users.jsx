@@ -19,6 +19,33 @@ function Users() {
     fetchUsers();
   }, []);
 
+  // Fungsi untuk memblokir atau membuka blokir pengguna berdasarkan id
+  const handleBlockUser = async (id, isBanned) => {
+    try {
+      let response;
+      if (isBanned) {
+        // Jika pengguna sudah diblokir, lakukan unblock
+        response = await axios.get(
+          `http://localhost:8000/api/users/unblock/${id}`
+        );
+      } else {
+        // Jika pengguna belum diblokir, lakukan block
+        response = await axios.get(
+          `http://localhost:8000/api/users/block/${id}`
+        );
+      }
+      console.log(response.data);
+      // Refresh the users list after blocking/unblocking a user
+      const updatedUsers = await axios.get("http://localhost:8000/api/users");
+      setUsers(updatedUsers.data);
+    } catch (error) {
+      console.error(
+        `Error ${isBanned ? "unblocking" : "blocking"} user:`,
+        error
+      );
+    }
+  };
+
   // Render action buttons for each user row
   function renderActions() {
     return (

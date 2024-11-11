@@ -59,9 +59,12 @@ const LoginPage = ({ setRole }) => {
         }
       })
       .catch((error) => {
+        if (error.status === 403) {
+          setMessage("Your account has been blocked");
+        } else {
+          setMessage("Email or password is incorrect");
+        }
         setLoading(false);
-        setMessage("Email or password is incorrect");
-        console.error("There was an error!", error);
       });
   };
 

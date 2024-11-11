@@ -27,7 +27,7 @@ function CMS() {
           {view === "countries" && <Countries />}
           {view === "validate" && <Validate />}
           {view === "input" && <InputFilm />}
-          {/* {view === "comments" && <Comments />} */}
+          {view === "comments" && <Comments />}
           {view === "awards" && <Awards />}
           {view === "actors" && <Actors />}
           {view === "users" && <Users />}
