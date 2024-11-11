@@ -197,14 +197,14 @@ function Movies() {
     return (
       <td>
         <button
-          className="hover:underline"
+          className="bg-blue-500 text-white text-xs px-3 py-1 rounded hover:bg-blue-600"
           onClick={() => handleEditClick(movie.id)}
         >
           Edit
         </button>
-        <span className="mx-2">|</span>
+        <span className="mx-2"></span>
         <button
-          className="hover:underline"
+          className="bg-red-500 text-white text-xs px-3 py-1 rounded hover:bg-red-600"
           onClick={() => handleDeleteClick(movie.id)}
         >
           Delete
