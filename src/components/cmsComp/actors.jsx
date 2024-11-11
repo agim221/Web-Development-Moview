@@ -106,11 +106,11 @@ function Actors() {
   function actions(index) {
     return (
       <td>
-        <button className="hover:underline" onClick={() => editActor(index)}>
+        <button className="text-blue-600 hover:underline" onClick={() => editActor(index)}>
           Edit
         </button>
         <span className="mx-2">|</span>
-        <button className="hover:underline" onClick={() => deleteActor(index)}>
+        <button className="text-red-600 hover:underline" onClick={() => deleteActor(index)}>
           Delete
         </button>
       </td>

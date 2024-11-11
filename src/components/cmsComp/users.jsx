@@ -35,7 +35,7 @@ function Users() {
   function renderActions() {
     return (
       <td>
-        <button className="hover:underline">Block</button>
+        <button className="text-red-600 hover:underline">Block</button>
       </td>
     );
   }

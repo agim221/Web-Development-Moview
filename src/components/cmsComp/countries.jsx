@@ -156,7 +156,7 @@ function Countries() {
                     className="text-blue-600 hover:underline"
                     onClick={() => startEditing(country)}
                   >
-                    Rename
+                    Edit
                   </button>
                   <span>|</span>
                   <button

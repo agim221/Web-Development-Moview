@@ -154,7 +154,7 @@ function Genres() {
                     className="text-blue-600 hover:underline"
                     onClick={() => startEditing(genre)}
                   >
-                    Rename
+                    Edit
                   </button>
                   <span>|</span>
                   <button
