@@ -107,9 +107,8 @@ function InputFilm() {
         actors: selectedActors.map((actor) => actor.value),
         genres: selectedGenres.map((genre) => genre.value),
         awards: selectedAwards.map((award) => award.value),
+        remember_token: localStorage.getItem("remember_token"),
       };
-
-      console.log("Film data:", filmData);
 
       const response = await axios.post(
         "http://localhost:8000/api/add-film",
@@ -120,8 +119,6 @@ function InputFilm() {
           },
         }
       );
-
-      console.log(response.data);
 
       // Reset form after submit
       setNewFilm({

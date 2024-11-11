@@ -44,7 +44,6 @@ function Actors() {
         name: newActor.name,
         photo: newActor.photo, // Base64 photo
       };
-      console.log(actorPayload);
 
       if (editingIndex !== null) {
         const actorToUpdate = actorData[editingIndex];

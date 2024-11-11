@@ -69,7 +69,7 @@ const LoginPage = ({ setRole }) => {
   };
 
   const handleLoginWithGoogle = () => {
-    window.location.href = "http://localhost:8000/api/auth/google";
+    window.location.href = "http://localhost:8000/auth/google";
   };
 
   useEffect(() => {

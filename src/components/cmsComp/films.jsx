@@ -96,8 +96,6 @@ function Movies() {
         trailer: movie.trailer,
       });
 
-      console.log(movie);
-
       setSelectedGenres(
         genresRes.data.map((genre) => ({
           value: genre.genre.id,
@@ -165,7 +163,6 @@ function Movies() {
         awards: selectedAwards.map((award) => award.value),
       };
 
-      console.log(filmData);
       await axios.put(
         `http://localhost:8000/api/films/${selectedMovie.id}/update`,
         filmData
@@ -173,10 +170,26 @@ function Movies() {
       setIsModalOpen(false);
       setSelectedMovie(null);
 
-      const response = await axios.get("http://localhost:8000/api/films");
+      const response = await axios.get(
+        "http://localhost:8000/api/films/verified"
+      );
+
       setMovies(response.data);
     } catch (error) {
       console.error("Error updating film:", error);
+    }
+  };
+
+  const handleDeleteClick = async (id) => {
+    try {
+      await axios.delete(`http://localhost:8000/api/films/${id}`);
+      const response = await axios.get(
+        "http://localhost:8000/api/films/verified"
+      );
+
+      setMovies(response.data);
+    } catch (error) {
+      console.error("Error deleting movie:", error);
     }
   };
 
@@ -190,7 +203,12 @@ function Movies() {
           Edit
         </button>
         <span className="mx-2">|</span>
-        <button className="hover:underline">Delete</button>
+        <button
+          className="hover:underline"
+          onClick={() => handleDeleteClick(movie.id)}
+        >
+          Delete
+        </button>
       </td>
     );
   }
@@ -198,7 +216,10 @@ function Movies() {
   useEffect(() => {
     const fetchMovies = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/api/films");
+        const response = await axios.get(
+          "http://localhost:8000/api/films/verified"
+        );
+
         setMovies(response.data);
       } catch (error) {
         console.error("Error fetching movies:", error);

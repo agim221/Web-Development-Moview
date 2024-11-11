@@ -5,10 +5,10 @@ import axios from "axios";
 function Users() {
   const [users, setUsers] = useState([]);
 
+  // Fetch users from the API
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        // Fetch users from the API
         const response = await axios.get("http://localhost:8000/api/users");
         setUsers(response.data);
       } catch (error) {
@@ -19,48 +19,55 @@ function Users() {
     fetchUsers();
   }, []);
 
-  // Fungsi untuk memblokir atau membuka blokir pengguna berdasarkan id
-  const handleBlockUser = async (id, isBanned) => {
+  // Handle blocking or unblocking a user based on id
+  const handleBlockUser = async (id, is_banned) => {
     try {
       let response;
-      if (isBanned) {
-        // Jika pengguna sudah diblokir, lakukan unblock
+      if (is_banned) {
+        // If user is banned, unblock the user
         response = await axios.get(
           `http://localhost:8000/api/users/unblock/${id}`
         );
       } else {
-        // Jika pengguna belum diblokir, lakukan block
+        // If user is not banned, block the user
         response = await axios.get(
           `http://localhost:8000/api/users/block/${id}`
         );
       }
-      console.log(response.data);
-      // Refresh the users list after blocking/unblocking a user
+
+      // Refresh the users list after blocking/unblocking
       const updatedUsers = await axios.get("http://localhost:8000/api/users");
       setUsers(updatedUsers.data);
     } catch (error) {
       console.error(
-        `Error ${isBanned ? "unblocking" : "blocking"} user:`,
+        `Error ${is_banned ? "unblocking" : "blocking"} user:`,
         error
       );
     }
   };
 
   // Render action buttons for each user row
-  function renderActions() {
+  function renderActions(user) {
     return (
       <td>
-        <button className="hover:underline">Block</button>
+        <button
+          onClick={() => handleBlockUser(user.id, user.is_banned)}
+          className={`p-2 rounded ${
+            user.is_banned ? "bg-green-500" : "bg-red-500"
+          } text-white hover:opacity-80`}
+        >
+          {user.is_banned ? "Unblock" : "Block"}
+        </button>
       </td>
     );
   }
 
-  // Map the users data to match the table's expected format
+  // Format users data for CMSTable
   const formattedUsers = users.map((user, index) => [
     index + 1, // Row number
     user.username, // Username
     user.email, // Email
-    renderActions(), // Actions
+    renderActions(user), // Actions
   ]);
 
   return (
@@ -86,7 +93,10 @@ function Users() {
               className="bg-slate-300 text-black p-2 rounded w-full"
             />
           </div>
-          <button className="bg-orange-500 text-white text-xs p-2 rounded hover:text-black hover:bg-white mt-6">
+          <button
+            className="bg-orange-500 text-white text-xs p-2 rounded hover:text-black hover:bg-white mt-6"
+            onClick={() => console.log("Add user functionality here")}
+          >
             Submit
           </button>
         </div>

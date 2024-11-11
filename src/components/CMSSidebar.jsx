@@ -58,6 +58,15 @@ function CMSSidebar({ onViewChange, view }) {
         </button>
 
         <button
+          onClick={() => onViewChange("validate")}
+          className={`w-full text-left p-2 rounded hover:bg-gray-700 ${
+            view === "dramas" && "bg-gray-700"
+          }`}
+        >
+          Validate Films
+        </button>
+
+        <button
           onClick={() => onViewChange("countries")}
           className={`w-full text-left p-2 rounded hover:bg-gray-700 ${
             view === "countries" && "bg-gray-700"

@@ -62,6 +62,7 @@ export default function MovieDetail() {
       const response = await axios.get(
         `http://localhost:8000/api/films_detail/${id}/comments`
       );
+      console.log("comments", response.data);
       setComments(response.data);
       setLoading(false);
     } catch (error) {
