@@ -4,45 +4,34 @@ import axios from "axios";
 
 function Users() {
   const [users, setUsers] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
 
   // Fetch users from the API
   useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const response = await axios.get("http://localhost:8000/api/users");
-        setUsers(response.data);
-      } catch (error) {
-        console.error("Error fetching users:", error);
-      }
-    };
-
     fetchUsers();
   }, []);
 
-  // Handle blocking or unblocking a user based on id
-  const handleBlockUser = async (id, is_banned) => {
+  const fetchUsers = async () => {
     try {
-      let response;
-      if (is_banned) {
-        // If user is banned, unblock the user
-        response = await axios.get(
-          `http://localhost:8000/api/users/unblock/${id}`
-        );
-      } else {
-        // If user is not banned, block the user
-        response = await axios.get(
-          `http://localhost:8000/api/users/block/${id}`
-        );
-      }
-
-      // Refresh the users list after blocking/unblocking
-      const updatedUsers = await axios.get("http://localhost:8000/api/users");
-      setUsers(updatedUsers.data);
+      // Fetch users from the API
+      const response = await axios.get("http://localhost:8000/api/users");
+      setUsers(response.data);
     } catch (error) {
-      console.error(
-        `Error ${is_banned ? "unblocking" : "blocking"} user:`,
-        error
+      console.error("Error fetching users:", error);
+    }
+  };
+
+  const searchUsers = async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost:8000/api/search/users",
+        {
+          params: { query: searchQuery },
+        }
       );
+      setUsers(response.data);
+    } catch (error) {
+      console.error("Error searching users:", error);
     }
   };
 
@@ -98,6 +87,23 @@ function Users() {
             onClick={() => console.log("Add user functionality here")}
           >
             Submit
+          </button>
+        </div>
+
+        {/* Search Bar */}
+        <div className="flex items-center mb-6 p-4 bg-slate-100 rounded">
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Search users..."
+            className="w-full px-3 py-2 bg-white rounded"
+          />
+          <button
+            className="ml-4 bg-slate-500 text-white text-xs px-3 py-1 rounded hover:bg-slate-600"
+            onClick={searchUsers}
+          >
+            Search
           </button>
         </div>
 

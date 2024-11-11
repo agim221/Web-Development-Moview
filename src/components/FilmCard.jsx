@@ -8,7 +8,7 @@ export default function FilmCard({ title, rating, year, posterUrl }) {
         src={posterUrl}
         alt=""
       />
-      <p className="break-words">{rating} / 10</p>
+      <p className="break-words">{rating} / 5</p>
       <p className="break-words">{title}</p>
       <p className="break-words">{year}</p>
     </div>

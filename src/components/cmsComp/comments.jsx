@@ -1,160 +1,104 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
-import CMSTable from "../../components/CMSTable"; // Adjusted component path if needed
+import CMSTable from "../../components/CMSTable";
 
 function Comments() {
-  const [commentsData, setCommentsData] = useState([]);
-  const [filterStatus, setFilterStatus] = useState("None");
-
-  // Fetching comments with callback
-  const fetchCommentsUnapproved = useCallback(async () => {
-    try {
-      const response = await axios.get(
-        "http://localhost:8000/api/comments/unapproved"
-      );
-      console.log("unapproved comments", response.data);
-      setCommentsData(response.data);
-    } catch (error) {
-      console.error("Error fetching comments:", error);
-    }
-  }, []);
-
-  const fetchCommentsApproved = useCallback(async () => {
-    try {
-      const response = await axios.get(
-        "http://localhost:8000/api/comments/approved"
-      );
-      console.log("approved comments", response.data);
-      setCommentsData(response.data);
-    } catch (error) {
-      console.error("Error fetching comments:", error);
-    }
-  }, []);
-
-  const fetchAllComments = useCallback(async () => {
-    try {
-      const response = await axios.get("http://localhost:8000/api/comments");
-      console.log("all comments", response.data);
-      setCommentsData(response.data);
-    } catch (error) {
-      console.error("Error fetching comments:", error);
-    }
-  }, []);
+  const [comments, setComments] = useState([]);
+  const [filter, setFilter] = useState("None");
+  const [showCount, setShowCount] = useState(10);
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
-    if (filterStatus === "Unapproved") {
-      fetchCommentsUnapproved();
-    } else if (filterStatus === "Approved") {
-      fetchCommentsApproved();
-    } else {
-      fetchAllComments();
-    }
-  }, [filterStatus]);
+    fetchComments();
+  }, []);
 
-  // Filter comments based on approval status
-  const filteredComments = commentsData.filter(
-    (comment) =>
-      filterStatus === "None" ||
-      (filterStatus === "Approved" && comment.is_approved) ||
-      (filterStatus === "Unapproved" && !comment.is_approved)
-  );
-
-  // Approve and delete actions
-  const handleApprove = async (id) => {
+  const fetchComments = async () => {
     try {
-      await axios.put(`http://localhost:8000/api/comments/approve/${id}`);
-      setCommentsData((prevData) =>
-        prevData.map((comment) =>
-          comment.id === id ? { ...comment, is_approved: true } : comment
-        )
-      );
+      const response = await axios.get("http://localhost:8000/api/comments");
+      setComments(response.data);
     } catch (error) {
-      console.error("Error approving comment:", error);
+      console.error("Error fetching comments:", error);
     }
   };
 
-  const handleDelete = async (id) => {
+  const searchComments = async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost:8000/api/search/comments",
+        {
+          params: { query: searchQuery },
+        }
+      );
+      setComments(response.data);
+    } catch (error) {
+      console.error("Error searching comments:", error);
+    }
+  };
+
+  const deleteComment = async (id) => {
     try {
       await axios.delete(`http://localhost:8000/api/comments/${id}`);
-      setCommentsData((prevData) =>
-        prevData.filter((comment) => comment.id !== id)
-      );
+      setComments(comments.filter((comment) => comment.id !== id));
     } catch (error) {
       console.error("Error deleting comment:", error);
     }
   };
 
-  // Actions for each comment row
-  function renderActions(comment) {
-    return (
-      <td className="text-center">
-        <button
-          onClick={() => handleApprove(comment.id)}
-          className={`text-blue-500 hover:underline mr-2 ${
-            comment.is_approved ? "text-gray-400 cursor-not-allowed" : ""
-          }`}
-          disabled={comment.is_approved}
-        >
-          Approve
-        </button>
-        <button
-          onClick={() => handleDelete(comment.id)}
-          className="text-red-500 hover:underline"
-        >
-          Delete
-        </button>
-      </td>
-    );
-  }
+  // Fungsi untuk mengonversi nilai rate menjadi bintang
+  const renderStars = (rate) => {
+    return "★".repeat(rate) + "☆".repeat(5 - rate); // menampilkan bintang sesuai rating dari 1 hingga 5
+  };
 
   return (
-    <section className="w-full p-4">
-      <div className="flex flex-col w-11/12 h-[900px] overflow-y-scroll mx-auto bg-white rounded-lg shadow-lg p-4">
-        {/* Filter by Status */}
-        <div className="flex items-center mb-6">
-          <label className="mr-4 font-semibold text-gray-600">
-            Filter by Status
-          </label>
-          <select
-            value={filterStatus}
-            onChange={(e) => setFilterStatus(e.target.value)}
-            className="bg-slate-200 text-gray-700 p-2 rounded-md"
+    <section className="w-full">
+      <div className="flex flex-col w-3/4 mx-auto">
+        {/* Filter and Show Controls */}
+        <div className="flex items-center justify-between mb-6 p-4 bg-slate-100 rounded">
+          <div className="flex gap-4 items-center">
+            <span>Shows</span>
+            <select
+              value={showCount}
+              onChange={(e) => setShowCount(e.target.value)}
+              className="bg-slate-300 text-black px-3 py-1 rounded"
+            >
+              <option value={5}>5</option>
+              <option value={10}>10</option>
+              <option value={15}>15</option>
+            </select>
+          </div>
+        </div>
+
+        {/* Search Bar */}
+        <div className="flex items-center mb-6 p-4 bg-slate-100 rounded">
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Search comments..."
+            className="w-full px-3 py-2 bg-white rounded"
+          />
+          <button
+            className="ml-4 bg-slate-500 text-white text-xs px-3 py-1 rounded hover:bg-slate-600"
+            onClick={searchComments}
           >
-            <option value="None">All</option>
-            <option value="Approved">Approved</option>
-            <option value="Unapproved">Unapproved</option>
-          </select>
+            Search
+          </button>
         </div>
 
         {/* Comments Table */}
         <CMSTable
-          headers={[
-            "No",
-            "Username",
-            "Rating",
-            "Film Title",
-            "Comment",
-            "Status",
-            "Actions",
-          ]}
-          datas={filteredComments.map((comment, index) => [
-            index + 1, // Row number
-            comment.user.username, // Username
-            <span>
-              {Array(parseInt(comment.rating, 10)).fill("★").join(" ")}
-            </span>, // Stars for rating
-            <span className="font-semibold">{comment.films.title}</span>, // Film title
-            <span className="italic">{comment.comment}</span>, // Comment text
-            <span
-              className={`px-2 py-1 rounded ${
-                comment.is_approved
-                  ? "bg-green-200 text-green-800"
-                  : "bg-red-200 text-red-800"
-              }`}
+          headers={["Username", "Rate", "Drama", "Comments", "Actions"]}
+          datas={comments.slice(0, showCount).map((comment, index) => [
+            comment.username,
+            renderStars(comment.rate), // menampilkan rating sebagai bintang
+            comment.film,
+            comment.comment,
+            <button
+              className="text-red-600 hover:underline"
+              onClick={() => deleteComment(comment.id)}
             >
-              {comment.is_approved ? "Approved" : "Unapproved"}
-            </span>, // Status badge
-            renderActions(comment), // Actions (Approve/Delete buttons)
+              Delete
+            </button>,
           ])}
         />
       </div>
