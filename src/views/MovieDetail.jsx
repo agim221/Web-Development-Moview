@@ -126,6 +126,7 @@ export default function MovieDetail() {
         console.error("Error submitting comment:", error);
       }
     }
+    finally{fetchFilm();}
   };
 
   const handleAddBookmark = async () => {

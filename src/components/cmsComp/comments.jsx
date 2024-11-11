@@ -91,7 +91,7 @@ function Comments() {
             comment.film,
             comment.comment,
             <button
-              className="text-red-600 hover:underline"
+              className="bg-red-500 text-white text-xs px-3 py-1 rounded hover:bg-red-600"
               onClick={() => deleteComment(comment.id)}
             >
               Delete

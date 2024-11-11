@@ -136,13 +136,13 @@ function Genres() {
               {editingGenre && editingGenre.id === genre.id ? (
                 <>
                   <button
-                    className="text-blue-600 hover:underline"
+                    className="bg-blue-500 text-white text-xs px-3 py-1 rounded hover:bg-blue-600"
                     onClick={() => updateGenre(genre.id)}
                   >
                     Save
                   </button>
                   <button
-                    className="text-red-600 hover:underline"
+                    className="bg-red-500 text-white text-xs px-3 py-1 rounded hover:bg-red-600"
                     onClick={() => setEditingGenre(null)}
                   >
                     Cancel
@@ -151,14 +151,13 @@ function Genres() {
               ) : (
                 <>
                   <button
-                    className="text-blue-600 hover:underline"
+                    className="bg-blue-500 text-white text-xs px-3 py-1 rounded hover:bg-blue-600"
                     onClick={() => startEditing(genre)}
                   >
                     Edit
                   </button>
-                  <span>|</span>
                   <button
-                    className="text-red-600 hover:underline"
+                    className="bg-red-500 text-white text-xs px-3 py-1 rounded hover:bg-red-600"
                     onClick={() => deleteGenre(genre.id)}
                   >
                     Delete

@@ -35,7 +35,7 @@ function Users() {
   function renderActions() {
     return (
       <td>
-        <button className="text-red-600 hover:underline">Block</button>
+        <button className="bg-red-500 text-white text-xs px-3 py-1 rounded hover:bg-red-600">Block</button>
       </td>
     );
   }
