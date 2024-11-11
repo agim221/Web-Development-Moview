@@ -13,32 +13,6 @@ function CMSSidebar({ onViewChange, view }) {
       <h2 className="text-2xl font-semibold mb-6">Moview</h2>
 
       <nav className="flex-1 space-y-4">
-        {/* <div className="mb-4">
-          <h3 className="text-lg font-medium">Dramas</h3>
-          <ul className="ml-4 space-y-2">
-            <li>
-              <button
-                onClick={() => onViewChange("validate")}
-                className={`w-full text-left p-2 rounded hover:bg-gray-700 ${
-                  view === "validate" && "bg-gray-700"
-                }`}
-              >
-                Validate
-              </button>
-            </li>
-            <li>
-              <button
-                onClick={() => onViewChange("input")}
-                className={`w-full text-left p-2 rounded hover:bg-gray-700 ${
-                  view === "input" && "bg-gray-700"
-                }`}
-              >
-                Input New Drama
-              </button>
-            </li>
-          </ul>
-        </div> */}
-
         <button
           onClick={() => onViewChange("input")}
           className={`w-full text-left p-2 rounded hover:bg-gray-700 ${
@@ -55,6 +29,15 @@ function CMSSidebar({ onViewChange, view }) {
           }`}
         >
           Films
+        </button>
+
+        <button
+          onClick={() => onViewChange("validate")}
+          className={`w-full text-left p-2 rounded hover:bg-gray-700 ${
+            view === "validate" && "bg-gray-700"
+          }`}
+        >
+          Validate
         </button>
 
         <button
