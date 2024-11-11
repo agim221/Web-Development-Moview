@@ -164,13 +164,13 @@ function Awards() {
               {editingAward && editingAward.id === award.id ? (
                 <>
                   <button
-                    className="text-blue-600 hover:underline"
+                    className="bg-blue-500 text-white text-xs px-3 py-1 rounded hover:bg-blue-600"
                     onClick={() => updateAward(award.id)}
                   >
                     Save
                   </button>
                   <button
-                    className="text-red-600 hover:underline"
+                    className="bg-red-500 text-white text-xs px-3 py-1 rounded hover:bg-red-600"
                     onClick={() => setEditingAward(null)}
                   >
                     Cancel
@@ -179,14 +179,13 @@ function Awards() {
               ) : (
                 <>
                   <button
-                    className="text-blue-600 hover:underline"
+                    className="bg-blue-500 text-white text-xs px-3 py-1 rounded hover:bg-blue-600"
                     onClick={() => startEditing(award)}
                   >
                     Edit
                   </button>
-                  <span>|</span>
                   <button
-                    className="text-red-600 hover:underline"
+                    className="bg-red-500 text-white text-xs px-3 py-1 rounded hover:bg-red-600"
                     onClick={() => deleteAward(award.id)}
                   >
                     Delete

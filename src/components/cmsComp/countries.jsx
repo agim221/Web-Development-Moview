@@ -138,13 +138,13 @@ function Countries() {
               {editingCountry && editingCountry.id === country.id ? (
                 <>
                   <button
-                    className="text-blue-600 hover:underline"
+                    className="bg-blue-500 text-white text-xs px-3 py-1 rounded hover:bg-blue-600"
                     onClick={() => updateCountry(country.id)}
                   >
                     Save
                   </button>
                   <button
-                    className="text-red-600 hover:underline"
+                    className="bg-red-500 text-white text-xs px-3 py-1 rounded hover:bg-red-600"
                     onClick={() => setEditingCountry(null)}
                   >
                     Cancel
@@ -153,14 +153,13 @@ function Countries() {
               ) : (
                 <>
                   <button
-                    className="text-blue-600 hover:underline"
+                    className="bg-blue-500 text-white text-xs px-3 py-1 rounded hover:bg-blue-600"
                     onClick={() => startEditing(country)}
                   >
-                    Rename
+                    Edit
                   </button>
-                  <span>|</span>
                   <button
-                    className="text-red-600 hover:underline"
+                    className="bg-red-500 text-white text-xs px-3 py-1 rounded hover:bg-red-600"
                     onClick={() => deleteCountry(country.id)}
                   >
                     Delete
