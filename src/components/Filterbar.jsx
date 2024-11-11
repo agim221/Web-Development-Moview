@@ -122,7 +122,7 @@ function Filterbar({ isOpen, toggleFilterBar, onSubmit }) {
 
   return (
     <section
-      className={`filter-sec bg-gray-500/90 h-full w-full absolute z-10 transition-transform duration-500 ease-in-out ${isOpen}`}
+      className={`filter-sec bg-gray-500/90 h-full w-full absolute z-10 transition-transform duration-500 ease-in-out ${isOpen} z-20`}
     >
       <div className="p-4 flex flex-col w-3/5 mx-auto mt-10">
         <div className="flex flex-row justify-between">

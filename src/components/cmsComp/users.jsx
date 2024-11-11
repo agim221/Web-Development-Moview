@@ -6,6 +6,7 @@ function Users() {
   const [users, setUsers] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
 
+  // Fetch users from the API
   useEffect(() => {
     fetchUsers();
   }, []);
@@ -22,9 +23,12 @@ function Users() {
 
   const searchUsers = async () => {
     try {
-      const response = await axios.get("http://localhost:8000/api/search/users", {
-        params: { query: searchQuery }
-      });
+      const response = await axios.get(
+        "http://localhost:8000/api/search/users",
+        {
+          params: { query: searchQuery },
+        }
+      );
       setUsers(response.data);
     } catch (error) {
       console.error("Error searching users:", error);
@@ -32,20 +36,27 @@ function Users() {
   };
 
   // Render action buttons for each user row
-  function renderActions() {
+  function renderActions(user) {
     return (
       <td>
-        <button className="bg-red-500 text-white text-xs px-3 py-1 rounded hover:bg-red-600">Block</button>
+        <button
+          onClick={() => handleBlockUser(user.id, user.is_banned)}
+          className={`p-2 rounded ${
+            user.is_banned ? "bg-green-500" : "bg-red-500"
+          } text-white hover:opacity-80`}
+        >
+          {user.is_banned ? "Unblock" : "Block"}
+        </button>
       </td>
     );
   }
 
-  // Map the users data to match the table's expected format
+  // Format users data for CMSTable
   const formattedUsers = users.map((user, index) => [
     index + 1, // Row number
     user.username, // Username
     user.email, // Email
-    renderActions(), // Actions
+    renderActions(user), // Actions
   ]);
 
   return (
@@ -71,7 +82,10 @@ function Users() {
               className="bg-slate-300 text-black p-2 rounded w-full"
             />
           </div>
-          <button className="bg-orange-500 text-white text-xs p-2 rounded hover:text-black hover:bg-white mt-6">
+          <button
+            className="bg-orange-500 text-white text-xs p-2 rounded hover:text-black hover:bg-white mt-6"
+            onClick={() => console.log("Add user functionality here")}
+          >
             Submit
           </button>
         </div>

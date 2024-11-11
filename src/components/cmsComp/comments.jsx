@@ -23,9 +23,12 @@ function Comments() {
 
   const searchComments = async () => {
     try {
-      const response = await axios.get("http://localhost:8000/api/search/comments", {
-        params: { query: searchQuery }
-      });
+      const response = await axios.get(
+        "http://localhost:8000/api/search/comments",
+        {
+          params: { query: searchQuery },
+        }
+      );
       setComments(response.data);
     } catch (error) {
       console.error("Error searching comments:", error);
@@ -95,7 +98,7 @@ function Comments() {
               onClick={() => deleteComment(comment.id)}
             >
               Delete
-            </button>
+            </button>,
           ])}
         />
       </div>

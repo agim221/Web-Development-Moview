@@ -1,87 +1,3 @@
-// import React, { useEffect, useState } from "react";
-// import CMSTable from "../../components/CMSTable";
-// import axios from "axios";
-
-// function Movies() {
-//   const [movies, setMovies] = useState([]);
-
-//   function renderActions() {
-//     return (
-//       <td>
-//         <button className="hover:underline">Edit</button>
-//         <span className="mx-2">|</span>
-//         <button className="hover:underline">Delete</button>
-//       </td>
-//     );
-//   }
-
-//   useEffect(() => {
-//     const fetchMovies = async () => {
-//       try {
-//         // Fetch movies from the API
-//         const response = await axios.get("http://localhost:8000/api/films");
-//         setMovies(response.data);
-//       } catch (error) {
-//         console.error("Error fetching movies:", error);
-//       }
-//     };
-
-//     fetchMovies();
-//   }, []);
-
-//   // Map the movies data to only include id, image, title, and release_date
-//   const formattedMovies = movies.map((movie, index) => [
-//     index, // ID
-//     <img src={movie.image} alt={movie.title} width="50" />, // Image thumbnail
-//     movie.title, // Title
-//     movie.release_date, // Year
-//     renderActions(), // Actions
-//   ]);
-
-//   return (
-//     <section className="w-full h-screen flex flex-col">
-//       <div className="flex flex-col w-3/4 mx-auto bg-white rounded-lg shadow-lg p-4 overflow-y-auto">
-//         {/* Form layout for adding a new user */}
-//         <div className="flex flex-row mb-8 gap-4 bg-slate-100 p-4 rounded">
-//           <div className="flex flex-col">
-//             <label className="text-sm">Username</label>
-//             <input
-//               type="text"
-//               name="username"
-//               id="username"
-//               className="bg-slate-300 text-black p-2 rounded w-full"
-//             />
-//           </div>
-//           <div className="flex flex-col">
-//             <label className="text-sm">Email</label>
-//             <input
-//               type="email"
-//               name="email"
-//               id="email"
-//               className="bg-slate-300 text-black p-2 rounded w-full"
-//             />
-//           </div>
-//           <button className="bg-orange-500 text-white text-xs p-2 rounded hover:text-black hover:bg-white mt-6">
-//             Submit
-//           </button>
-//         </div>
-//       </div>
-
-//       <div className="flex flex-col w-3/4 mx-auto h-full bg-white rounded-lg shadow-lg p-4 overflow-y-auto">
-//         {/* Table layout for displaying movies */}
-//         <div className="overflow-y-auto">
-//           <CMSTable
-//             headers={["No", "Image", "Title", "Year", "Actions"]}
-//             datas={formattedMovies}
-//           />
-//         </div>
-//       </div>
-//     </section>
-//   );
-// }
-
-// export default Movies;
-
 import React, { useState, useEffect } from "react";
 import CMSTable from "../../components/CMSTable";
 import axios from "axios";
@@ -121,6 +37,7 @@ function Movies() {
             axios.get("http://localhost:8000/api/awards"),
             axios.get("http://localhost:8000/api/actors"),
           ]);
+
         setYears(
           yearsRes.data.map((year) => ({ value: year.year, label: year.year }))
         );
@@ -161,34 +78,37 @@ function Movies() {
         `http://localhost:8000/api/films_detail/${id}`
       );
       const movie = response.data;
-      console.log(movie);
+
+      const [actorsRes, genresRes, awardsRes] = await Promise.all([
+        axios.get(`http://localhost:8000/api/films_detail/${id}/actors`),
+        axios.get(`http://localhost:8000/api/films_detail/${id}/genres`),
+        axios.get(`http://localhost:8000/api/films_detail/${id}/awards`),
+      ]);
 
       setSelectedMovie(movie);
       setNewFilm({
         title: movie.title,
-        altTitle: "Test",
+        altTitle: movie.altTitle || "",
         year: movie.release_date,
         country: countries.find((c) => c.value === movie.country_id),
         synopsis: movie.description,
         availability: movie.availability,
         trailer: movie.trailer,
       });
+
       setSelectedGenres(
-        movie.genres.map((genre) => ({
-          value: genre.id,
-          label: genre.name,
+        genresRes.data.map((genre) => ({
+          value: genre.genre.id,
+          label: genre.genre.name,
         }))
       );
       setSelectedActors(
-        movie.actors.map((actor) => ({
-          value: actor.id,
-          label: actor.name,
-        }))
+        actorsRes.data.map((actor) => ({ value: actor.id, label: actor.name }))
       );
       setSelectedAwards(
-        movie.awards.map((award) => ({
-          value: award.id,
-          label: award.name,
+        awardsRes.data.map((award) => ({
+          value: award.award.id,
+          label: award.award.name,
         }))
       );
       setSelectedImage(movie.image);
@@ -205,30 +125,34 @@ function Movies() {
 
   const handleImageChange = (event) => {
     const file = event.target.files[0];
-    if (file) {
-      setSelectedImage(file);
-    }
+    if (file) setSelectedImage(file);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     const convertImageToBase64 = (file) => {
       return new Promise((resolve, reject) => {
         const reader = new FileReader();
-        reader.onloadend = () => {
-          resolve(reader.result);
-        };
+        reader.onloadend = () => resolve(reader.result);
         reader.onerror = reject;
         reader.readAsDataURL(file);
       });
     };
+
     try {
-      const base64Image = selectedImage
-        ? await convertImageToBase64(selectedImage)
-        : null;
+      let image;
+      if (selectedImage && typeof selectedImage !== "string") {
+        // Jika selectedImage adalah file baru, konversi ke Base64
+        image = await convertImageToBase64(selectedImage);
+      } else {
+        // Jika selectedImage adalah path yang sudah ada, gunakan path tersebut
+        image = selectedImage;
+      }
+
       const filmData = {
         title: newFilm.title,
-        image: base64Image,
+        image: image,
         description: newFilm.synopsis,
         release_date: newFilm.year,
         country_id: newFilm.country.value,
@@ -238,17 +162,34 @@ function Movies() {
         genres: selectedGenres.map((genre) => genre.value),
         awards: selectedAwards.map((award) => award.value),
       };
+
       await axios.put(
-        `http://localhost:8000/api/films/${selectedMovie.id}`,
+        `http://localhost:8000/api/films/${selectedMovie.id}/update`,
         filmData
       );
       setIsModalOpen(false);
       setSelectedMovie(null);
-      // Refresh the movies list
-      const response = await axios.get("http://localhost:8000/api/films");
+
+      const response = await axios.get(
+        "http://localhost:8000/api/films/verified"
+      );
+
       setMovies(response.data);
     } catch (error) {
       console.error("Error updating film:", error);
+    }
+  };
+
+  const handleDeleteClick = async (id) => {
+    try {
+      await axios.delete(`http://localhost:8000/api/films/${id}`);
+      const response = await axios.get(
+        "http://localhost:8000/api/films/verified"
+      );
+
+      setMovies(response.data);
+    } catch (error) {
+      console.error("Error deleting movie:", error);
     }
   };
 
@@ -262,7 +203,12 @@ function Movies() {
           Edit
         </button>
         <span className="mx-2">|</span>
-        <button className="hover:underline">Delete</button>
+        <button
+          className="hover:underline"
+          onClick={() => handleDeleteClick(movie.id)}
+        >
+          Delete
+        </button>
       </td>
     );
   }
@@ -270,7 +216,10 @@ function Movies() {
   useEffect(() => {
     const fetchMovies = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/api/films");
+        const response = await axios.get(
+          "http://localhost:8000/api/films/verified"
+        );
+
         setMovies(response.data);
       } catch (error) {
         console.error("Error fetching movies:", error);
@@ -307,7 +256,7 @@ function Movies() {
                 {!selectedImage ? (
                   <label
                     htmlFor="image-upload"
-                    className="w-full h-64 rounded-xl cursor-pointer bg-slate-500 flex items-center justify-center"
+                    className="w-full h-full rounded-xl cursor-pointer bg-slate-500 flex items-center justify-center"
                   >
                     <input
                       type="file"
@@ -323,7 +272,7 @@ function Movies() {
                 ) : (
                   <label
                     htmlFor="image-upload"
-                    className="relative w-full h-64 rounded-xl cursor-pointer"
+                    className="relative w-full h-auto rounded-xl cursor-pointer"
                   >
                     <input
                       type="file"
@@ -339,7 +288,7 @@ function Movies() {
                           : URL.createObjectURL(selectedImage)
                       }
                       alt="Film Cover"
-                      className="w-full h-64 object-cover rounded-xl"
+                      className="w-full h-auto object-cover rounded-xl"
                     />
                   </label>
                 )}
@@ -377,29 +326,25 @@ function Movies() {
                   <div className="flex-1">
                     <label htmlFor="year">Year</label>
                     <Select
-                      name="year"
-                      id="year"
-                      className="text-black w-full mt-2"
                       options={years}
-                      value={years.find((y) => y.value === newFilm.year)}
+                      value={
+                        newFilm.year
+                          ? { value: newFilm.year, label: newFilm.year }
+                          : null
+                      }
                       onChange={(selectedOption) =>
                         setNewFilm({ ...newFilm, year: selectedOption.value })
                       }
-                      placeholder="Select Year"
                     />
                   </div>
                   <div className="flex-1">
                     <label htmlFor="country">Country</label>
                     <Select
-                      name="country"
-                      id="country"
-                      className="text-black w-full mt-2"
                       options={countries}
                       value={newFilm.country}
                       onChange={(selectedOption) =>
                         setNewFilm({ ...newFilm, country: selectedOption })
                       }
-                      placeholder="Select Country"
                     />
                   </div>
                 </div>
@@ -408,20 +353,61 @@ function Movies() {
                   <textarea
                     name="synopsis"
                     id="synopsis"
-                    className="bg-slate-400 text-white p-2 rounded w-full"
-                    rows="4"
+                    className="bg-slate-400 text-white p-2 rounded w-full h-32"
                     value={newFilm.synopsis}
                     onChange={(e) =>
                       setNewFilm({ ...newFilm, synopsis: e.target.value })
                     }
-                  ></textarea>
+                  />
                 </div>
                 <div>
-                  <label htmlFor="available">Availability</label>
+                  <label htmlFor="trailer">Trailer</label>
                   <input
                     type="text"
-                    name="available"
-                    id="available"
+                    name="trailer"
+                    id="trailer"
+                    className="bg-slate-400 text-white p-2 rounded w-full"
+                    value={newFilm.trailer}
+                    onChange={(e) =>
+                      setNewFilm({ ...newFilm, trailer: e.target.value })
+                    }
+                  />
+                </div>
+                <div className="flex gap-4">
+                  <div className="flex-1">
+                    <label htmlFor="actors">Actors</label>
+                    <Select
+                      isMulti
+                      options={actors}
+                      value={selectedActors}
+                      onChange={setSelectedActors}
+                    />
+                  </div>
+                  <div className="flex-1">
+                    <label htmlFor="genres">Genres</label>
+                    <Select
+                      isMulti
+                      options={genres}
+                      value={selectedGenres}
+                      onChange={setSelectedGenres}
+                    />
+                  </div>
+                </div>
+                <div>
+                  <label htmlFor="awards">Awards</label>
+                  <Select
+                    isMulti
+                    options={awards}
+                    value={selectedAwards}
+                    onChange={setSelectedAwards}
+                  />
+                </div>
+                <div>
+                  <label htmlFor="availability">Availability</label>
+                  <input
+                    type="text"
+                    name="availability"
+                    id="availability"
                     className="bg-slate-400 text-white p-2 rounded w-full"
                     value={newFilm.availability}
                     onChange={(e) =>
@@ -429,61 +415,11 @@ function Movies() {
                     }
                   />
                 </div>
-                <div>
-                  <label htmlFor="genre">Select Genre(s)</label>
-                  <Select
-                    options={genres}
-                    isMulti
-                    value={selectedGenres}
-                    onChange={setSelectedGenres}
-                    className="text-black w-full mt-2"
-                    placeholder="Choose genres..."
-                  />
-                </div>
-                <div>
-                  <label htmlFor="actor">Select Actor(s) (Up to 9)</label>
-                  <Select
-                    options={actors}
-                    isMulti
-                    value={selectedActors}
-                    onChange={setSelectedActors}
-                    className="text-black w-full mt-2"
-                    placeholder="Choose actors..."
-                  />
-                </div>
-                <div className="flex gap-4">
-                  <div className="flex-1">
-                    <label htmlFor="trailer">Link Trailer</label>
-                    <input
-                      type="text"
-                      name="trailer"
-                      id="trailer"
-                      className="bg-slate-400 text-white p-2 rounded w-full"
-                      value={newFilm.trailer}
-                      onChange={(e) =>
-                        setNewFilm({ ...newFilm, trailer: e.target.value })
-                      }
-                    />
-                  </div>
-                  <div className="flex-1">
-                    <label htmlFor="award">Award</label>
-                    <Select
-                      name="award"
-                      id="award"
-                      isMulti
-                      className="text-black w-full mt-2"
-                      options={awards}
-                      value={selectedAwards}
-                      onChange={setSelectedAwards}
-                      placeholder="Select Award"
-                    />
-                  </div>
-                </div>
                 <button
                   type="submit"
-                  className="mt-4 bg-slate-500 text-white rounded-lg w-2/5 h-10"
+                  className="bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-700"
                 >
-                  Submit
+                  Save
                 </button>
               </div>
             </form>
