@@ -93,14 +93,14 @@ function CMSSidebar({ onViewChange, view }) {
           Actors
         </button>
 
-        {/* <button
+        <button
           onClick={() => onViewChange("comments")}
           className={`w-full text-left p-2 rounded hover:bg-gray-700 ${
             view === "comments" && "bg-gray-700"
           }`}
         >
           Comments
-        </button> */}
+        </button>
 
         <button
           onClick={() => onViewChange("users")}

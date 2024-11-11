@@ -1,92 +1,106 @@
-import React, { useState } from "react";
-import CMSTable from "../../components/CMSTable"; // menyesuaikan path komponen CMSTable
-
-
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import CMSTable from "../../components/CMSTable";
 
 function Comments() {
-  const [commentsData, setCommentsData] = useState([
-    {
-      username: "Nasu",
-      rating: 5,
-      drama: "[2023] Japan - Live Love You",
-      comment:
-        "I love this drama. It taught me a lot about money and finance. Love is not everything, it’s also about how we handle money. Setting plot is in the real life. What the most thing that I love is about the kindness. Having money is perfect.",
-      status: "Unapproved",
-    },
-    {
-      username: "Luffy",
-      rating: 2,
-      drama: "[2023] Japan - Live Love You",
-      comment: "Meh",
-      status: "Approved",
-    },
-  ]);
+  const [comments, setComments] = useState([]);
+  const [filter, setFilter] = useState("None");
+  const [showCount, setShowCount] = useState(10);
+  const [searchQuery, setSearchQuery] = useState("");
 
-  const handleDelete = (username) => {
-    setCommentsData(commentsData.filter((comment) => comment.username !== username));
+  useEffect(() => {
+    fetchComments();
+  }, []);
+
+  const fetchComments = async () => {
+    try {
+      const response = await axios.get("http://localhost:8000/api/comments");
+      setComments(response.data);
+    } catch (error) {
+      console.error("Error fetching comments:", error);
+    }
   };
 
-  const handleApprove = (username) => {
-    setCommentsData(
-      commentsData.map((comment) =>
-        comment.username === username
-          ? { ...comment, status: "Approved" }
-          : comment
-      )
-    );
+  const searchComments = async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost:8000/api/search/comments",
+        {
+          params: { query: searchQuery },
+        }
+      );
+      setComments(response.data);
+    } catch (error) {
+      console.error("Error searching comments:", error);
+    }
   };
 
-  function actions(username, status) {
-    return (
-      <>
-        <td>
-          <button
-            onClick={() => handleApprove(username)}
-            className={`hover:underline ${
-              status === "Approved" ? "text-gray-500 cursor-not-allowed" : ""
-            }`}
-            disabled={status === "Approved"}
-          >
-            Approve
-          </button>
-          <span className=""> | </span>
-          <button onClick={() => handleDelete(username)} className="hover:underline">
-            Delete
-          </button>
-        </td>
-      </>
-    );
-  }
+  const deleteComment = async (id) => {
+    try {
+      await axios.delete(`http://localhost:8000/api/comments/${id}`);
+      setComments(comments.filter((comment) => comment.id !== id));
+    } catch (error) {
+      console.error("Error deleting comment:", error);
+    }
+  };
+
+  // Fungsi untuk mengonversi nilai rate menjadi bintang
+  const renderStars = (rate) => {
+    return "★".repeat(rate) + "☆".repeat(5 - rate); // menampilkan bintang sesuai rating dari 1 hingga 5
+  };
 
   return (
     <section className="w-full">
-      <div className="flex flex-col w-full mx-auto">
-        <div className="flex flex-row mb-8 gap-4 bg-slate-100 p-2 rounded">
-          <span className="text-sm self-center">Filter by Status</span>
-          <select className="bg-slate-300 text-white ml-4">
-            <option value="None">None</option>
-            <option value="Approved">Approved</option>
-            <option value="Unapproved">Unapproved</option>
-          </select>
-        </div>
-        <CMSTable
-          headers={["", "Username", "Rating", "Drama", "Comment", "Status", "Action"]}
-          datas={commentsData.map((comment, index) => [
-            index + 1,
-            comment.username,
-            <span>{Array(comment.rating).fill("★").join(" ")}</span>, // Menampilkan rating
-            comment.drama,
-            comment.comment,
-            <span
-              className={`px-2 py-1 rounded ${
-                comment.status === "Unapproved" ? "bg-red-200" : "bg-green-200"
-              }`}
+      <div className="flex flex-col w-3/4 mx-auto">
+        {/* Filter and Show Controls */}
+        <div className="flex items-center justify-between mb-6 p-4 bg-slate-100 rounded">
+          <div className="flex gap-4 items-center">
+            <span>Shows</span>
+            <select
+              value={showCount}
+              onChange={(e) => setShowCount(e.target.value)}
+              className="bg-slate-300 text-black px-3 py-1 rounded"
             >
-              {comment.status}
-            </span>,
-            actions(comment.username, comment.status),
+              <option value={5}>5</option>
+              <option value={10}>10</option>
+              <option value={15}>15</option>
+            </select>
+          </div>
+        </div>
+
+        {/* Search Bar */}
+        <div className="flex items-center mb-6 p-4 bg-slate-100 rounded">
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Search comments..."
+            className="w-full px-3 py-2 bg-white rounded"
+          />
+          <button
+            className="ml-4 bg-slate-500 text-white text-xs px-3 py-1 rounded hover:bg-slate-600"
+            onClick={searchComments}
+          >
+            Search
+          </button>
+        </div>
+
+        {/* Comments Table */}
+        <CMSTable
+          headers={["Username", "Rate", "Drama", "Comments", "Actions"]}
+          datas={comments.slice(0, showCount).map((comment, index) => [
+            comment.username,
+            renderStars(comment.rate), // menampilkan rating sebagai bintang
+            comment.film,
+            comment.comment,
+            <button
+              className="text-red-600 hover:underline"
+              onClick={() => deleteComment(comment.id)}
+            >
+              Delete
+            </button>,
           ])}
-        ></CMSTable>
+        />
       </div>
     </section>
   );

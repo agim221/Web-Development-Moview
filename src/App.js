@@ -12,7 +12,10 @@ import Filterbar from "./components/Filterbar";
 import CMS from "./views/cms";
 import Register from "./views/register";
 import Bookmark from "./views/bookmark";
+import Account from "./views/account";
 import axios from "axios";
+import AuthCallback from "./views/auth";
+import AddMovie from "./views/addMovie";
 
 function App() {
   const [isOpen, setIsOpen] = useState("-translate-y-full");
@@ -115,6 +118,12 @@ function App() {
               <Route path="/watchlist" element={<Bookmark />} />
               <Route path="/register" element={<Register />} />
               <Route path="/movieDetail/:id" element={<MovieDetail />} />
+              <Route path="/account" element={<Account />} />
+              <Route path="/add-movie" element={<AddMovie />} />
+              <Route
+                path="/auth/callback"
+                element={<AuthCallback setRole={setRole} />}
+              />
             </Routes>
           </div>
         </div>

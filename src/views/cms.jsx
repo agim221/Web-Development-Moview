@@ -27,7 +27,7 @@ function CMS() {
           {view === "countries" && <Countries />}
           {view === "validate" && <Validate />}
           {view === "input" && <InputFilm />}
-          {/* {view === "comments" && <Comments />} */}
+          {view === "comments" && <Comments />}
           {view === "awards" && <Awards />}
           {view === "actors" && <Actors />}
           {view === "users" && <Users />}
@@ -35,6 +35,7 @@ function CMS() {
           {view === "home" && (
             <p className="text-gray-600">Select a section from the sidebar.</p>
           )}
+          {/* {view === "films" && <Films />} */}
         </div>
       </div>
     </div>

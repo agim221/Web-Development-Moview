@@ -50,6 +50,7 @@ function FilmList({
             }
           );
         }
+        console.log(response.data);
         setFilms(response.data);
         setLoading(false);
       } catch (error) {
@@ -64,6 +65,7 @@ function FilmList({
             filmShowed - (filmShowed - 1)
           }/${filmShowed}`
         );
+
         setFilms(response.data);
         setLoading(false);
       } catch (error) {
@@ -100,13 +102,13 @@ function FilmList({
           filterData.year !== "" ||
           filterData.country !== "" ||
           searchBy === "actor")
-          ? films.slice(0, filmShowed).map((film) => (
+          ? films.slice(0, filmShowed).map((film, index) => (
               <div
-                key={film.film_id}
+                key={index + filmShowed}
                 onClick={() => handleFilmClick(film.film_id)}
               >
                 <FilmCard
-                  key={film.film_id}
+                  key={index + filmShowed}
                   title={film.title}
                   description={film.description}
                   posterUrl={film.image}
@@ -118,10 +120,13 @@ function FilmList({
                 />
               </div>
             ))
-          : films.slice(0, filmShowed).map((film) => (
-              <div key={film.id} onClick={() => handleFilmClick(film.id)}>
+          : films.slice(0, filmShowed).map((film, index) => (
+              <div
+                key={index + filmShowed}
+                onClick={() => handleFilmClick(film.id)}
+              >
                 <FilmCard
-                  key={film.id}
+                  key={index + filmShowed}
                   title={film.title}
                   description={film.description}
                   posterUrl={film.image}
