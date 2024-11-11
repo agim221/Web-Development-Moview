@@ -35,6 +35,29 @@ function Users() {
     }
   };
 
+  const handleBlockUser = async (id, isBanned) => {
+    try {
+      let response;
+      if (isBanned) {
+        response = await axios.get(
+          `http://localhost:8000/api/users/unblock/${id}`
+        );
+      } else {
+        response = await axios.get(
+          `http://localhost:8000/api/users/block/${id}`
+        );
+      }
+      console.log(response.data);
+      // Refresh the users list after blocking/unblocking a user
+      fetchUsers();
+    } catch (error) {
+      console.error(
+        `Error ${isBanned ? "unblocking" : "blocking"} user:`,
+        error
+      );
+    }
+  };
+
   // Render action buttons for each user row
   function renderActions(user) {
     return (

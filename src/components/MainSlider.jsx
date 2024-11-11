@@ -34,6 +34,14 @@ export default function MainSlider() {
     fetchTrending();
   }, []);
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      nextPicture("right");
+    }, 3000); // Change picture every 5 seconds
+
+    return () => clearTimeout(timer); // Clear timeout if component unmounts or activePicture changes
+  }, [activePicture, trending]);
+
   if (loading) {
     return (
       <div className="flex justify-center items-center h-screen">
@@ -58,7 +66,7 @@ export default function MainSlider() {
                 key={index}
                 className={`w-full h-full mx-auto shrink-0 transition-transform duration-300 ease-in-out will-change-transform`}
                 style={{ transform: `translateX(-${activePicture * 100}%)` }}
-                src={item.image}
+                src={item.poster}
                 alt={item.title}
                 loading="eager"
               />
@@ -137,21 +145,3 @@ export default function MainSlider() {
     </>
   );
 }
-
-// Tambahkan CSS ini untuk animasi loading lingkaran
-<style jsx>{`
-  .spinner {
-    width: 50px;
-    height: 50px;
-    border: 6px solid #ddd;
-    border-top-color: #4fa94d;
-    border-radius: 50%;
-    animation: spin 1s ease infinite;
-  }
-
-  @keyframes spin {
-    to {
-      transform: rotate(360deg);
-    }
-  }
-`}</style>;
