@@ -37,41 +37,59 @@ function App() {
     );
   }, []);
 
-  useEffect(() => {
-    const fetchRole = async () => {
-      try {
-        const response = await axios.get("http://localhost:8000/api/role", {
-          params: {
-            remember_token: localStorage.getItem("remember_token"),
-          },
-        });
+  const fetchRole = useCallback(async () => {
+    try {
+      const response = await axios.get("http://localhost:8000/api/role", {
+        params: {
+          remember_token: localStorage.getItem("remember_token"),
+        },
+      });
 
-        if (response.data === "admin") {
-          setRole(response.data);
-        }
-      } catch (error) {
-        console.error("Error fetching role:", error);
-      } finally {
-        setLoading(false);
+      if (response.data === "admin") {
+        setRole(response.data);
       }
-    };
+    } catch (error) {
+      console.error("Error fetching role:", error);
+    } finally {
+      setLoading(false);
+    }
+  });
+
+  useEffect(() => {
+    // const fetchRole = async () => {
+    //   try {
+    //     const response = await axios.get("http://localhost:8000/api/role", {
+    //       params: {
+    //         remember_token: localStorage.getItem("remember_token"),
+    //       },
+    //     });
+
+    //     if (response.data === "admin") {
+    //       setRole(response.data);
+    //     }
+    //   } catch (error) {
+    //     console.error("Error fetching role:", error);
+    //   } finally {
+    //     setLoading(false);
+    //   }
+    // };
 
     fetchRole();
   }, []);
 
-  if (loading) {
-    return (
-      <div className="flex justify-center items-center h-screen">
-        <Circles
-          height="80"
-          width="80"
-          fill="#BCCFC0"
-          stroke="#0a0a0a"
-          aria-label="loading"
-        />
-      </div>
-    );
-  }
+  // if (loading) {
+  //   return (
+  //     <div className="flex justify-center items-center h-screen">
+  //       <Circles
+  //         height="80"
+  //         width="80"
+  //         fill="#BCCFC0"
+  //         stroke="#0a0a0a"
+  //         aria-label="loading"
+  //       />
+  //     </div>
+  //   );
+  // }
 
   return (
     <Router>

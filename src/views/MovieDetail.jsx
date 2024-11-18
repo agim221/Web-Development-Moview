@@ -94,7 +94,10 @@ export default function MovieDetail() {
     };
 
     try {
-      const response = await axios.post("http://localhost:8000/api/bookmarks/check", data);
+      const response = await axios.post(
+        "http://localhost:8000/api/bookmarks/check",
+        data
+      );
       setIsBookmarked(response.data.exists);
     } catch (error) {
       console.error("Error checking bookmark:", error);
@@ -126,8 +129,9 @@ export default function MovieDetail() {
       } else {
         console.error("Error submitting comment:", error);
       }
+    } finally {
+      fetchFilm();
     }
-    finally{fetchFilm();}
   };
 
   const handleAddBookmark = async () => {

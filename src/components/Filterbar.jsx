@@ -251,4 +251,4 @@ function Filterbar({ isOpen, toggleFilterBar, onSubmit }) {
   );
 }
 
-export default Filterbar;
+export default React.memo(Filterbar);
