@@ -102,6 +102,7 @@ const LoginPage = ({ setRole }) => {
               className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-orange-500"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
+              aria-label="username"
             />
           </div>
           <div>
@@ -111,10 +112,13 @@ const LoginPage = ({ setRole }) => {
               className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-orange-500"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              aria-label="password"
             />
           </div>
           <div>
-            <p className="text-red-500 text-sm">{message}</p>
+            <p className="text-red-500 text-sm" data-testid="message">
+              {message}
+            </p>
           </div>
           <div>
             <label className="flex items-center">

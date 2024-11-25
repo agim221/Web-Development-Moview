@@ -102,7 +102,7 @@ function InputFilm() {
         image: base64Image, // Using Base64 string
         description: newFilm.synopsis,
         release_date: newFilm.year,
-        country_id: newFilm.country.value,
+        country_id: newFilm.country,
         trailer: newFilm.trailer,
         availability: newFilm.availability,
         actors: selectedActors.map((actor) => actor.value),
@@ -174,6 +174,7 @@ function InputFilm() {
                 className="hidden"
                 onChange={handleImageChange}
                 accept="image/*"
+                aria-label="image-upload"
               />
               <span className="text-white text-lg font-bold">Upload Photo</span>
             </label>
@@ -188,6 +189,7 @@ function InputFilm() {
                 className="hidden"
                 onChange={handleImageChange}
                 accept="image/*"
+                aria-label="image-upload"
               />
               <img
                 src={URL.createObjectURL(selectedImage)}
@@ -199,6 +201,7 @@ function InputFilm() {
           <button
             type="submit"
             className="mt-4 bg-slate-500 text-white rounded-lg w-2/5 h-10"
+            aria-label="submit-button"
           >
             Submit
           </button>
@@ -217,6 +220,7 @@ function InputFilm() {
                 onChange={(e) =>
                   setNewFilm({ ...newFilm, title: e.target.value })
                 }
+                aria-label="title-input"
               />
             </div>
             <div className="w-1/2">
@@ -230,6 +234,7 @@ function InputFilm() {
                 onChange={(e) =>
                   setNewFilm({ ...newFilm, altTitle: e.target.value })
                 }
+                aria-label="alt-title"
               />
             </div>
           </div>
@@ -247,6 +252,7 @@ function InputFilm() {
                   setNewFilm({ ...newFilm, year: selectedOption.value })
                 }
                 placeholder="Select Year"
+                aria-label="year"
               />
             </div>
             <div className="flex-1">
@@ -261,6 +267,7 @@ function InputFilm() {
                   setNewFilm({ ...newFilm, country: selectedOption })
                 }
                 placeholder="Select Country"
+                aria-label="country"
               />
             </div>
           </div>
@@ -276,6 +283,7 @@ function InputFilm() {
               onChange={(e) =>
                 setNewFilm({ ...newFilm, synopsis: e.target.value })
               }
+              aria-label="synopsis"
             ></textarea>
           </div>
 
@@ -290,6 +298,7 @@ function InputFilm() {
               onChange={(e) =>
                 setNewFilm({ ...newFilm, availability: e.target.value })
               }
+              aria-label="availability"
             />
           </div>
 
@@ -302,6 +311,7 @@ function InputFilm() {
               onChange={setSelectedGenres}
               className="text-black w-full mt-2"
               placeholder="Choose genres..."
+              aria-label="genres"
             />
           </div>
 
@@ -315,6 +325,7 @@ function InputFilm() {
               className="text-black w-full mt-2"
               placeholder="Choose actors..."
               components={{ Option: customOption }}
+              aria-label="actors"
             />
           </div>
 
@@ -330,6 +341,7 @@ function InputFilm() {
                 onChange={(e) =>
                   setNewFilm({ ...newFilm, trailer: e.target.value })
                 }
+                aria-label="trailer-input"
               />
             </div>
             <div className="flex-1">
@@ -343,6 +355,7 @@ function InputFilm() {
                 value={selectedAwards}
                 onChange={setSelectedAwards}
                 placeholder="Select Award"
+                aria-label="awards"
               />
             </div>
           </div>

@@ -36,7 +36,7 @@ const config = {
   transformIgnorePatterns: [
     "/node_modules/(?!(axios)/)", // Transform axios explicitly
   ],
-
+  testMatch: ["**/src/**/*.test.js", "**/src/**/*.spec.js"],
   // An array of regexp pattern strings used to skip coverage collection
   // coveragePathIgnorePatterns: [
   //   "\\\\node_modules\\\\"
