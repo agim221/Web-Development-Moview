@@ -24,9 +24,12 @@ function Actors() {
 
   const searchActors = async () => {
     try {
-      const response = await axios.get("http://localhost:8000/api/search/actors", {
-        params: { query: searchQuery }
-      });
+      const response = await axios.get(
+        "http://localhost:8000/api/search/actors",
+        {
+          params: { query: searchQuery },
+        }
+      );
       setActorData(response.data);
     } catch (error) {
       console.error("Error searching actors:", error);
@@ -105,11 +108,17 @@ function Actors() {
   function actions(index) {
     return (
       <td>
-        <button className="bg-blue-500 text-white text-xs px-3 py-1 rounded hover:bg-blue-600" onClick={() => editActor(index)}>
+        <button
+          className="bg-blue-500 text-white text-xs px-3 py-1 rounded hover:bg-blue-600"
+          onClick={() => editActor(index)}
+        >
           Edit
         </button>
         <span className="mx-2"></span>
-        <button className="bg-red-500 text-white text-xs px-3 py-1 rounded hover:bg-red-600" onClick={() => deleteActor(index)}>
+        <button
+          className="bg-red-500 text-white text-xs px-3 py-1 rounded hover:bg-red-600"
+          onClick={() => deleteActor(index)}
+        >
           Delete
         </button>
       </td>
@@ -138,22 +147,28 @@ function Actors() {
         <div className="flex flex-row mb-8 gap-4 bg-slate-100 p-4 rounded">
           <div className="flex flex-col flex-grow">
             <div className="mb-4">
-              <label className="text-sm">Actor Name</label>
+              <label className="text-sm" aria-label="label-actor">
+                Actor Name
+              </label>
               <input
                 type="text"
                 name="name"
                 value={newActor.name}
                 onChange={handleInputChange}
                 className="bg-slate-300 text-black p-1 rounded w-full"
+                aria-label="input-actor"
               />
             </div>
             <div className="mb-4">
-              <label className="text-sm">Photo</label>
+              <label className="text-sm" aria-label="label-photo">
+                Photo
+              </label>
               <input
                 type="file"
                 name="photo"
                 onChange={handleFileChange}
                 className="bg-slate-300 text-black p-1 rounded w-full"
+                aria-label="input-photo"
               />
               {preview && (
                 <div className="mt-4">

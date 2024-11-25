@@ -62,6 +62,7 @@ function Home({ filterData, searchText }) {
             "remember_token"
           )}`
         );
+        console.log(response.data);
         setBookmarks(response.data);
       } catch (error) {
         console.error("Error fetching bookmarks:", error);
@@ -129,15 +130,20 @@ function Home({ filterData, searchText }) {
               </svg>
             </div>
 
-            {bookmarks.map((film) => (
-              <FilmCard
-                key={film.id}
-                title={film.title}
-                rating={film.rating}
-                year={film.release_date}
-                posterUrl={film.image}
-              />
-            ))}
+            {bookmarks.map(
+              (film) => (
+                console.log(film),
+                (
+                  <FilmCard
+                    key={film.id}
+                    title={film.title}
+                    rating={film.rating}
+                    year={film.release_date}
+                    posterUrl={film.image}
+                  />
+                )
+              )
+            )}
           </div>
         ) : (
           <p></p>

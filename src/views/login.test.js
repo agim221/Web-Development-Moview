@@ -10,7 +10,10 @@ jest.mock("axios");
 describe("LoginPage", () => {
   // Reset mock before each test
   beforeEach(() => {
+    axios.get.mockReset();
     axios.post.mockReset();
+    axios.put.mockReset();
+    axios.delete.mockReset();
   });
 
   // Clean up after each test
@@ -36,10 +39,10 @@ describe("LoginPage", () => {
   test("displays API error message", async () => {
     // Mock API response
     axios.post.mockImplementationOnce(() =>
-      Promise.resolve({
+      Promise.reject({
         response: {
           status: 400,
-          data: { error: "Invalid password" },
+          error: "Invalid password",
         },
       })
     );
@@ -158,6 +161,36 @@ describe("LoginPage", () => {
 
     await waitFor(() => {
       expect(mockSetRole).toHaveBeenCalledWith("admin");
+    });
+  });
+
+  test("logs in successfully as blocked account", async () => {
+    axios.post.mockImplementationOnce(() =>
+      Promise.reject({ response: { status: 403 } })
+    );
+
+    render(
+      <MemoryRouter
+        future={{ v7_relativeSplatPath: true, v7_startTransition: true }}
+      >
+        <LoginPage setRole={() => {}} />
+      </MemoryRouter>
+    );
+
+    fireEvent.change(screen.getByLabelText("username"), {
+      target: { value: "blockuser" },
+    });
+
+    fireEvent.change(screen.getByLabelText("password"), {
+      target: { value: "blockuser12" },
+    });
+
+    fireEvent.click(screen.getByText("Sign in"));
+
+    await waitFor(() => {
+      expect(screen.getByTestId("message").textContent).toBe(
+        "Your account has been blocked"
+      );
     });
   });
 
