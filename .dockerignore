@@ -1,0 +1,6 @@
+.gitignore
+tailwind.config.js
+.Babelrc
+node_modules
+coverage
+__mocks__
