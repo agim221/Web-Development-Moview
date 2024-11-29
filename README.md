@@ -21,36 +21,36 @@ Untuk penginstalan aplikasi ini terdapat dua versi, yaitu penginstalan versi lok
 
 ### 2. Create folder for project
 
-- `mkdir moview`
+- `mkdir moview` <br>
 - `cd moview`
 
 ### 3. Install Frontend
 
-- Clone Repository
-  `git clone https://github.com/agim221/Web-Development-Moview`
+- Clone Repository <br>
+  `git clone https://github.com/agim221/Web-Development-Moview` <br>
   `cd Web-Development-Moview`
 - Install package needed
   `npm install`
 
 ### 4. Install Backend
 
-- Clone Repository
-  `git clone https://github.com/agim221/Web-Development-Moview-Back-End`
+- Clone Repository <br>
+  `git clone https://github.com/agim221/Web-Development-Moview-Back-End` <br>
   `cd Web-Development-Moview-Back-End`
-- Install Dependencies
+- Install Dependencies <br>
   `composer install`
-- Create environment
+- Create environment <br>
   `cp .env.example .env`
-- Generate key
+- Generate key <br>
   `php artisan key:generate`
 - Configure your database settings in the .env file
-- Run database migrations
+- Run database migrations <br>
   `php artisan migrate`
-- Run this python script to input film data
+- Run this python script to input film data <br>
   `python nama-file.py`
-- Run database seed
+- Run database seed <br>
   `php artisan db:seed --class=DatabaseSeeder`
-- Install Laravel Passport for API authentication
+- Install Laravel Passport for API authentication <br>
   `php artisan passport:install`
 
 ## Features
