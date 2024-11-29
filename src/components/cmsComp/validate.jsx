@@ -112,16 +112,15 @@ function Validate() {
 
   function renderActions(film) {
     return (
-      <td>
+      <td className="flex gap-1">
         <button
-          className="hover:underline"
+          className="bg-blue-500 text-white text-xs px-3 py-1 rounded hover:bg-blue-600"
           onClick={() => handleValidateClick(film)}
         >
           Validate
         </button>
-        <span className="mx-2">|</span>
         <button
-          className="hover:underline"
+          className="bg-red-500 text-white text-xs px-3 py-1 rounded hover:bg-blue-600"
           onClick={() => handleDeleteClick(film.id)}
         >
           Delete

@@ -25,6 +25,7 @@ function Movies() {
   const [selectedActors, setSelectedActors] = useState([]);
   const [selectedAwards, setSelectedAwards] = useState([]);
   const [selectedImage, setSelectedImage] = useState(null);
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -71,6 +72,35 @@ function Movies() {
     };
     fetchData();
   }, []);
+
+  const fetchMovies = async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost:8000/api/films/verified"
+      );
+      setMovies(response.data);
+    } catch (error) {
+      console.error("Error fetching movies:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchMovies();
+  }, []);
+
+  const searchMovies = async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost:8000/api/search/films",
+        {
+          params: { query: searchQuery },
+        }
+      );
+      setMovies(response.data);
+    } catch (error) {
+      console.error("Error searching movies:", error);
+    }
+  };
 
   const handleEditClick = async (id) => {
     try {
@@ -170,11 +200,7 @@ function Movies() {
       setIsModalOpen(false);
       setSelectedMovie(null);
 
-      const response = await axios.get(
-        "http://localhost:8000/api/films/verified"
-      );
-
-      setMovies(response.data);
+      fetchMovies();
     } catch (error) {
       console.error("Error updating film:", error);
     }
@@ -183,11 +209,7 @@ function Movies() {
   const handleDeleteClick = async (id) => {
     try {
       await axios.delete(`http://localhost:8000/api/films/${id}`);
-      const response = await axios.get(
-        "http://localhost:8000/api/films/verified"
-      );
-
-      setMovies(response.data);
+      fetchMovies();
     } catch (error) {
       console.error("Error deleting movie:", error);
     }
@@ -213,30 +235,32 @@ function Movies() {
     );
   }
 
-  useEffect(() => {
-    const fetchMovies = async () => {
-      try {
-        const response = await axios.get(
-          "http://localhost:8000/api/films/verified"
-        );
-
-        setMovies(response.data);
-      } catch (error) {
-        console.error("Error fetching movies:", error);
-      }
-    };
-    fetchMovies();
-  }, []);
-
   return (
     <section className="w-full h-screen flex flex-col">
       <div className="flex flex-col w-3/4 mx-auto bg-white rounded-lg shadow-lg p-4 overflow-y-auto">
+        {/* Search Bar */}
+        <div className="flex items-center mb-6 p-4 bg-slate-100 rounded">
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Search films..."
+            className="w-full px-3 py-2 bg-white rounded"
+          />
+          <button
+            className="ml-4 bg-slate-500 text-white text-xs px-3 py-1 rounded hover:bg-slate-600"
+            onClick={searchMovies}
+          >
+            Search
+          </button>
+        </div>
+
         <CMSTable
           headers={["No", "Title", "Year", "Actions"]}
           datas={movies.map((movie, index) => [
             index + 1,
             movie.title,
-            movie.year,
+            movie.release_date,
             renderActions(movie),
           ])}
         />

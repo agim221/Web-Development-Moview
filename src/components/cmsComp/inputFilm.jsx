@@ -59,6 +59,7 @@ function InputFilm() {
         setActors(
           actorsRes.data.map((actor) => ({
             value: actor.id,
+            image: actor.photo_url,
             label: actor.name,
           }))
         );
@@ -120,6 +121,9 @@ function InputFilm() {
         }
       );
 
+      // Show success alert
+      alert("Film added successfully!");
+
       // Reset form after submit
       setNewFilm({
         title: "",
@@ -136,7 +140,23 @@ function InputFilm() {
       setSelectedAwards([]);
     } catch (error) {
       console.error("Error posting film:", error);
+      // Show error alert
+      alert("Failed to add film!");
     }
+  };
+
+  const customOption = (props) => {
+    const { innerRef, innerProps, data } = props;
+    return (
+      <div ref={innerRef} {...innerProps} className="flex items-center p-2">
+        <img
+          src={data.image}
+          alt={data.label}
+          className="w-8 h-8 rounded-full mr-2"
+        />
+        <span>{data.label}</span>
+      </div>
+    );
   };
 
   return (
@@ -294,6 +314,7 @@ function InputFilm() {
               onChange={setSelectedActors}
               className="text-black w-full mt-2"
               placeholder="Choose actors..."
+              components={{ Option: customOption }}
             />
           </div>
 

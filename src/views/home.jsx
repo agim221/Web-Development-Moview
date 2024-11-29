@@ -70,6 +70,7 @@ function Home({ filterData, searchText }) {
 
     fetchBookmarks();
   }, [rememberToken]);
+
   return (
     <>
       <MainSlider />

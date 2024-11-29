@@ -145,12 +145,6 @@ const LoginPage = ({ setRole }) => {
               Sign in
             </button>
           )}
-          {/* <button
-            type="submit"
-            className="w-full py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600"
-          >
-            Sign in
-          </button> */}
           <div>
             <button
               type="button"

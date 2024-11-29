@@ -4,17 +4,27 @@ import CMSTable from "../../components/CMSTable";
 
 function Comments() {
   const [comments, setComments] = useState([]);
-  const [filter, setFilter] = useState("None");
-  const [showCount, setShowCount] = useState(10);
+  const [filter, setFilter] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     fetchComments();
-  }, []);
+  }, [filter]);
 
   const fetchComments = async () => {
     try {
-      const response = await axios.get("http://localhost:8000/api/comments");
+      let response;
+      if (filter === "approved") {
+        response = await axios.get(
+          "http://localhost:8000/api/comments/approved"
+        );
+      } else if (filter === "unapproved") {
+        response = await axios.get(
+          "http://localhost:8000/api/comments/unapproved"
+        );
+      } else {
+        response = await axios.get("http://localhost:8000/api/comments");
+      }
       setComments(response.data);
     } catch (error) {
       console.error("Error fetching comments:", error);
@@ -44,6 +54,19 @@ function Comments() {
     }
   };
 
+  const approveComment = async (id) => {
+    try {
+      await axios.put(`http://localhost:8000/api/comments/approve/${id}`);
+      setComments(
+        comments.map((comment) =>
+          comment.id === id ? { ...comment, is_approved: true } : comment
+        )
+      );
+    } catch (error) {
+      console.error("Error approving comment:", error);
+    }
+  };
+
   // Fungsi untuk mengonversi nilai rate menjadi bintang
   const renderStars = (rate) => {
     return "★".repeat(rate) + "☆".repeat(5 - rate); // menampilkan bintang sesuai rating dari 1 hingga 5
@@ -51,19 +74,19 @@ function Comments() {
 
   return (
     <section className="w-full">
-      <div className="flex flex-col w-3/4 mx-auto">
-        {/* Filter and Show Controls */}
+      <div className="flex flex-col w-3/4 mx-auto h-[900px] overflow-y-scroll">
+        {/* Filter Controls */}
         <div className="flex items-center justify-between mb-6 p-4 bg-slate-100 rounded">
           <div className="flex gap-4 items-center">
-            <span>Shows</span>
+            <span>Filter</span>
             <select
-              value={showCount}
-              onChange={(e) => setShowCount(e.target.value)}
+              value={filter}
+              onChange={(e) => setFilter(e.target.value)}
               className="bg-slate-300 text-black px-3 py-1 rounded"
             >
-              <option value={5}>5</option>
-              <option value={10}>10</option>
-              <option value={15}>15</option>
+              <option value="all">All</option>
+              <option value="approved">Approved</option>
+              <option value="unapproved">Unapproved</option>
             </select>
           </div>
         </div>
@@ -87,18 +110,36 @@ function Comments() {
 
         {/* Comments Table */}
         <CMSTable
-          headers={["Username", "Rate", "Drama", "Comments", "Actions"]}
-          datas={comments.slice(0, showCount).map((comment, index) => [
-            comment.username,
-            renderStars(comment.rate), // menampilkan rating sebagai bintang
-            comment.film,
+          headers={[
+            "Username",
+            "Rate",
+            "Drama",
+            "Comments",
+            "Approved",
+            "Actions",
+          ]}
+          datas={comments.map((comment, index) => [
+            comment.user.username,
+            renderStars(comment.rating), // menampilkan rating sebagai bintang
+            comment.films.title,
             comment.comment,
-            <button
-              className="bg-red-500 text-white text-xs px-3 py-1 rounded hover:bg-red-600"
-              onClick={() => deleteComment(comment.id)}
-            >
-              Delete
-            </button>,
+            comment.is_approved ? "Yes" : "No", // Menampilkan status approved
+            <div className="flex gap-2">
+              {!comment.is_approved && (
+                <button
+                  className="bg-green-500 text-white text-xs px-3 py-1 rounded hover:bg-green-600"
+                  onClick={() => approveComment(comment.id)}
+                >
+                  Approve
+                </button>
+              )}
+              <button
+                className="bg-red-500 text-white text-xs px-3 py-1 rounded hover:bg-red-600"
+                onClick={() => deleteComment(comment.id)}
+              >
+                Delete
+              </button>
+            </div>,
           ])}
         />
       </div>

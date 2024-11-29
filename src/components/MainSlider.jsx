@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { Circles } from "react-loading-icons";
 import axios from "axios";
 
@@ -19,18 +19,19 @@ export default function MainSlider() {
     });
   };
 
-  useEffect(() => {
-    const fetchTrending = async () => {
-      try {
-        const response = await axios.get("http://localhost:8000/api/trending");
-        setTrending(response.data);
-        setLoading(false);
-      } catch (error) {
-        console.error("There was an error fetching the trending data!", error);
-        setLoading(false);
-      }
-    };
+  const fetchTrending = useCallback(async () => {
+    try {
+      const response = await axios.get("http://localhost:8000/api/trending");
 
+      setTrending(response.data);
+    } catch (error) {
+      console.error("There was an error fetching the trending data!", error);
+    } finally {
+      setLoading(false);
+    }
+  });
+
+  useEffect(() => {
     fetchTrending();
   }, []);
 
@@ -40,7 +41,7 @@ export default function MainSlider() {
     }, 3000); // Change picture every 5 seconds
 
     return () => clearTimeout(timer); // Clear timeout if component unmounts or activePicture changes
-  }, [activePicture, trending]);
+  }, []);
 
   if (loading) {
     return (
@@ -68,7 +69,7 @@ export default function MainSlider() {
                 style={{ transform: `translateX(-${activePicture * 100}%)` }}
                 src={item.poster}
                 alt={item.title}
-                loading="eager"
+                loading="lazy"
               />
             ))}
           </div>
@@ -134,7 +135,7 @@ export default function MainSlider() {
                   {trending[activePicture].title}
                 </h2>
                 <p className="">{trending[activePicture].genre}</p>
-                <p className="">{trending[activePicture].rating} / 10</p>
+                <p className="">{trending[activePicture].rating} / 5</p>
                 <p className="">{trending[activePicture].year}</p>
                 <p className="">{trending[activePicture].description}</p>
               </>

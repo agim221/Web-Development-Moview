@@ -50,7 +50,7 @@ function FilmList({
             }
           );
         }
-        console.log(response.data);
+
         setFilms(response.data);
         setLoading(false);
       } catch (error) {
