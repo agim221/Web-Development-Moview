@@ -26,8 +26,8 @@ Untuk penginstalan aplikasi ini terdapat dua versi, yaitu penginstalan versi lok
 
 ### 3. Install Frontend
 
-- Clone Repository
-  `git clone https://github.com/agim221/Web-Development-Moview`
+- Clone Repository <br>
+  `git clone https://github.com/agim221/Web-Development-Moview` <br>
   `cd Web-Development-Moview`
 - Install package needed
   `npm install`
