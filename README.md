@@ -9,7 +9,7 @@ Moview merupakan sebuah website yang didesain untuk membantu user mencari, menil
 
 ## Installation
 
-Untuk penginstalan aplikasi ini terdapat dua versi, yaitu penginstalan versi lokal dan versi Docker. Klik [di sini](http://example.com) untuk penginstalan versi Docker. Ikuti instruksi di bawah ini untuk penginstalan aplikasi lokal:
+Untuk penginstalan aplikasi ini terdapat dua versi, yaitu penginstalan versi lokal dan versi Docker. Klik [di sini](https://github.com/agim221/Web-Development-Moview/tree/docker) untuk penginstalan versi Docker. Ikuti instruksi di bawah ini untuk penginstalan aplikasi lokal:
 
 ### 1. Prerequisites
 
