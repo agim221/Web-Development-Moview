@@ -31,8 +31,10 @@ Untuk penginstalan aplikasi ini terdapat dua versi, yaitu penginstalan versi lok
 - Clone Repository <br>
   `git clone https://github.com/agim221/Web-Development-Moview` <br>
   `cd Web-Development-Moview`
+- Change branch <br>
+  `git checkout docker`
 - Build image react
-  `docker build -t react-app`
+  `docker build -t react-app .`
 
 ### 4. Install Backend
 
@@ -71,6 +73,6 @@ Author: Agim, Zahran
 
 ## References
 
-- [Install docker]()
+- [Install docker](https://youtu.be/XgRGI0Pw2mM?si=sQzbunjXrHMBCQSQ)
 - [Setting OAuth](https://youtu.be/r8sVXy7lSTM?si=DGc_rI0c2GrWHTHD)
 - [Setting env for database](https://medium.com/@erlandmuchasaj/laravel-env-5fe7f88bd256)
