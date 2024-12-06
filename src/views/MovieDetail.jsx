@@ -33,7 +33,7 @@ export default function MovieDetail() {
   const fetchFilm = useCallback(async () => {
     try {
       const response = await axios.get(
-        `https://webdev-production-2eb9.up.railway.app//api/films_detail/${id}`
+        `https://webdev-production-2eb9.up.railway.app/api/films_detail/${id}`
       );
       setFilm(response.data);
       setLoading(false);
@@ -47,7 +47,7 @@ export default function MovieDetail() {
   const fetchActor = useCallback(async () => {
     try {
       const response = await axios.get(
-        `https://webdev-production-2eb9.up.railway.app//api/films_detail/${id}/actors`
+        `https://webdev-production-2eb9.up.railway.app/api/films_detail/${id}/actors`
       );
       setActors(response.data);
       setLoading(false);
@@ -61,7 +61,7 @@ export default function MovieDetail() {
   const fetchComments = useCallback(async () => {
     try {
       const response = await axios.get(
-        `https://webdev-production-2eb9.up.railway.app//api/films_detail/${id}/comments`
+        `https://webdev-production-2eb9.up.railway.app/api/films_detail/${id}/comments`
       );
       console.log("comments", response.data);
       setComments(response.data);
@@ -76,7 +76,7 @@ export default function MovieDetail() {
   const fetchGenres = useCallback(async () => {
     try {
       const response = await axios.get(
-        `https://webdev-production-2eb9.up.railway.app//api/films_detail/${id}/genres`
+        `https://webdev-production-2eb9.up.railway.app/api/films_detail/${id}/genres`
       );
       setGenres(response.data);
       setLoading(false);
@@ -95,7 +95,7 @@ export default function MovieDetail() {
 
     try {
       const response = await axios.post(
-        "https://webdev-production-2eb9.up.railway.app//api/bookmarks/check",
+        "https://webdev-production-2eb9.up.railway.app/api/bookmarks/check",
         data
       );
       setIsBookmarked(response.data.exists);
@@ -117,7 +117,7 @@ export default function MovieDetail() {
 
     try {
       await axios.post(
-        "https://webdev-production-2eb9.up.railway.app//api/add-comments",
+        "https://webdev-production-2eb9.up.railway.app/api/add-comments",
         data
       );
       fetchComments();
@@ -145,7 +145,7 @@ export default function MovieDetail() {
 
     try {
       await axios.post(
-        "https://webdev-production-2eb9.up.railway.app//api/bookmarks",
+        "https://webdev-production-2eb9.up.railway.app/api/bookmarks",
         data
       );
       setIsBookmarked(true);
@@ -164,7 +164,7 @@ export default function MovieDetail() {
 
     try {
       await axios.post(
-        "https://webdev-production-2eb9.up.railway.app//api/bookmarks/remove",
+        "https://webdev-production-2eb9.up.railway.app/api/bookmarks/remove",
         data
       );
       setIsBookmarked(false);

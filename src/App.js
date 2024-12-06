@@ -40,7 +40,7 @@ function App() {
   const fetchRole = useCallback(async () => {
     try {
       const response = await axios.get(
-        "https://webdev-production-2eb9.up.railway.app//api/role",
+        "https://webdev-production-2eb9.up.railway.app/api/role",
         {
           params: {
             remember_token: localStorage.getItem("remember_token"),
@@ -61,7 +61,7 @@ function App() {
   useEffect(() => {
     // const fetchRole = async () => {
     //   try {
-    //     const response = await axios.get("https://webdev-production-2eb9.up.railway.app//api/role", {
+    //     const response = await axios.get("https://webdev-production-2eb9.up.railway.app/api/role", {
     //       params: {
     //         remember_token: localStorage.getItem("remember_token"),
     //       },

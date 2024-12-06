@@ -58,7 +58,7 @@ function Home({ filterData, searchText }) {
 
       try {
         const response = await axios.get(
-          `https://webdev-production-2eb9.up.railway.app//api/bookmarks/${localStorage.getItem(
+          `https://webdev-production-2eb9.up.railway.app/api/bookmarks/${localStorage.getItem(
             "remember_token"
           )}`
         );

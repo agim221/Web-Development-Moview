@@ -14,7 +14,7 @@ function Validate() {
   const fetchGenres = useCallback(async (id) => {
     try {
       const response = await axios.get(
-        `https://webdev-production-2eb9.up.railway.app//api/films_detail/${id}/genres`
+        `https://webdev-production-2eb9.up.railway.app/api/films_detail/${id}/genres`
       );
       setGenres(response.data);
     } catch (error) {
@@ -25,7 +25,7 @@ function Validate() {
   const fetchActors = useCallback(async (id) => {
     try {
       const response = await axios.get(
-        `https://webdev-production-2eb9.up.railway.app//api/films_detail/${id}/actors`
+        `https://webdev-production-2eb9.up.railway.app/api/films_detail/${id}/actors`
       );
       setActors(response.data);
     } catch (error) {
@@ -36,7 +36,7 @@ function Validate() {
   const fetchAwards = useCallback(async (id) => {
     try {
       const response = await axios.get(
-        `https://webdev-production-2eb9.up.railway.app//api/films_detail/${id}/awards`
+        `https://webdev-production-2eb9.up.railway.app/api/films_detail/${id}/awards`
       );
       setAwards(response.data);
     } catch (error) {
@@ -47,7 +47,7 @@ function Validate() {
   const fetchCountry = useCallback(async (id) => {
     try {
       const response = await axios.get(
-        `https://webdev-production-2eb9.up.railway.app//api/countries/${id}`
+        `https://webdev-production-2eb9.up.railway.app/api/countries/${id}`
       );
       setCountry(response.data);
     } catch (error) {
@@ -59,7 +59,7 @@ function Validate() {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "https://webdev-production-2eb9.up.railway.app//api/films/unverified"
+          "https://webdev-production-2eb9.up.railway.app/api/films/unverified"
         );
 
         setFilms(response.data);
@@ -87,10 +87,10 @@ function Validate() {
   const handleApproveClick = async (id) => {
     try {
       await axios.put(
-        `https://webdev-production-2eb9.up.railway.app//api/films/approve/${id}`
+        `https://webdev-production-2eb9.up.railway.app/api/films/approve/${id}`
       );
       const response = await axios.get(
-        "https://webdev-production-2eb9.up.railway.app//api/films/unverified"
+        "https://webdev-production-2eb9.up.railway.app/api/films/unverified"
       );
       setFilms(response.data);
       setIsModalOpen(false);
@@ -102,10 +102,10 @@ function Validate() {
   const handleDeleteClick = async (id) => {
     try {
       await axios.delete(
-        `https://webdev-production-2eb9.up.railway.app//api/films/${id}`
+        `https://webdev-production-2eb9.up.railway.app/api/films/${id}`
       );
       const response = await axios.get(
-        "https://webdev-production-2eb9.up.railway.app//api/films/unverified"
+        "https://webdev-production-2eb9.up.railway.app/api/films/unverified"
       );
       setFilms(response.data);
       setIsModalOpen(false);

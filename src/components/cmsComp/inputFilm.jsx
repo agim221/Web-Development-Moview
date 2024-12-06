@@ -29,19 +29,19 @@ function InputFilm() {
         const [yearsRes, countriesRes, genresRes, awardsRes, actorsRes] =
           await Promise.all([
             axios.get(
-              "https://webdev-production-2eb9.up.railway.app//api/years"
+              "https://webdev-production-2eb9.up.railway.app/api/years"
             ),
             axios.get(
-              "https://webdev-production-2eb9.up.railway.app//api/countries"
+              "https://webdev-production-2eb9.up.railway.app/api/countries"
             ),
             axios.get(
-              "https://webdev-production-2eb9.up.railway.app//api/genres"
+              "https://webdev-production-2eb9.up.railway.app/api/genres"
             ),
             axios.get(
-              "https://webdev-production-2eb9.up.railway.app//api/awards"
+              "https://webdev-production-2eb9.up.railway.app/api/awards"
             ),
             axios.get(
-              "https://webdev-production-2eb9.up.railway.app//api/actors"
+              "https://webdev-production-2eb9.up.railway.app/api/actors"
             ),
           ]);
 
@@ -122,7 +122,7 @@ function InputFilm() {
       };
 
       const response = await axios.post(
-        "https://webdev-production-2eb9.up.railway.app//api/add-film",
+        "https://webdev-production-2eb9.up.railway.app/api/add-film",
         filmData,
         {
           headers: {

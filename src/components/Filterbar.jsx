@@ -81,7 +81,7 @@ function Filterbar({ isOpen, toggleFilterBar, onSubmit }) {
     const fetchYears = async () => {
       try {
         const response = await axios.get(
-          "https://webdev-production-2eb9.up.railway.app//api/years"
+          "https://webdev-production-2eb9.up.railway.app/api/years"
         );
         setYears(response.data);
       } catch (error) {
@@ -92,7 +92,7 @@ function Filterbar({ isOpen, toggleFilterBar, onSubmit }) {
     const fetchCountries = async () => {
       try {
         const response = await axios.get(
-          "https://webdev-production-2eb9.up.railway.app//api/countries"
+          "https://webdev-production-2eb9.up.railway.app/api/countries"
         );
         setCountries(response.data);
       } catch (error) {
@@ -103,7 +103,7 @@ function Filterbar({ isOpen, toggleFilterBar, onSubmit }) {
     const fetchGenres = async () => {
       try {
         const response = await axios.get(
-          "https://webdev-production-2eb9.up.railway.app//api/genres"
+          "https://webdev-production-2eb9.up.railway.app/api/genres"
         );
         setGenres(response.data);
       } catch (error) {
@@ -114,7 +114,7 @@ function Filterbar({ isOpen, toggleFilterBar, onSubmit }) {
     const fetchAwards = async () => {
       try {
         const response = await axios.get(
-          "https://webdev-production-2eb9.up.railway.app//api/awards"
+          "https://webdev-production-2eb9.up.railway.app/api/awards"
         );
         setAwards(response.data);
       } catch (error) {

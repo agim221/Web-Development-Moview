@@ -15,7 +15,7 @@ function Genres() {
   const fetchGenres = async () => {
     try {
       const response = await axios.get(
-        "https://webdev-production-2eb9.up.railway.app//api/genres"
+        "https://webdev-production-2eb9.up.railway.app/api/genres"
       );
       setGenres(response.data);
     } catch (error) {
@@ -26,7 +26,7 @@ function Genres() {
   const searchGenres = async () => {
     try {
       const response = await axios.get(
-        "https://webdev-production-2eb9.up.railway.app//api/search/genres",
+        "https://webdev-production-2eb9.up.railway.app/api/search/genres",
         {
           params: { query: searchQuery },
         }
@@ -41,7 +41,7 @@ function Genres() {
     try {
       if (!newGenre) return;
       const response = await axios.post(
-        "https://webdev-production-2eb9.up.railway.app//api/genres",
+        "https://webdev-production-2eb9.up.railway.app/api/genres",
         {
           name: newGenre,
         }
@@ -56,7 +56,7 @@ function Genres() {
   const deleteGenre = async (id) => {
     try {
       await axios.delete(
-        `https://webdev-production-2eb9.up.railway.app//api/genres/${id}`
+        `https://webdev-production-2eb9.up.railway.app/api/genres/${id}`
       );
       setGenres(genres.filter((genre) => genre.id !== id));
     } catch (error) {
@@ -68,7 +68,7 @@ function Genres() {
     try {
       if (!editingGenre) return;
       await axios.put(
-        `https://webdev-production-2eb9.up.railway.app//api/genres/${id}`,
+        `https://webdev-production-2eb9.up.railway.app/api/genres/${id}`,
         {
           name: editingGenre.name,
         }

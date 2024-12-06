@@ -22,7 +22,7 @@ export default function MainSlider() {
   const fetchTrending = useCallback(async () => {
     try {
       const response = await axios.get(
-        "https://webdev-production-2eb9.up.railway.app//api/trending"
+        "https://webdev-production-2eb9.up.railway.app/api/trending"
       );
 
       setTrending(response.data);

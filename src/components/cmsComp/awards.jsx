@@ -16,7 +16,7 @@ function Awards() {
   const fetchAwards = async () => {
     try {
       const response = await axios.get(
-        "https://webdev-production-2eb9.up.railway.app//api/awards"
+        "https://webdev-production-2eb9.up.railway.app/api/awards"
       );
       setAwards(response.data);
     } catch (error) {
@@ -27,7 +27,7 @@ function Awards() {
   const searchAwards = async () => {
     try {
       const response = await axios.get(
-        "https://webdev-production-2eb9.up.railway.app//api/search/awards",
+        "https://webdev-production-2eb9.up.railway.app/api/search/awards",
         {
           params: { query: searchQuery },
         }
@@ -42,7 +42,7 @@ function Awards() {
     try {
       if (!newYear || !newName) return;
       const response = await axios.post(
-        "https://webdev-production-2eb9.up.railway.app//api/awards",
+        "https://webdev-production-2eb9.up.railway.app/api/awards",
         {
           year: newYear,
           name: newName,
@@ -59,7 +59,7 @@ function Awards() {
   const deleteAward = async (id) => {
     try {
       await axios.delete(
-        `https://webdev-production-2eb9.up.railway.app//api/awards/${id}`
+        `https://webdev-production-2eb9.up.railway.app/api/awards/${id}`
       );
       setAwards(awards.filter((award) => award.id !== id));
     } catch (error) {
@@ -71,7 +71,7 @@ function Awards() {
     try {
       if (!editingAward) return;
       await axios.put(
-        `https://webdev-production-2eb9.up.railway.app//api/awards/${id}`,
+        `https://webdev-production-2eb9.up.railway.app/api/awards/${id}`,
         {
           year: editingAward.year,
           name: editingAward.name,

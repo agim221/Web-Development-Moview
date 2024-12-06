@@ -15,7 +15,7 @@ function Countries() {
   const fetchCountries = async () => {
     try {
       const response = await axios.get(
-        "https://webdev-production-2eb9.up.railway.app//api/countries"
+        "https://webdev-production-2eb9.up.railway.app/api/countries"
       );
       setCountries(response.data);
     } catch (error) {
@@ -26,7 +26,7 @@ function Countries() {
   const searchCountries = async () => {
     try {
       const response = await axios.get(
-        "https://webdev-production-2eb9.up.railway.app//api/search/countries",
+        "https://webdev-production-2eb9.up.railway.app/api/search/countries",
         {
           params: { query: searchQuery },
         }
@@ -41,7 +41,7 @@ function Countries() {
     try {
       if (!newCountry) return;
       const response = await axios.post(
-        "https://webdev-production-2eb9.up.railway.app//api/countries",
+        "https://webdev-production-2eb9.up.railway.app/api/countries",
         {
           name: newCountry,
         }
@@ -56,7 +56,7 @@ function Countries() {
   const deleteCountry = async (id) => {
     try {
       await axios.delete(
-        `https://webdev-production-2eb9.up.railway.app//api/countries/${id}`
+        `https://webdev-production-2eb9.up.railway.app/api/countries/${id}`
       );
       setCountries(countries.filter((country) => country.id !== id));
     } catch (error) {
@@ -68,7 +68,7 @@ function Countries() {
     try {
       if (!editingCountry) return;
       await axios.put(
-        `https://webdev-production-2eb9.up.railway.app//api/countries/${id}`,
+        `https://webdev-production-2eb9.up.railway.app/api/countries/${id}`,
         {
           name: editingCountry.name,
         }

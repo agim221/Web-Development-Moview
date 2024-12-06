@@ -21,7 +21,7 @@ const SignUpPage = () => {
 
       try {
         const response = await axios.post(
-          `https://webdev-production-2eb9.up.railway.app//register`,
+          `https://webdev-production-2eb9.up.railway.app/register`,
           {
             username: username,
             email: email,

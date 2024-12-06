@@ -16,15 +16,15 @@ function Comments() {
       let response;
       if (filter === "approved") {
         response = await axios.get(
-          "https://webdev-production-2eb9.up.railway.app//api/comments/approved"
+          "https://webdev-production-2eb9.up.railway.app/api/comments/approved"
         );
       } else if (filter === "unapproved") {
         response = await axios.get(
-          "https://webdev-production-2eb9.up.railway.app//api/comments/unapproved"
+          "https://webdev-production-2eb9.up.railway.app/api/comments/unapproved"
         );
       } else {
         response = await axios.get(
-          "https://webdev-production-2eb9.up.railway.app//api/comments"
+          "https://webdev-production-2eb9.up.railway.app/api/comments"
         );
       }
       setComments(response.data);
@@ -36,7 +36,7 @@ function Comments() {
   const searchComments = async () => {
     try {
       const response = await axios.get(
-        "https://webdev-production-2eb9.up.railway.app//api/search/comments",
+        "https://webdev-production-2eb9.up.railway.app/api/search/comments",
         {
           params: { query: searchQuery },
         }
@@ -50,7 +50,7 @@ function Comments() {
   const deleteComment = async (id) => {
     try {
       await axios.delete(
-        `https://webdev-production-2eb9.up.railway.app//api/comments/${id}`
+        `https://webdev-production-2eb9.up.railway.app/api/comments/${id}`
       );
       setComments(comments.filter((comment) => comment.id !== id));
     } catch (error) {
@@ -61,7 +61,7 @@ function Comments() {
   const approveComment = async (id) => {
     try {
       await axios.put(
-        `https://webdev-production-2eb9.up.railway.app//api/comments/approve/${id}`
+        `https://webdev-production-2eb9.up.railway.app/api/comments/approve/${id}`
       );
       setComments(
         comments.map((comment) =>

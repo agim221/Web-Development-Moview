@@ -16,7 +16,7 @@ function Actors() {
   const fetchActors = async () => {
     try {
       const response = await axios.get(
-        "https://webdev-production-2eb9.up.railway.app//api/actors"
+        "https://webdev-production-2eb9.up.railway.app/api/actors"
       );
       setActorData(response.data);
     } catch (error) {
@@ -27,7 +27,7 @@ function Actors() {
   const searchActors = async () => {
     try {
       const response = await axios.get(
-        "https://webdev-production-2eb9.up.railway.app//api/search/actors",
+        "https://webdev-production-2eb9.up.railway.app/api/search/actors",
         {
           params: { query: searchQuery },
         }
@@ -65,7 +65,7 @@ function Actors() {
       if (editingIndex !== null) {
         const actorToUpdate = actorData[editingIndex];
         const response = await axios.put(
-          `https://webdev-production-2eb9.up.railway.app//api/actors/update/${actorToUpdate.id}`,
+          `https://webdev-production-2eb9.up.railway.app/api/actors/update/${actorToUpdate.id}`,
           actorPayload
         );
         const updatedActors = [...actorData];
@@ -74,7 +74,7 @@ function Actors() {
         setEditingIndex(null);
       } else {
         const response = await axios.post(
-          "https://webdev-production-2eb9.up.railway.app//api/add-actor",
+          "https://webdev-production-2eb9.up.railway.app/api/add-actor",
           actorPayload
         );
         setActorData([...actorData, response.data]);
@@ -98,7 +98,7 @@ function Actors() {
     try {
       const actorToDelete = actorData[index];
       await axios.delete(
-        `https://webdev-production-2eb9.up.railway.app//api/actors/${actorToDelete.id}`
+        `https://webdev-production-2eb9.up.railway.app/api/actors/${actorToDelete.id}`
       );
       const filteredData = actorData.filter((_, i) => i !== index);
       setActorData(filteredData);
