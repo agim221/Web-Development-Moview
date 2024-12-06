@@ -15,7 +15,9 @@ function Actors() {
 
   const fetchActors = async () => {
     try {
-      const response = await axios.get("http://localhost:8000/api/actors");
+      const response = await axios.get(
+        "https://webdev-production-2eb9.up.railway.app//api/actors"
+      );
       setActorData(response.data);
     } catch (error) {
       console.error("Error fetching actors:", error);
@@ -24,9 +26,12 @@ function Actors() {
 
   const searchActors = async () => {
     try {
-      const response = await axios.get("http://localhost:8000/api/search/actors", {
-        params: { query: searchQuery }
-      });
+      const response = await axios.get(
+        "https://webdev-production-2eb9.up.railway.app//api/search/actors",
+        {
+          params: { query: searchQuery },
+        }
+      );
       setActorData(response.data);
     } catch (error) {
       console.error("Error searching actors:", error);
@@ -60,7 +65,7 @@ function Actors() {
       if (editingIndex !== null) {
         const actorToUpdate = actorData[editingIndex];
         const response = await axios.put(
-          `http://localhost:8000/api/actors/update/${actorToUpdate.id}`,
+          `https://webdev-production-2eb9.up.railway.app//api/actors/update/${actorToUpdate.id}`,
           actorPayload
         );
         const updatedActors = [...actorData];
@@ -69,7 +74,7 @@ function Actors() {
         setEditingIndex(null);
       } else {
         const response = await axios.post(
-          "http://localhost:8000/api/add-actor",
+          "https://webdev-production-2eb9.up.railway.app//api/add-actor",
           actorPayload
         );
         setActorData([...actorData, response.data]);
@@ -93,7 +98,7 @@ function Actors() {
     try {
       const actorToDelete = actorData[index];
       await axios.delete(
-        `http://localhost:8000/api/actors/${actorToDelete.id}`
+        `https://webdev-production-2eb9.up.railway.app//api/actors/${actorToDelete.id}`
       );
       const filteredData = actorData.filter((_, i) => i !== index);
       setActorData(filteredData);
@@ -105,11 +110,17 @@ function Actors() {
   function actions(index) {
     return (
       <td>
-        <button className="bg-blue-500 text-white text-xs px-3 py-1 rounded hover:bg-blue-600" onClick={() => editActor(index)}>
+        <button
+          className="bg-blue-500 text-white text-xs px-3 py-1 rounded hover:bg-blue-600"
+          onClick={() => editActor(index)}
+        >
           Edit
         </button>
         <span className="mx-2"></span>
-        <button className="bg-red-500 text-white text-xs px-3 py-1 rounded hover:bg-red-600" onClick={() => deleteActor(index)}>
+        <button
+          className="bg-red-500 text-white text-xs px-3 py-1 rounded hover:bg-red-600"
+          onClick={() => deleteActor(index)}
+        >
           Delete
         </button>
       </td>

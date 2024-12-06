@@ -14,7 +14,9 @@ function Countries() {
 
   const fetchCountries = async () => {
     try {
-      const response = await axios.get("http://localhost:8000/api/countries");
+      const response = await axios.get(
+        "https://webdev-production-2eb9.up.railway.app//api/countries"
+      );
       setCountries(response.data);
     } catch (error) {
       console.error("Error fetching countries:", error);
@@ -23,9 +25,12 @@ function Countries() {
 
   const searchCountries = async () => {
     try {
-      const response = await axios.get("http://localhost:8000/api/search/countries", {
-        params: { query: searchQuery }
-      });
+      const response = await axios.get(
+        "https://webdev-production-2eb9.up.railway.app//api/search/countries",
+        {
+          params: { query: searchQuery },
+        }
+      );
       setCountries(response.data);
     } catch (error) {
       console.error("Error searching countries:", error);
@@ -35,9 +40,12 @@ function Countries() {
   const addCountry = async () => {
     try {
       if (!newCountry) return;
-      const response = await axios.post("http://localhost:8000/api/countries", {
-        name: newCountry,
-      });
+      const response = await axios.post(
+        "https://webdev-production-2eb9.up.railway.app//api/countries",
+        {
+          name: newCountry,
+        }
+      );
       setCountries([...countries, response.data]);
       setNewCountry("");
     } catch (error) {
@@ -47,7 +55,9 @@ function Countries() {
 
   const deleteCountry = async (id) => {
     try {
-      await axios.delete(`http://localhost:8000/api/countries/${id}`);
+      await axios.delete(
+        `https://webdev-production-2eb9.up.railway.app//api/countries/${id}`
+      );
       setCountries(countries.filter((country) => country.id !== id));
     } catch (error) {
       console.error("Error deleting country:", error);
@@ -57,9 +67,12 @@ function Countries() {
   const updateCountry = async (id) => {
     try {
       if (!editingCountry) return;
-      await axios.put(`http://localhost:8000/api/countries/${id}`, {
-        name: editingCountry.name,
-      });
+      await axios.put(
+        `https://webdev-production-2eb9.up.railway.app//api/countries/${id}`,
+        {
+          name: editingCountry.name,
+        }
+      );
       setCountries(
         countries.map((country) =>
           country.id === id

@@ -14,7 +14,9 @@ function Users() {
   const fetchUsers = async () => {
     try {
       // Fetch users from the API
-      const response = await axios.get("http://localhost:8000/api/users");
+      const response = await axios.get(
+        "https://webdev-production-2eb9.up.railway.app//api/users"
+      );
       setUsers(response.data);
     } catch (error) {
       console.error("Error fetching users:", error);
@@ -24,7 +26,7 @@ function Users() {
   const searchUsers = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:8000/api/search/users",
+        "https://webdev-production-2eb9.up.railway.app//api/search/users",
         {
           params: { query: searchQuery },
         }
@@ -40,11 +42,11 @@ function Users() {
       let response;
       if (isBanned) {
         response = await axios.get(
-          `http://localhost:8000/api/users/unblock/${id}`
+          `https://webdev-production-2eb9.up.railway.app//api/users/unblock/${id}`
         );
       } else {
         response = await axios.get(
-          `http://localhost:8000/api/users/block/${id}`
+          `https://webdev-production-2eb9.up.railway.app//api/users/block/${id}`
         );
       }
       console.log(response.data);

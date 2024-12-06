@@ -20,11 +20,14 @@ const SignUpPage = () => {
       setLoading(true);
 
       try {
-        const response = await axios.post(`http://localhost:8000/register`, {
-          username: username,
-          email: email,
-          password: password,
-        });
+        const response = await axios.post(
+          `https://webdev-production-2eb9.up.railway.app//register`,
+          {
+            username: username,
+            email: email,
+            password: password,
+          }
+        );
         // Lakukan sesuatu dengan response jika diperlukan
         if (response.status === 204) {
           navigate("/login");

@@ -33,7 +33,7 @@ export default function MovieDetail() {
   const fetchFilm = useCallback(async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8000/api/films_detail/${id}`
+        `https://webdev-production-2eb9.up.railway.app//api/films_detail/${id}`
       );
       setFilm(response.data);
       setLoading(false);
@@ -47,7 +47,7 @@ export default function MovieDetail() {
   const fetchActor = useCallback(async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8000/api/films_detail/${id}/actors`
+        `https://webdev-production-2eb9.up.railway.app//api/films_detail/${id}/actors`
       );
       setActors(response.data);
       setLoading(false);
@@ -61,7 +61,7 @@ export default function MovieDetail() {
   const fetchComments = useCallback(async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8000/api/films_detail/${id}/comments`
+        `https://webdev-production-2eb9.up.railway.app//api/films_detail/${id}/comments`
       );
       console.log("comments", response.data);
       setComments(response.data);
@@ -76,7 +76,7 @@ export default function MovieDetail() {
   const fetchGenres = useCallback(async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8000/api/films_detail/${id}/genres`
+        `https://webdev-production-2eb9.up.railway.app//api/films_detail/${id}/genres`
       );
       setGenres(response.data);
       setLoading(false);
@@ -95,7 +95,7 @@ export default function MovieDetail() {
 
     try {
       const response = await axios.post(
-        "http://localhost:8000/api/bookmarks/check",
+        "https://webdev-production-2eb9.up.railway.app//api/bookmarks/check",
         data
       );
       setIsBookmarked(response.data.exists);
@@ -116,7 +116,10 @@ export default function MovieDetail() {
     };
 
     try {
-      await axios.post("http://localhost:8000/api/add-comments", data);
+      await axios.post(
+        "https://webdev-production-2eb9.up.railway.app//api/add-comments",
+        data
+      );
       fetchComments();
       setComment("");
       setRating(5);
@@ -141,7 +144,10 @@ export default function MovieDetail() {
     };
 
     try {
-      await axios.post("http://localhost:8000/api/bookmarks", data);
+      await axios.post(
+        "https://webdev-production-2eb9.up.railway.app//api/bookmarks",
+        data
+      );
       setIsBookmarked(true);
       alert("Film added to bookmarks!");
     } catch (error) {
@@ -157,7 +163,10 @@ export default function MovieDetail() {
     };
 
     try {
-      await axios.post("http://localhost:8000/api/bookmarks/remove", data);
+      await axios.post(
+        "https://webdev-production-2eb9.up.railway.app//api/bookmarks/remove",
+        data
+      );
       setIsBookmarked(false);
       alert("Film removed from bookmarks!");
     } catch (error) {

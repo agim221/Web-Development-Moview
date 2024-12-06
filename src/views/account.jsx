@@ -13,7 +13,7 @@ function Account() {
   const fetchAccountInfo = useCallback(async () => {
     try {
       const response = await axios.get(
-        "http://localhost:8000/api/users/detail",
+        "https://webdev-production-2eb9.up.railway.app//api/users/detail",
         {
           params: {
             remember_token: localStorage.getItem("remember_token"),
@@ -33,12 +33,15 @@ function Account() {
 
   const handlePasswordChange = async () => {
     try {
-      await axios.put("http://localhost:8000/api/users/change-password", {
-        remember_token: localStorage.getItem("remember_token"),
-        current_password: currentPassword,
-        new_password: newPassword,
-        confirm_new_password: confirmNewPassword,
-      });
+      await axios.put(
+        "https://webdev-production-2eb9.up.railway.app//api/users/change-password",
+        {
+          remember_token: localStorage.getItem("remember_token"),
+          current_password: currentPassword,
+          new_password: newPassword,
+          confirm_new_password: confirmNewPassword,
+        }
+      );
 
       setCurrentPassword("");
       setNewPassword("");

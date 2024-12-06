@@ -24,7 +24,7 @@ const LoginPage = ({ setRole }) => {
     setLoading(true);
 
     axios
-      .post("http://localhost:8000/login", {
+      .post("https://webdev-production-2eb9.up.railway.app//login", {
         username: username,
         password: password,
       })
@@ -69,7 +69,8 @@ const LoginPage = ({ setRole }) => {
   };
 
   const handleLoginWithGoogle = () => {
-    window.location.href = "http://localhost:8000/auth/google";
+    window.location.href =
+      "https://webdev-production-2eb9.up.railway.app//auth/google";
   };
 
   useEffect(() => {

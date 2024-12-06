@@ -32,11 +32,21 @@ function Movies() {
       try {
         const [yearsRes, countriesRes, genresRes, awardsRes, actorsRes] =
           await Promise.all([
-            axios.get("http://localhost:8000/api/years"),
-            axios.get("http://localhost:8000/api/countries"),
-            axios.get("http://localhost:8000/api/genres"),
-            axios.get("http://localhost:8000/api/awards"),
-            axios.get("http://localhost:8000/api/actors"),
+            axios.get(
+              "https://webdev-production-2eb9.up.railway.app//api/years"
+            ),
+            axios.get(
+              "https://webdev-production-2eb9.up.railway.app//api/countries"
+            ),
+            axios.get(
+              "https://webdev-production-2eb9.up.railway.app//api/genres"
+            ),
+            axios.get(
+              "https://webdev-production-2eb9.up.railway.app//api/awards"
+            ),
+            axios.get(
+              "https://webdev-production-2eb9.up.railway.app//api/actors"
+            ),
           ]);
 
         setYears(
@@ -76,7 +86,7 @@ function Movies() {
   const fetchMovies = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:8000/api/films/verified"
+        "https://webdev-production-2eb9.up.railway.app//api/films/verified"
       );
       setMovies(response.data);
     } catch (error) {
@@ -91,7 +101,7 @@ function Movies() {
   const searchMovies = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:8000/api/search/films",
+        "https://webdev-production-2eb9.up.railway.app//api/search/films",
         {
           params: { query: searchQuery },
         }
@@ -105,14 +115,20 @@ function Movies() {
   const handleEditClick = async (id) => {
     try {
       const response = await axios.get(
-        `http://localhost:8000/api/films_detail/${id}`
+        `https://webdev-production-2eb9.up.railway.app//api/films_detail/${id}`
       );
       const movie = response.data;
 
       const [actorsRes, genresRes, awardsRes] = await Promise.all([
-        axios.get(`http://localhost:8000/api/films_detail/${id}/actors`),
-        axios.get(`http://localhost:8000/api/films_detail/${id}/genres`),
-        axios.get(`http://localhost:8000/api/films_detail/${id}/awards`),
+        axios.get(
+          `https://webdev-production-2eb9.up.railway.app//api/films_detail/${id}/actors`
+        ),
+        axios.get(
+          `https://webdev-production-2eb9.up.railway.app//api/films_detail/${id}/genres`
+        ),
+        axios.get(
+          `https://webdev-production-2eb9.up.railway.app//api/films_detail/${id}/awards`
+        ),
       ]);
 
       setSelectedMovie(movie);
@@ -194,7 +210,7 @@ function Movies() {
       };
 
       await axios.put(
-        `http://localhost:8000/api/films/${selectedMovie.id}/update`,
+        `https://webdev-production-2eb9.up.railway.app//api/films/${selectedMovie.id}/update`,
         filmData
       );
       setIsModalOpen(false);
@@ -208,7 +224,9 @@ function Movies() {
 
   const handleDeleteClick = async (id) => {
     try {
-      await axios.delete(`http://localhost:8000/api/films/${id}`);
+      await axios.delete(
+        `https://webdev-production-2eb9.up.railway.app//api/films/${id}`
+      );
       fetchMovies();
     } catch (error) {
       console.error("Error deleting movie:", error);

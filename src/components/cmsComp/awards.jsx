@@ -15,7 +15,9 @@ function Awards() {
 
   const fetchAwards = async () => {
     try {
-      const response = await axios.get("http://localhost:8000/api/awards");
+      const response = await axios.get(
+        "https://webdev-production-2eb9.up.railway.app//api/awards"
+      );
       setAwards(response.data);
     } catch (error) {
       console.error("Error fetching awards:", error);
@@ -24,9 +26,12 @@ function Awards() {
 
   const searchAwards = async () => {
     try {
-      const response = await axios.get("http://localhost:8000/api/search/awards", {
-        params: { query: searchQuery }
-      });
+      const response = await axios.get(
+        "https://webdev-production-2eb9.up.railway.app//api/search/awards",
+        {
+          params: { query: searchQuery },
+        }
+      );
       setAwards(response.data);
     } catch (error) {
       console.error("Error searching awards:", error);
@@ -36,10 +41,13 @@ function Awards() {
   const addAward = async () => {
     try {
       if (!newYear || !newName) return;
-      const response = await axios.post("http://localhost:8000/api/awards", {
-        year: newYear,
-        name: newName,
-      });
+      const response = await axios.post(
+        "https://webdev-production-2eb9.up.railway.app//api/awards",
+        {
+          year: newYear,
+          name: newName,
+        }
+      );
       setAwards([...awards, response.data]);
       setNewYear("");
       setNewName("");
@@ -50,7 +58,9 @@ function Awards() {
 
   const deleteAward = async (id) => {
     try {
-      await axios.delete(`http://localhost:8000/api/awards/${id}`);
+      await axios.delete(
+        `https://webdev-production-2eb9.up.railway.app//api/awards/${id}`
+      );
       setAwards(awards.filter((award) => award.id !== id));
     } catch (error) {
       console.error("Error deleting award:", error);
@@ -60,10 +70,13 @@ function Awards() {
   const updateAward = async (id) => {
     try {
       if (!editingAward) return;
-      await axios.put(`http://localhost:8000/api/awards/${id}`, {
-        year: editingAward.year,
-        name: editingAward.name,
-      });
+      await axios.put(
+        `https://webdev-production-2eb9.up.railway.app//api/awards/${id}`,
+        {
+          year: editingAward.year,
+          name: editingAward.name,
+        }
+      );
       setAwards(
         awards.map((award) =>
           award.id === id

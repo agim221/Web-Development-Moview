@@ -28,7 +28,7 @@ function Navbar({
   const fetchSuggestionsByTitle = async (query) => {
     try {
       const response = await axios.get(
-        `http://localhost:8000/api/films/auto-complete/title`,
+        `https://webdev-production-2eb9.up.railway.app//api/films/auto-complete/title`,
         {
           params: { title: query },
         }
@@ -42,7 +42,7 @@ function Navbar({
   const fetchSuggestionsByActor = async (query) => {
     try {
       const response = await axios.get(
-        `http://localhost:8000/api/films/auto-complete/actor`,
+        `https://webdev-production-2eb9.up.railway.app//api/films/auto-complete/actor`,
         {
           params: { name: query },
         }

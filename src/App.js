@@ -39,11 +39,14 @@ function App() {
 
   const fetchRole = useCallback(async () => {
     try {
-      const response = await axios.get("http://localhost:8000/api/role", {
-        params: {
-          remember_token: localStorage.getItem("remember_token"),
-        },
-      });
+      const response = await axios.get(
+        "https://webdev-production-2eb9.up.railway.app//api/role",
+        {
+          params: {
+            remember_token: localStorage.getItem("remember_token"),
+          },
+        }
+      );
 
       if (response.data === "admin") {
         setRole(response.data);
@@ -58,7 +61,7 @@ function App() {
   useEffect(() => {
     // const fetchRole = async () => {
     //   try {
-    //     const response = await axios.get("http://localhost:8000/api/role", {
+    //     const response = await axios.get("https://webdev-production-2eb9.up.railway.app//api/role", {
     //       params: {
     //         remember_token: localStorage.getItem("remember_token"),
     //       },

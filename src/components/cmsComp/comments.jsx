@@ -16,14 +16,16 @@ function Comments() {
       let response;
       if (filter === "approved") {
         response = await axios.get(
-          "http://localhost:8000/api/comments/approved"
+          "https://webdev-production-2eb9.up.railway.app//api/comments/approved"
         );
       } else if (filter === "unapproved") {
         response = await axios.get(
-          "http://localhost:8000/api/comments/unapproved"
+          "https://webdev-production-2eb9.up.railway.app//api/comments/unapproved"
         );
       } else {
-        response = await axios.get("http://localhost:8000/api/comments");
+        response = await axios.get(
+          "https://webdev-production-2eb9.up.railway.app//api/comments"
+        );
       }
       setComments(response.data);
     } catch (error) {
@@ -34,7 +36,7 @@ function Comments() {
   const searchComments = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:8000/api/search/comments",
+        "https://webdev-production-2eb9.up.railway.app//api/search/comments",
         {
           params: { query: searchQuery },
         }
@@ -47,7 +49,9 @@ function Comments() {
 
   const deleteComment = async (id) => {
     try {
-      await axios.delete(`http://localhost:8000/api/comments/${id}`);
+      await axios.delete(
+        `https://webdev-production-2eb9.up.railway.app//api/comments/${id}`
+      );
       setComments(comments.filter((comment) => comment.id !== id));
     } catch (error) {
       console.error("Error deleting comment:", error);
@@ -56,7 +60,9 @@ function Comments() {
 
   const approveComment = async (id) => {
     try {
-      await axios.put(`http://localhost:8000/api/comments/approve/${id}`);
+      await axios.put(
+        `https://webdev-production-2eb9.up.railway.app//api/comments/approve/${id}`
+      );
       setComments(
         comments.map((comment) =>
           comment.id === id ? { ...comment, is_approved: true } : comment

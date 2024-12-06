@@ -14,7 +14,9 @@ function Genres() {
 
   const fetchGenres = async () => {
     try {
-      const response = await axios.get("http://localhost:8000/api/genres");
+      const response = await axios.get(
+        "https://webdev-production-2eb9.up.railway.app//api/genres"
+      );
       setGenres(response.data);
     } catch (error) {
       console.error("Error fetching genres:", error);
@@ -23,9 +25,12 @@ function Genres() {
 
   const searchGenres = async () => {
     try {
-      const response = await axios.get("http://localhost:8000/api/search/genres", {
-        params: { query: searchQuery }
-      });
+      const response = await axios.get(
+        "https://webdev-production-2eb9.up.railway.app//api/search/genres",
+        {
+          params: { query: searchQuery },
+        }
+      );
       setGenres(response.data);
     } catch (error) {
       console.error("Error searching genres:", error);
@@ -35,9 +40,12 @@ function Genres() {
   const addGenre = async () => {
     try {
       if (!newGenre) return;
-      const response = await axios.post("http://localhost:8000/api/genres", {
-        name: newGenre,
-      });
+      const response = await axios.post(
+        "https://webdev-production-2eb9.up.railway.app//api/genres",
+        {
+          name: newGenre,
+        }
+      );
       setGenres([...genres, response.data]);
       setNewGenre("");
     } catch (error) {
@@ -47,7 +55,9 @@ function Genres() {
 
   const deleteGenre = async (id) => {
     try {
-      await axios.delete(`http://localhost:8000/api/genres/${id}`);
+      await axios.delete(
+        `https://webdev-production-2eb9.up.railway.app//api/genres/${id}`
+      );
       setGenres(genres.filter((genre) => genre.id !== id));
     } catch (error) {
       console.error("Error deleting genre:", error);
@@ -57,9 +67,12 @@ function Genres() {
   const updateGenre = async (id) => {
     try {
       if (!editingGenre) return;
-      await axios.put(`http://localhost:8000/api/genres/${id}`, {
-        name: editingGenre.name,
-      });
+      await axios.put(
+        `https://webdev-production-2eb9.up.railway.app//api/genres/${id}`,
+        {
+          name: editingGenre.name,
+        }
+      );
       setGenres(
         genres.map((genre) =>
           genre.id === id ? { ...genre, name: editingGenre.name } : genre

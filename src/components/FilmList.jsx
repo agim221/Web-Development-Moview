@@ -27,7 +27,7 @@ function FilmList({
         let response;
         if (searchBy === "title") {
           response = await axios.get(
-            `http://localhost:8000/api/films/search/${
+            `https://webdev-production-2eb9.up.railway.app//api/films/search/${
               filmShowed - (filmShowed - 1)
             }/${filmShowed}`,
             {
@@ -39,7 +39,7 @@ function FilmList({
           );
         } else {
           response = await axios.get(
-            `http://localhost:8000/api/films/search/actor/${
+            `https://webdev-production-2eb9.up.railway.app//api/films/search/actor/${
               filmShowed - (filmShowed - 1)
             }/${filmShowed}`,
             {
@@ -61,7 +61,7 @@ function FilmList({
     const fetchFilms = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8000/api/films/range/${
+          `https://webdev-production-2eb9.up.railway.app//api/films/range/${
             filmShowed - (filmShowed - 1)
           }/${filmShowed}`
         );

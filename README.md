@@ -53,6 +53,11 @@ Untuk penginstalan aplikasi ini terdapat dua versi, yaitu penginstalan versi lok
 - Install Laravel Passport for API authentication <br>
   `php artisan passport:install`
 
+### 5. Run Project
+
+-
+-
+
 ## Features
 
 1. Register and Login:

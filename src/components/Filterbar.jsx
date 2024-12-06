@@ -80,7 +80,9 @@ function Filterbar({ isOpen, toggleFilterBar, onSubmit }) {
   useEffect(() => {
     const fetchYears = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/api/years");
+        const response = await axios.get(
+          "https://webdev-production-2eb9.up.railway.app//api/years"
+        );
         setYears(response.data);
       } catch (error) {
         console.error("Error fetching years:", error);
@@ -89,7 +91,9 @@ function Filterbar({ isOpen, toggleFilterBar, onSubmit }) {
 
     const fetchCountries = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/api/countries");
+        const response = await axios.get(
+          "https://webdev-production-2eb9.up.railway.app//api/countries"
+        );
         setCountries(response.data);
       } catch (error) {
         console.error("Error fetching countries:", error);
@@ -98,7 +102,9 @@ function Filterbar({ isOpen, toggleFilterBar, onSubmit }) {
 
     const fetchGenres = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/api/genres");
+        const response = await axios.get(
+          "https://webdev-production-2eb9.up.railway.app//api/genres"
+        );
         setGenres(response.data);
       } catch (error) {
         console.error("Error fetching genres:", error);
@@ -107,7 +113,9 @@ function Filterbar({ isOpen, toggleFilterBar, onSubmit }) {
 
     const fetchAwards = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/api/awards");
+        const response = await axios.get(
+          "https://webdev-production-2eb9.up.railway.app//api/awards"
+        );
         setAwards(response.data);
       } catch (error) {
         console.error("Error fetching awards:", error);
